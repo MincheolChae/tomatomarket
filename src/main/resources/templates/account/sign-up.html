@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/sign-up.css">
+</head>
+<body>
+    <header id="header">
+        <div class="container">
+            <div class="title">
+                <div class="title-wrap">
+                    <a href="/"><img src="img/tomato-emoji-clipart-md.png" alt="tomato" class="tomato">
+                    <div class="head">토마토 마켓</div></a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <article>
+        <div class="container">
+            <div class="inputuser">
+                <form th:action="@{/sign-up}" method="post" th:object="${signUpForm}" class="validation" novalidate>
+                    <div class="input-info">
+                        <label for="email">아이디(이메일)</label>
+                        <input id="email" type="email" name="email" th:field="*{email}" placeholder="tomato@email.com" required>
+                    </div><small th:if="${#fields.hasErrors('email')}" th:errors="*{email}">이메일 입력 오류</small>
+                    <div class="input-info">
+                        <label for="password">비밀번호</label>
+                        <input id="password" type="password" name="password" th:field="*{password}" placeholder="8자 이상의 비밀번호 입력" required minlength="8" maxlength="20">
+                    </div>
+                    <div class="input-info">
+                        <label for="password2">비밀번호 확인</label>
+                        <input id="password2" type="password" name="password2" th:field="*{password2}" placeholder="8자 이상의 비밀번호 재입력" required minlength="8" maxlength="20">
+                    </div><small th:if="${#fields.hasErrors('password')}" th:errors="*{password}">비밀번호 불일치 오류</small>
+                    <div class="input-info">
+                        <label for="name">이름</label>
+                        <input id="name" type="text" name="name" th:field="*{name}" required>
+                    </div><small th:if="${#fields.hasErrors('name')}" th:errors="*{name}">이름 입력 오류</small>
+                    <div class="input-info">
+                        <label for="phone">휴대폰 번호</label>
+                        <input id="phone" type="tel" name="phone" th:field="*{phone}" required>
+                    </div><small th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">휴대폰 번호 입력 오류</small>
+                    <div class="input-info">
+                        <input type="submit" value="가입하기" class="submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </article>
+
+    <footer>
+        <div class="container">
+            <div class="footer">
+                <address>Copyright © <strong>Tomato Market</strong> Inc. All Rights Reserved.</address>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../../static/js/jquery.min_3.5.1.js"></script>
+<!--    <script type="application/javascript">-->
+<!--        var forms = document.getElementsByClassName('validation');-->
+<!--        Array.prototype.filter.call(forms, function (form) {-->
+<!--            form.addEventListener('submit', function (event) {-->
+<!--                if (form.checkValidity() === false) {-->
+<!--                    event.preventDefault();-->
+<!--                    event.stopPropagation();-->
+<!--                }-->
+<!--                form.classList.add('was-validated')-->
+<!--            }, false)-->
+<!--        }, false)-->
+<!--    </script>-->
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/reset.css">
+</head>
+<body>
+    <header id="header">
+        <div class="container">
+            <div class="title">
+                <div class="title-wrap">
+                    <a href="/"><img src="img/tomato-emoji-clipart-md.png" alt="tomato" class="tomato">
+                    <div class="head">토마토 마켓</div></a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <article>
+        <div class="container">
+            <div class="inputuser">
+                <form th:action="@{/login}" method="post" novalidate>
+                    <div class="input-info">
+                        <label for="username">아이디(이메일)</label>
+                        <input id="username" type="email" name="username" placeholder="tomato@email.com" required>
+                    </div>
+                    <div class="input-info">
+                        <label for="password">비밀번호</label>
+                        <input id="password" type="password" name="password" required>
+                    </div>
+                    <div class="input-info">
+                        <div class="remember">
+                            <input type="checkbox" id="rememberMe" name="remember-me">
+                            <label for="rememberMe" class="rememberMe">로그인 유지</label>
+                        </div>
+                        <div>
+                            <a href="#">아이디 찾기</a>
+                            <span> | </span>
+                            <a href="#">비밀번호 찾기</a>
+                            <span> | </span>
+                            <a href="/signup">회원 가입</a>
+                        </div>
+                    </div>
+                    <div class="input-info">
+                        <input type="submit" value="로그인" class="submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </article>
+
+    <footer>
+        <div class="container">
+            <div class="footer">
+                <address>Copyright ©<strong>Tomato Market</strong> Inc. All Rights Reserved.</address>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,16 @@
+body{background-color: #ecf0f1;}
+.container{margin: 0 auto; width: 600px; height: 100%;}
+#header{width: 100%; margin-top: 40px;}
+.title{height: 80px;}
+.title-wrap{padding: 10px 170px; height: 60px;}
+.tomato{width: 60px; height: 60px; float: left;}
+.head{float: left; color:#ff6348; font-size: 34px; font-weight: bold;}
+
+article{margin-top: 10px;}
+article small{padding: 0 100px; color: #e84118;}
+article .inputuser .input-info{text-align: center; margin: 5px 0;}
+article .inputuser label{display: block; font-size: 18px; font-weight: bold; padding: 10px 100px 5px; text-align: left;}
+article .inputuser input{width: 380px; height: 45px; padding: 0 10px;}
+article .inputuser .submit{width: 400px; height: 50px; background-color: #ff6348; color: #fff; font-size: 22px; margin-top: 20px; letter-spacing: 1px; border: none;}
+
+footer .footer address{text-align: center;}
