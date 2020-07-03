@@ -1,6 +1,34 @@
 @charset "utf-8";
 
 body{background-color: #f5f6fa;}
+.container{margin: 0 auto; width: 1000px; height: 100%;}
+/* 헤더 */
+#header{background: #fff; width: 100%;  position: fixed; z-index: 100; box-shadow: 1px 1px 5px #dbdbdb;}
+.title{height: 80px;}
+.title-wrap{padding: 10px 0; height: 60px;}
+.tomato{width: 60px; height: 60px; float: left;}
+.head{float: left; color:#ff6348; font-size: 40px; font-weight: bold; font-family: 'Gamja Flower', cursive;}
+.search{float: left; display: block; width: 490px; height: 40px; border:2px solid #ff6348; border-radius: 5px; margin:10px 25px 10px 30px;}
+.search input{float: left; width: 420px; height: 40px; border:0; padding-left: 20px; font-size: 15px;}
+.search input:focus{outline: none;}
+.search .search-button:focus{outline: none;}
+.search .search-button:hover{cursor: pointer;}
+.search-img{float: left; width: 50px; height: 50px;}
+.magnifying{width: 40px; height: 40px;}
+.log{float: left; height: 30px; margin:10px 0; padding: 5px; border: 1px solid #ff6348; border-radius: 18px; font-size: 18px; font-weight: bold; color: #ff6348;}
+.log:hover{background-color: #ff6348; font-size: 18px; font-weight: bold; color: #fff;}
+.sign-up{float: left; height: 30px; margin: 10px 0 10px 15px; padding: 5px; border: 1px solid #ff6348; border-radius: 18px; font-size: 18px; font-weight: bold; color: #ff6348;}
+.sign-up:hover{background-color: #ff6348; font-size: 18px; font-weight: bold; color: #fff;}
+.logout-form{display: block; float: left; height: 30px; margin:10px 0 10px 3px; padding: 5px; border: 1px solid #ff6348; border-radius: 18px;}
+.logout-form input{border: none; background: none; outline: none; cursor: pointer; font-size: 18px; font-weight: bold; color: #ff6348;}
+.logout-form:hover{background-color: #ff6348; cursor: pointer;}
+.logout-form:hover input{font-size: 18px; font-weight: bold; color: #fff;}
+
+/* 이메일 인증하라는 메세지 */
+.not-veri-email{position: fixed; top: 120px; right: 200px; z-index: 5000; border: 3px solid #e84118; background-color: #ffcccc; padding: 10px; border-radius: 10px; font-size: 18px;}
+.not-veri-email:hover{cursor: default}
+.not-veri-email .resend{font-size: 15px; font-weight: bold; padding: 5px; color: #16a085;}
+.not-veri-email .resend:hover{text-decoration: underline; cursor: pointer;}
 
 /* 여백 초기화 */
 body, div, ul, li, dl, dt, ol, h1, h2, h3, h4, h5, h6, input, fieldset, legend, p, select, table, th, td, tr, textarea, button, form {margin: 0; padding: 0;}

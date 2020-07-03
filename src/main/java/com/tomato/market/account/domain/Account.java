@@ -37,7 +37,7 @@ public class Account {
 
     private LocalDateTime joinedAt;  //가입날(인증된 날)
 
-    //TODO 판매내역
+    //TODO 판매내역 속성 추가하고 관리
 
     private String location;  //살고 있는 지역 (위치 API or 수동 입력)
 

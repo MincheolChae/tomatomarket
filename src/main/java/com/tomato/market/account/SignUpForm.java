@@ -23,7 +23,7 @@ public class SignUpForm {
     private String password2;
 
     @NotBlank
-    @Pattern(regexp = "^[가-힣0-9]{2,8}|[a-zA-Z0-9]{3,16}$")  //TODO regexp 새로 작성
+    @Pattern(regexp = "^[가-힣a-zA-Z0-9]{3,12}$")  //TODO regexp 새로 작성
     private String nickname;
 
     @NotBlank

@@ -2,6 +2,7 @@ package com.tomato.market.account;
 
 import com.tomato.market.account.domain.Account;
 import com.tomato.market.account.domain.AccountRepository;
+import com.tomato.market.account.profile.ProfileModifyForm;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
@@ -51,7 +52,6 @@ public class AccountService implements UserDetailsService {
         javaMailSender.send(mailMessage);
     }
 
-
     public void login(Account account) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 new UserAccount(account),
@@ -85,5 +85,10 @@ public class AccountService implements UserDetailsService {
         account.setEmailVerified(true);
         account.setJoinedAt(LocalDateTime.now());
         login(account);
+    }
+
+    public void modifyProfile(Account account, ProfileModifyForm profileModifyForm) {
+        modelMapper.map(profileModifyForm, account);
+        accountRepository.save(account);
     }
 }

@@ -1,10 +1,10 @@
 body{background-color: #f5f6fa;}
 .container{margin: 0 auto; width: 600px; height: 100%;}
-#header{width: 100%; margin-top: 40px;}
-.title{height: 80px;}
-.title-wrap{padding: 10px 170px; height: 60px;}
-.tomato{width: 60px; height: 60px; float: left;}
-.head{float: left; color:#ff6348; font-size: 40px; font-weight: bold; font-family: 'Gamja Flower', cursive;}
+#login-header{width: 100%; margin-top: 40px;}
+.login-title{height: 80px;}
+.login-title-wrap{padding: 10px 170px; height: 60px;}
+.login-tomato{width: 60px; height: 60px; float: left;}
+.login-head{float: left; color:#ff6348; font-size: 40px; font-weight: bold; font-family: 'Gamja Flower', cursive;}
 
 article{margin-top: 10px;}
 article .inputuser .input-info{text-align: center; margin: 5px 0;}
@@ -24,8 +24,9 @@ article .oauth img{float:left; width: 60px; height: 45px; padding-left:10px;}
 article .google img{padding: 8px 11px 7px 22px; width: 37px; height: 30px;}
 article .oauth div{float:left; font-size: 20px; padding: 8px 0 8px 10px; width: 320px;}
 article .oauth div:hover{cursor: pointer;}
-article .google:hover div{color: #222222;}
-article .naver:hover div{color: #222222;}
+article .google:hover div{color: #222222; text-decoration: underline;}
+article .facebook:hover div{text-decoration: underline;}
+article .naver:hover div{color: #222222; text-decoration: underline;}
 article .facebook div{color: #ffffff;}
 
 

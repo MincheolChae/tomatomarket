@@ -48,7 +48,7 @@ public class AccountController {
     public String checkEmailToken(String token, String email, Model model) {
         Account account = accountRepository.findByEmail(email);
         if (account == null) {
-            model.addAttribute("error", "일치하는 이메일이 없습니다.");
+            model.addAttribute("error", "이메일 주소가 정확하지 않습니다.");
             return "account/checked-email";
         }
         if (!account.isValidToken(token)) {

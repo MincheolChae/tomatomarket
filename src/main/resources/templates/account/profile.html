@@ -5,36 +5,15 @@
     <title>토마토 마켓 - 프로필</title>
     <link rel="shortcut icon" href="/img/favicon-32x32.png">
     <link rel="stylesheet" href="/css/reset.css">
-    <link rel="stylesheet" href="/css/profile.css">
+    <link rel="stylesheet" href="/css/account/profile.css">
     <link rel="stylesheet" href="/css/font-awesome.min.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- header -->
-    <header id="header">
-        <div class="container">
-            <div class="title">
-                <div class="title-wrap">
-                    <a href="/"><img src="/img/tomato-emoji-clipart-md.png" alt="tomato" class="tomato">
-                    <div class="head">토마토 마켓</div></a>
-                    <div class="search">
-                        <div class="search-input"><input type="text" name="serch" placeholder="지역, 상품 등을 검색해보세요."></div>
-                        <div class="search-img"><button class="search-button" title="검색"><img src="/img/magnifying-glass-tilted-left-emoji-clipart-md.png" alt="search" class="magnifying"></button></div>
-                    </div>
-                    <a th:href="@{/login}" sec:authorize="!isAuthenticated()"><div class="log"><span>로그인</span></div></a>
-                    <form th:action="@{/logout}" method="post" class="logout-form" sec:authorize="isAuthenticated()"><input type="submit" value="로그아웃"></form>
-                    <a th:href="@{/sign-up}" sec:authorize="!isAuthenticated()"><div class="sign-up"><span>회원가입</span></div></a>
-                    <a th:href="@{'/profile/'+ ${#authentication.name}}" sec:authorize="isAuthenticated()"><div class="sign-up"><span>마이페이지</span></div></a>
-                </div>
-            </div>
-        </div>
-    </header>
-    <!-- //header -->
 
-    <div class="not-veri-email" th:if="${account != null && !account.emailVerified}">
-        <span>이메일 인증이 <br>필요합니다. <br>이메일을 <br>확인해주세요.<br><a class="resend" href="#">이메일 재전송</a></span>
-    </div>
+    <header th:replace="fragments.html :: header"></header>
+    <div th:replace="fragments.html :: veri-email"></div>
 
     <article>
         <div class="container">
@@ -45,7 +24,7 @@
                     <img th:if="${!#strings.isEmpty(account?.profileImage)}" th:src="${account.profileImage}"
                          width="90" height="90"/>
                     <br>
-                    <div class="profile-modify"><button type="submit" class="modify" th:if="${isOwner}">개인정보 수정</button></div>
+                    <div class="profile-modify"><button class="modify" th:if="${isOwner}">개인정보 수정</button></div>
                 </div>
                 <div class="profile-content">
                     <ul class="profile-content-title">
@@ -73,7 +52,7 @@
                         </li>
                         <li>
                             <i class="fa fa-unlock-alt" aria-hidden="true"></i>
-                            <span th:if="${isOwner}"><a href="">비밀번호 변경</a></span>
+                            <span th:if="${isOwner}"><a href="#">비밀번호 변경</a></span>
                         </li>
                     </ul>
                 </div>
@@ -155,8 +134,14 @@
         </div>
     </footer>
     <!-- //footer -->
+
+    <script src="/js/jquery.min_3.5.1.js"></script>
     <script src="/js/jdenticon-2.2.0.min.js"></script>
     <script>
+        document.querySelector("button[class=modify]").onclick = function(){
+            location.href = "/profile/settings";
+        }
+
 
     </script>
 </body>

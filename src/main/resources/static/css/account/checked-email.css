@@ -23,5 +23,9 @@ body{background-color: #f5f6fa;}
 .logout-form:hover input{font-size: 18px; font-weight: bold; color: #fff;}
 
 article{padding-top: 90px; height: 500px;}
-article .container{ background-color: #dbdbdb;}
-
+article .container{}
+article .email-check{font-size: 30px; text-align: center; padding-top: 50px; line-height: 80px;}
+article .email-check p{font-weight: bold;}
+article .email-check button{ padding: 10px; border-radius: 10px; font-size: 20px; color: #ffffff; background-color: #34495e;}
+article .email-check button:hover{cursor: pointer; text-decoration: underline;}
+article .email-check button:focus{outline: none;}

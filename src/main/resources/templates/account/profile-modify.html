@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>토마토 마켓 - 프로필 수정</title>
+    <link rel="shortcut icon" href="/img/favicon-32x32.png">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/account/profile-modify.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header th:replace="fragments.html :: header"></header>
+    <div th:replace="fragments.html :: veri-email"></div>
+
+    <article>
+        <div class="container">
+            <form th:action="@{/profile/settings}" th:method="post" th:object="${profileModifyForm}" class="modify-form validation" novalidate>
+                <div class="profile">
+                    <div class="profile-image">
+                        <svg th:if="${#strings.isEmpty(account?.profileImage)}" th:data-jdenticon-value="${#authentication.name}"
+                             width="90" height="90"></svg>
+                        <img th:if="${!#strings.isEmpty(account?.profileImage)}" th:src="${account.profileImage}"
+                             width="90" height="90"/>
+                        <br>
+                        <div class="profile-modify"><button type="submit" class="modify">수정 완료</button></div>
+                    </div>
+                    <div class="profile-content">
+                        <ul class="profile-content-title">
+                            <li>
+                                <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                                <span th:text="${account.nickname}"></span>
+                            </li>
+                            <li>
+                                <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                                <span th:text="${account.email}"></span>
+                            </li>
+                            <li>
+                                <i class="fa fa-phone" aria-hidden="true"></i>
+                                <input type="text" th:field="*{phone}" th:value="${account.phone}" placeholder="휴대폰 번호">
+                            </li>
+                            <li>
+                                <i class="fa fa-home" aria-hidden="true"></i>
+                                <input type="text" th:field="*{location}" th:if="${!#strings.isEmpty(account.location)}" th:value="${account.location}" placeholder="동네">
+                                <input type="text" th:field="*{location}" th:if="${#strings.isEmpty(account.location)}" placeholder="동네">
+                            </li>
+                            <li>
+                                <i class="fa fa-sign-in" aria-hidden="true"></i>
+                                <span th:if="${!#strings.isEmpty(account.joinedAt)}" th:text="${#temporals.format(account.joinedAt, 'yyyy년 MM월 dd일 가입')}">프로필 가입일</span>
+                                <span th:if="${#strings.isEmpty(account.joinedAt)}" style="color: #ffffff; background-color: #ff6348">이메일 인증이 필요합니다.</span>
+                            </li>
+                            <li>
+                                <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                                <span><a href="#">비밀번호 변경</a></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </article>
+
+    <script src="/js/jdenticon-2.2.0.min.js"></script>
+</body>
+</html>

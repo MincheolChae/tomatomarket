@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/", "/login", "/sign-up", "/check-email-token",
                         "/email-login", "/login-by-email", "/search", "/oauth2/**").permitAll()
-                .antMatchers("/css/**", "/img/**", "/js/**", "/fonts/**", "/icon/*", "/h2-console/**").permitAll()  //정적 요소들 path 허용
+                .antMatchers("/css/**", "/img/**", "/js/**", "/fonts/**", "/icon/**", "/h2-console/**").permitAll()  //정적 요소들 path 허용
                 .antMatchers(HttpMethod.GET, "/profile/*").permitAll()
                 .anyRequest().authenticated();
 

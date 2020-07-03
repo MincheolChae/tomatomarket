@@ -1,10 +1,10 @@
 body{background-color: #f5f6fa;}
 .container{margin: 0 auto; width: 600px; height: 100%;}
-#header{width: 100%; margin-top: 40px;}
-.title{height: 80px;}
-.title-wrap{padding: 10px 170px; height: 60px;}
-.tomato{width: 60px; height: 60px; float: left;}
-.head{float: left; color:#ff6348; font-size: 40px; font-weight: bold; font-family: 'Gamja Flower', cursive;}
+#signup-header{width: 100%; margin-top: 40px;}
+.signup-title{height: 80px;}
+.signup-title-wrap{padding: 10px 170px; height: 60px;}
+.signup-tomato{width: 60px; height: 60px; float: left;}
+.signup-head{float: left; color:#ff6348; font-size: 40px; font-weight: bold; font-family: 'Gamja Flower', cursive;}
 
 article{margin-top: 10px;}
 article small{color: #e84118;}
