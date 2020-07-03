@@ -24,7 +24,8 @@ public class Account {
 
     private String password;
 
-    private String name;
+    @Column(unique = true)
+    private String nickname;
 
     private String phone;  //휴대폰 번호
 
@@ -48,10 +49,14 @@ public class Account {
 
     private boolean newProductNotiByWeb = true;  //관심 키워드에 해당하는 제품 업로드 알림을 웹으로 받을지
 
-
     public void generateEmailCheckToken() {
         this.emailCheckToken = UUID.randomUUID().toString();  //랜덤 UUID 로 토큰 생성
         this.emailCheckTokenGeneratedAt = LocalDateTime.now();  //생성된 시간 저장
     }
+
+    public boolean isValidToken(String token) {
+        return this.emailCheckToken.equals(token);
+    }
+
 }
 

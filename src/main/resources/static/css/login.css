@@ -1,18 +1,32 @@
-body{background-color: #ecf0f1;}
+body{background-color: #f5f6fa;}
 .container{margin: 0 auto; width: 600px; height: 100%;}
 #header{width: 100%; margin-top: 40px;}
 .title{height: 80px;}
 .title-wrap{padding: 10px 170px; height: 60px;}
 .tomato{width: 60px; height: 60px; float: left;}
-.head{float: left; color:#ff6348; font-size: 34px; font-weight: bold;}
+.head{float: left; color:#ff6348; font-size: 40px; font-weight: bold; font-family: 'Gamja Flower', cursive;}
 
 article{margin-top: 10px;}
 article .inputuser .input-info{text-align: center; margin: 5px 0;}
 article .inputuser label{display: block; font-size: 18px; font-weight: bold; padding: 5px 100px; text-align: left;}
 article .inputuser input{width: 380px; height: 45px; padding: 0 10px;}
-article .inputuser .remember{overflow: hidden; padding: 5px 100px;}
+article .inputuser .remember{overflow: hidden; padding: 5px 100px; margin-bottom: 10px; height: 20px;}
+article .inputuser .remember-small{text-align: left; margin-right: 50px; background-color: #ffeaa7; display: inline-block; display: none;}
 article .inputuser #rememberMe{width:15px; height:15px; float:left; margin-right: 5px;}
 article .inputuser .rememberMe{font-size: 12px; font-weight: normal; padding: 0; float: left;}
 article .inputuser .submit{width: 400px; height: 50px; background-color: #ff6348; color: #fff; font-size: 22px; margin-top: 10px; letter-spacing: 1px; border: none;}
+article .inputuser .submit:hover{cursor: pointer; color: #222222;}
+article .oauth{margin:20px 100px; width: 400px; overflow: hidden; border-radius: 10px;}
+article .google{background-color: #ffffff;}
+article .facebook {background-color: #3b5998;}
+article .naver {background-color: #00B900;}
+article .oauth img{float:left; width: 60px; height: 45px; padding-left:10px;}
+article .google img{padding: 8px 11px 7px 22px; width: 37px; height: 30px;}
+article .oauth div{float:left; font-size: 20px; padding: 8px 0 8px 10px; width: 320px;}
+article .oauth div:hover{cursor: pointer;}
+article .google:hover div{color: #222222;}
+article .naver:hover div{color: #222222;}
+article .facebook div{color: #ffffff;}
+
 
 footer .footer address{text-align: center;}

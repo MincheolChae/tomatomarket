@@ -13,7 +13,9 @@ public class UserAccount extends User {
     private Account account;
 
     public UserAccount(Account account) {
-        super(account.getName(), account.getPassword(), Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")));
+        super(account.getNickname(),   //principal 로 사용할 username 인듯?
+                account.getPassword(),
+                Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")));
         this.account = account;
     }
 }

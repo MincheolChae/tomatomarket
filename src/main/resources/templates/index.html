@@ -1,13 +1,18 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>토마토 마켓</title>
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/slick.css">
-    <link rel="stylesheet" href="css/slick-theme.css">
-    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="shortcut icon" href="/img/favicon-32x32.png">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/slick.css">
+    <link rel="stylesheet" href="/css/slick-theme.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Single+Day&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- header -->
@@ -15,19 +20,25 @@
         <div class="container">
             <div class="title">
                 <div class="title-wrap">
-                    <a href="/"><img src="img/tomato-emoji-clipart-md.png" alt="tomato" class="tomato">
+                    <a href="/"><img src="/img/tomato-emoji-clipart-md.png" alt="tomato" class="tomato">
                     <div class="head">토마토 마켓</div></a>
                     <div class="search">
                         <div class="search-input"><input type="text" name="serch" placeholder="지역, 상품 등을 검색해보세요."></div>
-                        <div class="search-img"><button class="search-button" title="검색"><img src="img/magnifying-glass-tilted-left-emoji-clipart-md.png" alt="search" class="magnifying"></button></div>
+                        <div class="search-img"><button class="search-button" title="검색"><img src="/img/magnifying-glass-tilted-left-emoji-clipart-md.png" alt="search" class="magnifying"></button></div>
                     </div>
-                    <a href="/login"><div class="login"><span>로그인</span></div></a>
-                    <a href="/sign-up"><div class="sign-up"><span>회원가입</span></div></a>
+                    <a th:href="@{/login}" sec:authorize="!isAuthenticated()"><div class="log"><span>로그인</span></div></a>
+                    <form th:action="@{/logout}" method="post" class="logout-form" sec:authorize="isAuthenticated()"><input type="submit" value="로그아웃"></form>
+                    <a th:href="@{/sign-up}" sec:authorize="!isAuthenticated()"><div class="sign-up"><span>회원가입</span></div></a>
+                    <a th:href="@{'/profile/'+ ${#authentication.name}}" sec:authorize="isAuthenticated()"><div class="sign-up"><span>마이페이지</span></div></a>
                 </div>
             </div>
         </div>
     </header>
     <!-- //header -->
+
+    <div class="not-veri-email" th:if="${account != null && !account.emailVerified}">
+        <span>이메일 인증이 <br>필요합니다. <br>이메일을 <br>확인해주세요.<br><span class="resend">이메일 재전송</span></span>
+    </div>
 
     <!-- nav -->
     <nav id="nav">
@@ -62,20 +73,45 @@
                 <div class="recommand-title">토마토 마켓 인기 매물</div>
                 <div class="fade">
                     <div>
-                        <a href="/">
+                        <a href="#">
                             <figure>
-                                <img src="img/1.jpg">
-                                <figcaption><span class="fade-title">매물제목1</span><span class="fade-price">매물가격1</span><span class="fade-location">장소</span></figcaption>
+                                <img src="/img/1.jpg">
+                                <figcaption><span class="fade-title">싱가폴 아파트 팝니다</span><span class="fade-location">싱가포르 종로구 동동</span><span class="fade-price">540,000원</span></figcaption>
                             </figure>
                         </a>
                     </div>
-                    <div><a href="/"><img src="img/2.jpg"></a></div>
-                    <div><a href="/"><img src="img/3.jpg"></a></div>
-                    <div><a href="/"><img src="img/4.jpg"></a></div>
-                    <div><a href="/"><img src="img/5.jpg"></a></div>
-                    <div><a href="/"><img src="img/6.jpg"></a></div>
-                    <div><a href="/"><img src="img/7.jpg"></a></div>
-                    <div><a href="/"><img src="img/8.jpg"></a></div>
+                    <div>
+                        <a href="#">
+                            <figure>
+                                <img src="/img/2.jpg">
+                                <figcaption><span class="fade-title">미국 빌딩 3채 팔아요~</span><span class="fade-location">미국 플로리다주</span><span class="fade-price">790,000원</span></figcaption>
+                            </figure>
+                        </a>
+                    </div>
+                    <div>
+                        <a href="#">
+                            <figure>
+                                <img src="/img/3.jpg">
+                                <figcaption><span class="fade-title">아껴 쓰던 섬 급처합니다!!</span><span class="fade-location">전라남도 완도군 노화읍 죽굴도</span><span class="fade-price">30,000원</span></figcaption>
+                            </figure>
+                        </a>
+                    </div>
+                    <div>
+                        <a href="#">
+                            <figure>
+                                <img src="/img/4.jpg">
+                                <figcaption><span class="fade-title">외딴섬에 있는 별장 팔아봅니다^^</span><span class="fade-location">전라남도 신안군 만재도</span><span class="fade-price">5,500,000원</span></figcaption>
+                            </figure>
+                        </a>
+                    </div>
+                    <div>
+                        <a href="#">
+                            <figure>
+                                <img src="/img/5.jpg">
+                                <figcaption><span class="fade-title">셜록홈즈가 살던 집 팔아요ㅋ</span><span class="fade-location">영국 런던 베이커스트리트 221b</span><span class="fade-price">2,100,000원</span></figcaption>
+                            </figure>
+                        </a>
+                    </div>
                 </div>
                 <div class="recommand-menu">
                     <div class="recommand-head">
@@ -103,8 +139,8 @@
             <div class="container">
                 <div class="content">
                     <ul>
-                        <a href="/"><li>
-                            <div><img src="img/7.jpg"></div>
+                        <a href="#"><li>
+                            <div><img src="/img/8.jpg"></div>
                             <div class="content-info">
                                 <div class="content-title">레노버 노트북 S340 팔아요</div>
                                 <div class="content-location">경기도 고양시 덕양구 화중로 152번길 32</div>
@@ -161,13 +197,13 @@
         </div>
     </footer>
 
-    <script src="js/jquery.min_3.5.1.js"></script>
-    <script src="js/slick.min.js"></script>
+    <script src="/js/jquery.min_3.5.1.js"></script>
+    <script src="/js/slick.min.js"></script>
     <script>
         $('.fade').slick({
             dots: true,
             autoplay: true,
-            autoplaySpeed: 3000,
+            autoplaySpeed: 3500,
             infinite: true,
             speed: 500,
             fade: true,

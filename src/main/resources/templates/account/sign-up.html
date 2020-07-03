@@ -2,9 +2,12 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>회원가입</title>
+    <title>토마토 마켓 - 회원가입</title>
+    <link rel="shortcut icon" href="/img/favicon-32x32.png">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/sign-up.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
 </head>
 <body>
     <header id="header">
@@ -23,9 +26,10 @@
             <div class="inputuser">
                 <form th:action="@{/sign-up}" method="post" th:object="${signUpForm}" class="validation" novalidate>
                     <div class="input-info">
-                        <label for="email">아이디(이메일)</label>
+                        <label for="email">이메일</label>
                         <input id="email" type="email" name="email" th:field="*{email}" placeholder="tomato@email.com" required>
-                    </div><small th:if="${#fields.hasErrors('email')}" th:errors="*{email}">이메일 입력 오류</small>
+                        <br><small th:if="${#fields.hasErrors('email')}" th:errors="*{email}">이메일 입력 오류</small>
+                    </div>
                     <div class="input-info">
                         <label for="password">비밀번호</label>
                         <input id="password" type="password" name="password" th:field="*{password}" placeholder="8자 이상의 비밀번호 입력" required minlength="8" maxlength="20">
@@ -33,15 +37,18 @@
                     <div class="input-info">
                         <label for="password2">비밀번호 확인</label>
                         <input id="password2" type="password" name="password2" th:field="*{password2}" placeholder="8자 이상의 비밀번호 재입력" required minlength="8" maxlength="20">
-                    </div><small th:if="${#fields.hasErrors('password')}" th:errors="*{password}">비밀번호 불일치 오류</small>
+                        <br><small th:if="${#fields.hasErrors('password')}" th:errors="*{password}">비밀번호 불일치 오류</small>
+                    </div>
                     <div class="input-info">
-                        <label for="name">이름</label>
-                        <input id="name" type="text" name="name" th:field="*{name}" required>
-                    </div><small th:if="${#fields.hasErrors('name')}" th:errors="*{name}">이름 입력 오류</small>
+                        <label for="nickname">닉네임</label>
+                        <input id="nickname" type="text" name="nickname" th:field="*{nickname}" required>
+                        <br><small th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">닉네임 입력 오류</small>
+                    </div>
                     <div class="input-info">
                         <label for="phone">휴대폰 번호</label>
                         <input id="phone" type="tel" name="phone" th:field="*{phone}" required>
-                    </div><small th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">휴대폰 번호 입력 오류</small>
+                        <br><small th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">휴대폰 번호 입력 오류</small>
+                    </div>
                     <div class="input-info">
                         <input type="submit" value="가입하기" class="submit">
                     </div>
@@ -58,7 +65,7 @@
         </div>
     </footer>
 
-    <script src="../../static/js/jquery.min_3.5.1.js"></script>
+    <script src="/js/jquery.min_3.5.1.js"></script>
 <!--    <script type="application/javascript">-->
 <!--        var forms = document.getElementsByClassName('validation');-->
 <!--        Array.prototype.filter.call(forms, function (form) {-->

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>토마토 마켓 - 프로필</title>
+    <link rel="shortcut icon" href="/img/favicon-32x32.png">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/profile.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- header -->
+    <header id="header">
+        <div class="container">
+            <div class="title">
+                <div class="title-wrap">
+                    <a href="/"><img src="/img/tomato-emoji-clipart-md.png" alt="tomato" class="tomato">
+                    <div class="head">토마토 마켓</div></a>
+                    <div class="search">
+                        <div class="search-input"><input type="text" name="serch" placeholder="지역, 상품 등을 검색해보세요."></div>
+                        <div class="search-img"><button class="search-button" title="검색"><img src="/img/magnifying-glass-tilted-left-emoji-clipart-md.png" alt="search" class="magnifying"></button></div>
+                    </div>
+                    <a th:href="@{/login}" sec:authorize="!isAuthenticated()"><div class="log"><span>로그인</span></div></a>
+                    <form th:action="@{/logout}" method="post" class="logout-form" sec:authorize="isAuthenticated()"><input type="submit" value="로그아웃"></form>
+                    <a th:href="@{/sign-up}" sec:authorize="!isAuthenticated()"><div class="sign-up"><span>회원가입</span></div></a>
+                    <a th:href="@{'/profile/'+ ${#authentication.name}}" sec:authorize="isAuthenticated()"><div class="sign-up"><span>마이페이지</span></div></a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- //header -->
+
+    <div class="not-veri-email" th:if="${account != null && !account.emailVerified}">
+        <span>이메일 인증이 <br>필요합니다. <br>이메일을 <br>확인해주세요.<br><a class="resend" href="#">이메일 재전송</a></span>
+    </div>
+
+    <article>
+        <div class="container">
+            <div class="profile">
+                <div class="profile-image">
+                    <svg th:if="${#strings.isEmpty(account?.profileImage)}" th:data-jdenticon-value="${#authentication.name}"
+                         width="90" height="90"></svg>
+                    <img th:if="${!#strings.isEmpty(account?.profileImage)}" th:src="${account.profileImage}"
+                         width="90" height="90"/>
+                    <br>
+                    <div class="profile-modify"><button type="submit" class="modify" th:if="${isOwner}">개인정보 수정</button></div>
+                </div>
+                <div class="profile-content">
+                    <ul class="profile-content-title">
+                        <li>
+                            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                            <span th:text="${account.nickname}">프로필 닉네임</span>
+                        </li>
+                        <li>
+                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                            <span th:text="${account.email}">프로필 이메일</span>
+                        </li>
+                        <li>
+                            <i class="fa fa-phone" aria-hidden="true"></i>
+                            <span th:if="${isOwner}" th:text="${account.phone}">프로필 휴대폰 번호</span>
+                        </li>
+                        <li>
+                            <i class="fa fa-home" aria-hidden="true"></i>
+                            <span th:if="${!(#strings.isEmpty(account.location)) && isOwner}" th:text="${account.location}">프로필 동네</span>
+                            <span th:if="${#strings.isEmpty(account.location) && isOwner}" style="color: #ffffff; background-color: #ff6348">동네를 설정하세요.</span>
+                        </li>
+                        <li>
+                            <i class="fa fa-sign-in" aria-hidden="true"></i>
+                            <span th:if="${!#strings.isEmpty(account.joinedAt)}" th:text="${#temporals.format(account.joinedAt, 'yyyy년 MM월 dd일 가입')}">프로필 가입일</span>
+                            <span th:if="${#strings.isEmpty(account.joinedAt) && isOwner}" style="color: #ffffff; background-color: #ff6348">이메일 인증이 필요합니다.</span>
+                        </li>
+                        <li>
+                            <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                            <span th:if="${isOwner}"><a href="">비밀번호 변경</a></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="notification">
+                <ul>
+                    <li>
+                        <span><i class="fa fa-bell" aria-hidden="true"></i>&nbsp;키워드에 등록한 상품명 등록시 웹 알림</span>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </li>
+                    <li>
+                        <span><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;키워드에 등록한 상품명 등록시 이메일 알림</span>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="like">
+                <div class="like-title">관심목록 &nbsp;<a href="#" class="more"><i class="fa fa-plus-square-o" aria-hidden="true"></i> 더보기</a></div>
+                <div class="like-content">
+                    관심목록 내용
+                </div>
+            </div>
+            <div class="keyword">
+                <div class="keyword-title">키워드 설정 &nbsp;<a href="#" class="more"><i class="fa fa-plus-square-o" aria-hidden="true"></i> 더보기</a></div>
+                <div class="keyword-content">
+                    키워드 설정 내용
+                </div>
+            </div>
+            <div class="selling">
+                <div class="selling-title">판매내역 &nbsp;<a href="#" class="more"><i class="fa fa-plus-square-o" aria-hidden="true"></i> 더보기</a></div>
+                <div class="selling-content">
+                    판매내역 내용
+                </div>
+            </div>
+            <div class="recent-act">
+                <div class="recent-act-title">최근활동 &nbsp;<a href="#" class="more"><i class="fa fa-plus-square-o" aria-hidden="true"></i> 더보기</a></div>
+                <div class="recent-act-content">
+                    최근활동 내용
+                </div>
+            </div>
+            <div class="chat">
+                <div class="chat-title">채팅 &nbsp;<a href="#" class="more"><i class="fa fa-plus-square-o" aria-hidden="true"></i> 더보기</a></div>
+                <div class="chat-content">
+                    채팅
+                </div>
+            </div>
+            <div class="leave">
+                <div><a href="#">회원탈퇴</a></div>
+            </div>
+        </div>
+    </article>
+
+    <!-- footer -->
+    <footer id="footer">
+        <div class="container">
+            <div class="footer">
+                <ul>
+                    <li><a href="#">이용약관</a></li>
+                    <li><a href="#"><strong>개인정보처리방침</strong></a></li>
+                    <li><a href="#">위치기반서비스 이용약관</a></li>
+                    <li><a href="#"><strong>광고주센터</strong></a></li>
+                    <li><a href="#">ABOUT US</a></li>
+                </ul>
+                <ul>
+                    <li>(주)토마토마켓 대표 채민철</li>
+                    <li>고객문의 : <a href="/">cmc752@gmail.com</a></li>
+                </ul>
+                <address>
+                    Copyright © <strong>Tomato Market</strong> Inc. All Rights Reserved.
+                </address>
+            </div>
+        </div>
+    </footer>
+    <!-- //footer -->
+    <script src="/js/jdenticon-2.2.0.min.js"></script>
+    <script>
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>토마토 마켓 - 가입 확인</title>
+    <link rel="shortcut icon" href="/img/favicon-32x32.png">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/checked-email.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- header -->
+    <header id="header">
+        <div class="container">
+            <div class="title">
+                <div class="title-wrap">
+                    <a href="/"><img src="/img/tomato-emoji-clipart-md.png" alt="tomato" class="tomato">
+                        <div class="head">토마토 마켓</div></a>
+                    <div class="search">
+                        <div class="search-input"><input type="text" name="serch" placeholder="지역, 상품 등을 검색해보세요."></div>
+                        <div class="search-img"><button class="search-button" title="검색"><img src="/img/magnifying-glass-tilted-left-emoji-clipart-md.png" alt="search" class="magnifying"></button></div>
+                    </div>
+                    <a th:href="@{/login}" sec:authorize="!isAuthenticated()"><div class="log"><span>로그인</span></div></a>
+                    <form th:action="@{/logout}" method="post" class="logout-form" sec:authorize="isAuthenticated()"><input type="submit" value="로그아웃"></form>
+                    <a th:href="@{/sign-up}" sec:authorize="!isAuthenticated()"><div class="sign-up"><span>회원가입</span></div></a>
+                    <a th:href="@{'/profile/'+ ${#authentication.name}}" sec:authorize="isAuthenticated()"><div class="sign-up"><span>마이페이지</span></div></a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- //header -->
+
+    <article>
+        <div class="container">
+            <div class="email-check">
+                <div th:if="${error == null}">
+                    <p>이메일 인증에 성공했습니다.</p>
+                    <span th:text="${nickname}"></span>님 가입을 축하합니다.
+                </div>
+                <div th:if="${error != null}">
+                    <p th:text="${error}"></p>
+                </div>
+
+            </div>
+        </div>
+    </article>
+
+
+</body>
+</html>

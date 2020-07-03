@@ -2,16 +2,19 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>로그인</title>
-    <link rel="stylesheet" href="css/login.css">
-    <link rel="stylesheet" href="css/reset.css">
+    <title>토마토 마켓 - 로그인</title>
+    <link rel="shortcut icon" href="/img/favicon-32x32.png">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/login.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
 </head>
 <body>
     <header id="header">
         <div class="container">
             <div class="title">
                 <div class="title-wrap">
-                    <a href="/"><img src="img/tomato-emoji-clipart-md.png" alt="tomato" class="tomato">
+                    <a href="/"><img src="/img/tomato-emoji-clipart-md.png" alt="tomato" class="tomato">
                     <div class="head">토마토 마켓</div></a>
                 </div>
             </div>
@@ -23,8 +26,8 @@
             <div class="inputuser">
                 <form th:action="@{/login}" method="post" novalidate>
                     <div class="input-info">
-                        <label for="username">아이디(이메일)</label>
-                        <input id="username" type="email" name="username" placeholder="tomato@email.com" required>
+                        <label for="username">아이디(이메일 또는 닉네임)</label>
+                        <input id="username" type="email" name="username" required>
                     </div>
                     <div class="input-info">
                         <label for="password">비밀번호</label>
@@ -34,19 +37,39 @@
                         <div class="remember">
                             <input type="checkbox" id="rememberMe" name="remember-me">
                             <label for="rememberMe" class="rememberMe">로그인 유지</label>
+                            <small class="remember-small">개인정보 보호를 위해 <strong>개인 PC에서만 사용하세요.</strong></small>
                         </div>
+
                         <div>
                             <a href="#">아이디 찾기</a>
                             <span> | </span>
                             <a href="#">비밀번호 찾기</a>
                             <span> | </span>
-                            <a href="/signup">회원 가입</a>
+                            <a href="/sign-up">회원 가입</a>
                         </div>
                     </div>
                     <div class="input-info">
                         <input type="submit" value="로그인" class="submit">
                     </div>
                 </form>
+                <div class="oauth google">
+                    <a href="/oauth2/authorization/google">
+                        <img src="/img/google.png" alt="구글 로고">
+                        <div>구글 계정으로 로그인</div>
+                    </a>
+                </div>
+                <div class="oauth facebook">
+                    <a href="#">
+                        <img src="/img/facebook.png" alt="페이스북 로고">
+                        <div>페이스북 계정으로 로그인</div>
+                    </a>
+                </div>
+                <div class="oauth naver">
+                    <a href="#">
+                        <img src="/img/naver.png" alt="네이버 로고">
+                        <div>네이버 계정으로 로그인</div>
+                    </a>
+                </div>
             </div>
         </div>
     </article>
@@ -58,5 +81,12 @@
             </div>
         </div>
     </footer>
+
+    <script src="/js/jquery.min_3.5.1.js"></script>
+    <script>
+        $('#rememberMe').on('click', function () {
+            $('.remember-small').toggle();
+        })
+    </script>
 </body>
 </html>

@@ -23,11 +23,11 @@ public class SignUpForm {
     private String password2;
 
     @NotBlank
-    @Pattern(regexp = "^[가-힣]{2,4}|[a-zA-Z]{2,10}\\s[a-zA-Z]{2,10}$")  //TODO regexp 작성
-    private String name;
+    @Pattern(regexp = "^[가-힣0-9]{2,8}|[a-zA-Z0-9]{3,16}$")  //TODO regexp 새로 작성
+    private String nickname;
 
     @NotBlank
-    @Pattern(regexp = "^01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$")   //TODO regexp 작성
+    @Pattern(regexp = "^01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$")   //TODO regexp 새로 작성 (특수문자 허용 여부)
     private String phone;
 
 }
