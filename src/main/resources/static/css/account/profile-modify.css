@@ -1,19 +1,23 @@
+.sign-up{height: 42px;}
+.logout-form{height: 42px;}
 
 article{padding-top:131px; height: 500px;}
-article .profile{width: 700px; height: 400px; padding-top: 30px; border-radius: 10px; margin: 0 auto; background-color: #ffffff; border: 1px solid #dbdbdb;}
-article .profile .profile-image{ width: 160px; height: inherit; float: left; padding-left: 50px; padding-right: 40px;}
-article .profile .profile-image svg{border: 3px solid #273c75; width: 150px; height: 150px; border-radius: 5px;}
-article .profile .profile-image .profile-modify{padding-top: 20px; font-weight: bold; font-size: 15px; text-align: center;}
-article .profile .profile-image .profile-modify button{font-weight: bold; font-size: 23px; padding: 5px; background-color: #2980b9; color: #fff; border-radius: 10px;}
-article .profile .profile-image .profile-modify button:hover{cursor: pointer; background-color: #ff6348;}
-article .profile .profile-image .profile-modify button:focus{outline: none;}
-article .profile .profile-content{ width: 400px; height: inherit; float: left;}
-article .profile .profile-content ul li{padding-bottom: 18px; font-size: 27px;}
-article .profile .profile-content ul li .fa-phone{font-size: 30px; padding-left: 4px;}
+article .profile{width: 570px; height: 380px; padding-top: 30px; border-radius: 10px; margin: 0 auto; background-color: #ffffff; border: 1px solid #dbdbdb;}
+article .profile .profile-content{width: 570px; height: inherit; float: left;}
+article .profile .profile-content ul li{padding-bottom: 15px; height: 50px; font-size: 20px; padding-left: 100px;}
+article .profile .profile-content ul li .error{font-size: 15px; color: #ff6348;}
+article .profile .profile-content ul li .fa-phone{font-size: 22px; padding-left: 4px;}
 article .profile .profile-content ul li .fa-home{padding-left: 2px;}
 article .profile .profile-content ul li .fa-sign-in{padding-left: 4px;}
 article .profile .profile-content ul li .fa-unlock-alt{font-size: 28px; padding-left: 4px; padding-right: 2px;}
-article .profile .profile-content .profile-content-title input{margin-left: 15px; width: 280px; height: 21px; font-size: 20px; padding: 10px; border-radius: 20px; border: 2px solid #2ecc71;}
-article .profile .profile-content .profile-content-title input{margin-left: 15px; width: 280px; height: 21px; font-size: 20px; padding: 10px;}
+article .profile .profile-content ul li #name{margin-left: 14px;}
+article .profile .profile-content ul li #nickname{margin-left: 19px;}
+article .profile .profile-content .profile-content-title input{margin-left: 15px; width: 295px; height: 35px; font-size: 20px; padding: 0 10px; border-radius: 20px; border: 2px solid #2ecc71;}
 article .profile .profile-content .profile-content-title input:focus{outline: none;}
 article .profile .profile-content .profile-content-title span{display: inline-block; margin-left: 15px;}
+article .profile .profile-content .profile-modify {text-align: center;}
+article .profile .profile-content .profile-modify .modify{font-weight: bold; font-size: 23px; padding: 5px; color: #fff; border-radius: 10px;}
+article .profile .profile-content .profile-modify .modify:focus{outline: none;}
+article .profile .profile-content .profile-modify .modify:hover{cursor: pointer; text-decoration: underline;}
+article .profile .profile-content .profile-modify .do{background-color: #2980b9;}
+article .profile .profile-content .profile-modify .undo{background-color: #d63031; margin-left: 15px;}

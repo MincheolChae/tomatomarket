@@ -29,7 +29,7 @@ public class SignUpFormValidator implements Validator {
         }
 
         if(!signUpForm.getPassword().equals(signUpForm.getPassword2())){
-            errors.rejectValue("password", "invalid.password", new Object[]{signUpForm.getPassword()}, "비밀번호가 일치하지 않습니다.");
+            errors.rejectValue("password", "invalid.password", "비밀번호가 일치하지 않습니다.");
         }
     }
 }

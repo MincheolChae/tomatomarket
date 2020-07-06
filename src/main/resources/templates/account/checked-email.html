@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>토마토 마켓 - 가입 확인</title>
@@ -15,11 +15,11 @@
     <header th:replace="fragments.html :: header"></header>
 
     <article>
-        <div class="container">
+        <div class="mycontainer">
             <div class="email-check">
                 <div th:if="${error == null}">
                     <p>이메일 인증에 성공했습니다.</p>
-                    <span th:text="${nickname}"></span>님 가입을 축하합니다.<br>
+                    <span th:text="${name}"></span>(<span th:text="${nickname}"></span>)님 가입을 축하합니다.<br>
                     <a href="/"><button>매물 보러가기</button></a>
                 </div>
                 <div th:if="${error != null}">

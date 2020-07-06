@@ -1,5 +1,3 @@
-body{background-color: #f5f6fa;}
-.container{margin: 0 auto; width: 1000px; height: 100%; }
 
 #header{background: #fff; width: 100%;  position: fixed; z-index: 100; box-shadow: 1px 1px 5px #dbdbdb;}
 .title{height: 80px;}

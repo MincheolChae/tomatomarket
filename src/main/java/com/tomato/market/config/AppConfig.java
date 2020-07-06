@@ -19,7 +19,7 @@ public class AppConfig {
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration()
-                .setDestinationNameTokenizer(NameTokenizers.UNDERSCORE)
+                .setDestinationNameTokenizer(NameTokenizers.UNDERSCORE)   //모델매퍼가 매핑하려는 이름을 구체적으로 설정해줌
                 .setSourceNameTokenizer(NameTokenizers.UNDERSCORE);
         return modelMapper;
     }

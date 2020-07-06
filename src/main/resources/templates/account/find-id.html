@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>토마토 마켓 - 아이디 찾기</title>
+    <link rel="shortcut icon" href="/img/favicon-32x32.png">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/account/find-id.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header th:replace="fragments.html :: header"></header>
+
+    <article>
+        <div class="mycontainer">
+            <div class="inputuser">
+                <form method="post" novalidate>
+                    <div class="input-info">
+                        <label for="name">이름 입력</label>
+                        <input id="name" type="text" name="name" placeholder="이름을 입력하세요." required min="2" max="16">
+                    </div>
+                    <div class="input-info">
+                        <label for="phone">휴대폰 번호 입력</label>
+                        <input id="phone" type="tel" name="phone" placeholder="특수문자 없이 숫자만 입력하세요." required>
+                    </div>
+                    <div class="input-info">
+                        <input type="submit" class="submit" value="아이디 찾기"> &nbsp;&nbsp;<span id="id-result"></span>
+                    </div>
+                    <div class="input-info">
+                        <div>
+                            <a href="#">비밀번호 찾기</a>
+                            <span> | </span>
+                            <a href="/sign-up">회원 가입</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </article>
+
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script th:replace="fragments.html :: ajax-csrf-header"></script>
+    <script>
+            $("form").on("submit", function () {
+                let name = document.querySelector('input[name=name]').value;
+                let phone = document.querySelector('input[name=phone]').value;
+
+                $.ajax({
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    data:JSON.stringify({name: name, phone:phone}),
+                    method: "POST",
+                    url: "/find-id",
+                    success:function(data){
+                        console.log("success")
+                        console.log(data);
+                        document.querySelector('#id-result').innerText = data;
+                    },
+                    error:function(error){
+                        console.log("error")
+                        console.log(error);
+                        document.querySelector('#id-result').innerText = error.responseText;
+                    }
+                }).done(function(e){
+                    console.log("done")
+                    console.log(e);
+                })
+                return false;
+            })
+    </script>
+
+</body>
+</html>

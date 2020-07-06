@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>토마토마켓 - 이메일 로그인</title>
+    <link rel="shortcut icon" href="/img/favicon-32x32.png">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/reset-2.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="fragments.html :: header"></div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <form class="needs-validation col-sm-6" action="#" th:action="@{/email-login}" method="post" novalidate>
+                <div class="form-group">
+                    <label for="email">가입 할 때 사용한 이메일을 입력하세요.</label>
+                    <input id="email" type="email" name="email" class="form-control" placeholder="tomato@email.com" aria-describedby="emailHelp" required>
+                    <small class="invalid-feedback">이메일을 입력하세요.</small>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-success btn-block" type="submit" aria-describedby="submitHelp">로그인 링크 보내기</button>
+                </div>
+            </form>
+        </div>
+        <div class="row justify-content-center">
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                <span th:text="${error}">에러 메세지</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div th:if="${message}" class="alert alert-info alert-dismissible fade show mt-3" role="alert">
+                <span th:text="${message}">발송 완료 메세지</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:replace="fragments.html :: form-validation"></script>
+</body>
+</html>

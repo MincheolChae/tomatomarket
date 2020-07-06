@@ -1,5 +1,4 @@
-body{background-color: #f5f6fa;}
-.container{margin: 0 auto; width: 600px; height: 100%;}
+.mycontainer{margin: 0 auto; width: 600px; height: 100%;}
 #login-header{width: 100%; margin-top: 40px;}
 .login-title{height: 80px;}
 .login-title-wrap{padding: 10px 170px; height: 60px;}

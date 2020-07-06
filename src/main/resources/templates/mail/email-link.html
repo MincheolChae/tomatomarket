@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>토마토 마켓</title>
+</head>
+<body>
+    <div>
+        <p style="font-size: 16px;">안녕하세요. <span th:text="${name}"></span>(<span th:text="${nickname}"></span>)님</p>
+
+        <h2 th:text="${message}">메시지</h2>
+
+        <div>
+            <a style="font-size: 16px;" th:href="${host + link}" th:text="${linkName}">Link</a>
+        </div>
+    </div>
+    <br>
+    <footer>
+        <address>
+            Copyright © <strong>Tomato Market</strong> Inc. All Rights Reserved.
+        </address>
+    </footer>
+</body>
+</html>

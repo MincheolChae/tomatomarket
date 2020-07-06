@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>토마토 마켓 - 이메일 재전송</title>
+    <link rel="shortcut icon" href="/img/favicon-32x32.png">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/account/checked-email.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header th:replace="fragments.html :: header"></header>
+
+<article>
+    <div class="mycontainer">
+        <div class="email-check">
+            <div th:if="${error == null}">
+                <p><span th:text="${email}"></span>로 이메일을 재전송했습니다.</p>
+                만약 받지 못하셨다면 이메일 주소를 다시 확인해주세요.<br>
+                <a th:href="@{/}"><button>돌아가기</button></a>
+            </div>
+            <div th:if="${error != null}">
+                <p th:text="${error}"></p>
+                만약 받지 못하셨다면 이메일 주소를 다시 확인해주세요.<br>
+                <p th:text="${email}"></p>
+                <a th:href="@{/}"><button>돌아가기</button></a>
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+</body>
+</html>

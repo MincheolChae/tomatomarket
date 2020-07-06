@@ -1,9 +1,13 @@
 package com.tomato.market.account.domain;
 
+import com.tomato.market.tag.Tag;
+import com.tomato.market.location.Location;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -24,12 +28,15 @@ public class Account {
 
     private String password;
 
+    private String name;
+
     @Column(unique = true)
     private String nickname;
 
-    private String phone;  //휴대폰 번호
+    @Column(unique = false)
+    private String phone;  //휴대폰 번호(폰번호는 바뀔수 있으므로 unique한 값으로 하지않음)
 
-    private boolean emailVerified;  //이메일 인증 여부
+    private boolean emailVerified = false;  //이메일 인증 여부
 
     private String emailCheckToken;  //이메일 인증 토큰
 
@@ -39,7 +46,13 @@ public class Account {
 
     //TODO 판매내역 속성 추가하고 관리
 
-    private String location;  //살고 있는 지역 (위치 API or 수동 입력)
+    //private String location;  //살고 있는 지역 (위치 API or 수동 입력)  >> 없애기
+
+    @ManyToMany
+    private Set<Tag> tags = new HashSet<>();   //관심 태그
+
+    @ManyToMany
+    private Set<Location> locations = new HashSet<>();  //활동 지역
 
     @Lob
     @Basic(fetch = FetchType.EAGER)
@@ -54,8 +67,17 @@ public class Account {
         this.emailCheckTokenGeneratedAt = LocalDateTime.now();  //생성된 시간 저장
     }
 
+    public void completeSignUp() {
+        this.emailVerified = true;
+        this.joinedAt = LocalDateTime.now();
+    }
+
     public boolean isValidToken(String token) {
         return this.emailCheckToken.equals(token);
+    }
+
+    public boolean canSendConfirmEmail() {
+        return this.emailCheckTokenGeneratedAt.isBefore(LocalDateTime.now().minusMinutes(30));
     }
 
 }

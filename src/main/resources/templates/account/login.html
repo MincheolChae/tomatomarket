@@ -11,7 +11,7 @@
 </head>
 <body>
     <header id="login-header">
-        <div class="container">
+        <div class="mycontainer">
             <div class="login-title">
                 <div class="login-title-wrap">
                     <a href="/"><img src="/img/tomato-emoji-clipart-md.png" alt="tomato" class="login-tomato">
@@ -22,7 +22,7 @@
     </header>
 
     <article>
-        <div class="container">
+        <div class="mycontainer">
             <div class="inputuser">
                 <form th:action="@{/login}" method="post" novalidate>
                     <div class="input-info">
@@ -41,9 +41,9 @@
                         </div>
 
                         <div>
-                            <a href="#">아이디 찾기</a>
+                            <a th:href="@{/find-id}">아이디 찾기</a>
                             <span> | </span>
-                            <a href="#">비밀번호 찾기</a>
+                            <a href="/email-login">비밀번호 찾기</a>
                             <span> | </span>
                             <a href="/sign-up">회원 가입</a>
                         </div>
@@ -75,14 +75,14 @@
     </article>
 
     <footer>
-        <div class="container">
+        <div class="mycontainer">
             <div class="footer">
                 <address>Copyright ©<strong>Tomato Market</strong> Inc. All Rights Reserved.</address>
             </div>
         </div>
     </footer>
 
-    <script src="/js/jquery.min_3.5.1.js"></script>
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script>
         $('#rememberMe').on('click', function () {
             $('.remember-small').toggle();

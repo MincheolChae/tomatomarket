@@ -1,7 +1,9 @@
+.sign-up{height: 42px;}
+.logout-form{height: 42px;}
 
-article{padding-top:131px; height: 1400px; }
-article .profile{width: 550px; height: 210px; padding-top: 30px; border-radius: 10px; margin: 0 auto; background-color: #ffffff; border: 1px solid #dbdbdb;}
-article .profile .profile-image{ width: 130px; height: inherit; float: left; padding-left: 50px; padding-right: 40px;}
+article{padding-top:150px; height: 700px; }
+article .profile{width: 665px; height: 270px; padding-top: 30px; border-radius: 10px; background-color: #ffffff; border: 1px solid #dbdbdb;}
+article .profile .profile-image{ width: 210px; height: inherit; float: left; padding-left: 50px; padding-right: 40px;}
 article .profile .profile-image svg{border: 3px solid #273c75; width: 120px; height: 120px; border-radius: 5px;}
 article .profile .profile-image .profile-modify{padding-top: 10px; font-weight: bold; font-size: 15px; text-align: center;}
 article .profile .profile-image .profile-modify button{font-weight: bold; font-size: 15px; padding: 5px; background-color: #2980b9; color: #fff; border-radius: 10px;}
@@ -11,65 +13,16 @@ article .profile .profile-content{ width: 300px; height: inherit; float: left;}
 article .profile .profile-content ul li{padding-bottom: 8px; font-size: 17px;}
 article .profile .profile-content ul li .fa-phone{font-size: 20px;}
 article .profile .profile-content ul li .fa-unlock-alt{font-size: 19px;}
-article .profile .profile-content .profile-content-title{}
-article .profile .profile-content .profile-content-title span{ display: inline-block; margin-left: 15px;}
+article .profile .profile-content .profile-content-title span{display: inline-block; margin-left: 15px;}
+article .profile .profile-content .profile-content-title .add{font-size: 12px; color: #95a5a6; margin-left: 10px;}
+article .profile .profile-content .profile-content-title .modify-password:hover{text-decoration: underline;}
 
-article .notification{margin: 10px auto 0; width: 510px; background-color: #74b9ff; border-radius: 10px; padding: 20px; font-size: 14px;}
-article .notification ul li:first-child{padding-bottom: 8px;}
-/* The switch - the box around the slider */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 35px;
-    height: 20px;
-}
-/* Hide default HTML checkbox */
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-/* The slider */
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 14px;
-    width: 14px;
-    left: 4px;
-    bottom: 3px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-input:checked + .slider {
-    background-color: #2196F3;
-}
-input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
-}
-input:checked + .slider:before {
-    -webkit-transform: translateX(12px);
-    -ms-transform: translateX(12px);
-    transform: translateX(12px);
-}
-/* Rounded sliders */
-.slider.round {
-    border-radius: 34px;
-}
-.slider.round:before {
-    border-radius: 50%;
-}
+article .notification{margin-top: 10px; width: 665px; background-color: #74b9ff; border-radius: 10px; padding: 0 20px 20px 20px; font-size: 15px;}
+article .notification ul li:first-child{margin-bottom: 10px; height: 40px;}
+article .notification .custom-control{padding-top: 6px;}
+article .notification .change-noti{font-weight: bold; font-size: 14px; padding: 2px 5px; background-color: #2980b9; color: #fff; border-radius: 10px; border: none;}
+article .notification .change-noti:hover{cursor: pointer; background-color: #ff6348;}
+article .notification .change-noti:focus{outline: none;}
 
 article .more{font-size: 15px; color: #718093;}
 article .like{height: 200px; border-bottom: 1px solid #dbdbdb;}

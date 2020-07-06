@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>토마토 마켓 - 관심 태그</title>
+    <link rel="shortcut icon" href="/img/favicon-32x32.png">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/reset-2.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <style>
+        .tagify-outside{
+            border: 0;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header th:replace="fragments.html :: header"></header>
+    <div th:replace="fragments.html :: veri-email"></div>
+
+    <div class="container">
+        <div class="row">
+            <div th:replace="fragments.html :: profile-side-menu (menu = 'tags')"></div>
+            <div class="col-8">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-info" role="alert" style="margin-left: 5px;">
+                            관심 있는 키워드를 태그로 등록해 주세요. 관련 매물이 등록되면 알림을 받을 수 있습니다.
+                        </div>
+                        <div id="whitelist" th:text="${whitelist}" hidden></div>
+                        <input id="tags" type="text" name="tags" th:value="${#strings.listJoin(tags, ',')}"
+                               class="tagify-outside" aria-describedby="tagHelp"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:replace="fragments.html :: ajax-csrf-header"></script>
+    <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
+    <script type="application/javascript" th:inline="javascript">
+        $(function() {
+            function tagRequest(url, tagTitle) {
+                $.ajax({
+                    dataType: "json",
+                    autocomplete: {
+                        enabled: true,
+                        rightKey: true,
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    method: "POST",
+                    url: "/profile/tags" + url,
+                    data: JSON.stringify({'tagTitle': tagTitle})
+                }).done(function (data, status) {
+                    console.log("${data} and status is ${status}");
+                });
+            }
+
+            function onAdd(e) {
+                tagRequest("/add", e.detail.data.value);
+            }
+
+            function onRemove(e) {
+                tagRequest("/remove", e.detail.data.value);
+            }
+
+            var tagInput = document.querySelector("#tags");
+            var tagify = new Tagify(tagInput, {
+                pattern: /^.{0,20}$/,
+                whitelist: JSON.parse(document.querySelector("#whitelist").textContent),
+                dropdown : {
+                    enabled: 1, // suggest tags after a single character input
+                } // map tags
+            });
+            tagify.on("add", onAdd);
+            tagify.on("remove", onRemove);
+            // add a class to Tagify's input element
+            tagify.DOM.input.classList.add('form-control');
+            // re-place Tagify's input element outside of the  element (tagify.DOM.scope), just before it
+            tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
+        });
+    </script>
+</body>
+</html>

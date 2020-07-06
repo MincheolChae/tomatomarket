@@ -1,0 +1,9 @@
+article{padding-top:131px; height: 500px;}
+
+article .inputuser form{width: 800px; padding-left:200px;}
+article .inputuser .input-info{margin: 10px 0;}
+article .inputuser .input-info #id-result{font-size: 20px;}
+article .inputuser label{display: block; font-size: 18px; font-weight: bold; padding: 5px 0; text-align: left;}
+article .inputuser input{width: 380px; height: 45px; padding: 0 10px;}
+article .inputuser .submit{width: 110px; height: 50px; background-color: #ff6348; color: #fff; font-size: 15px; margin-top: 10px; letter-spacing: 1px; border: none;}
+article .inputuser .submit:hover{cursor: pointer; color: #222222;}

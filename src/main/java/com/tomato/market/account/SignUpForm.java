@@ -15,19 +15,24 @@ public class SignUpForm {
     private String email;
 
     @NotBlank
-    @Length(min = 8, max = 20)
+    @Length(min = 8, max = 30)
     private String password;
 
     @NotBlank
-    @Length(min = 8, max = 20)
+    @Length(min = 8, max = 30)
     private String password2;
 
     @NotBlank
-    @Pattern(regexp = "^[가-힣a-zA-Z0-9]{3,12}$")  //TODO regexp 새로 작성
+    @Length(min = 2, max = 16)
+    @Pattern(regexp = "^[가-힣a-zA-Z]{2,16}$")
+    private String name;
+
+    @NotBlank
+    @Pattern(regexp = "^[가-힣a-zA-Z0-9]{2,16}$")
     private String nickname;
 
     @NotBlank
-    @Pattern(regexp = "^01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$")   //TODO regexp 새로 작성 (특수문자 허용 여부)
+    @Pattern(regexp = "^01(?:0|1|[6-9])(\\d{3}|\\d{4})(\\d{4})$")
     private String phone;
 
 }

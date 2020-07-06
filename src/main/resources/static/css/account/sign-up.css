@@ -1,5 +1,5 @@
-body{background-color: #f5f6fa;}
-.container{margin: 0 auto; width: 600px; height: 100%;}
+
+.mycontainer{margin: 0 auto; width: 600px; height: 100%;}
 #signup-header{width: 100%; margin-top: 40px;}
 .signup-title{height: 80px;}
 .signup-title-wrap{padding: 10px 170px; height: 60px;}

@@ -7,11 +7,12 @@
 <body>
     <!-- header -->
     <header id="header" th:fragment="header">
-        <div class="container">
+        <div class="mycontainer">
             <div class="title">
                 <div class="title-wrap">
                     <a href="/"><img src="/img/tomato-emoji-clipart-md.png" alt="tomato" class="tomato">
-                        <div class="head">토마토 마켓</div></a>
+                        <div class="head">토마토 마켓</div>
+                    </a>
                     <div class="search">
                         <div class="search-input"><input type="text" name="serch" placeholder="지역, 상품 등을 검색해보세요."></div>
                         <div class="search-img"><button class="search-button" title="검색"><img src="/img/magnifying-glass-tilted-left-emoji-clipart-md.png" alt="search" class="magnifying"></button></div>
@@ -28,9 +29,56 @@
 
     <!-- 이메일 인증하라는 메세지 -->
     <div class="not-veri-email" th:if="${account != null && !account.emailVerified}" th:fragment="veri-email">
-        <span>이메일 인증이 <br>필요합니다. <br>이메일을 <br>확인해주세요.<br><button type="submit" class="resend">이메일 재전송</button></span>
+        <span>이메일 인증이 <br>필요합니다. <br>이메일을 <br>확인해주세요.<br><a th:href="@{/resend-confirm-email}"><button type="button" class="resend">이메일 재전송</button></a></span>
     </div>
     <!-- //이메일 인증하라는 메세지 -->
+
+
+    <!-- 프로필 사이드 메뉴 -->
+    <div class="col-3 list-group" th:fragment="profile-side-menu (menu)">
+        <a class="list-group-item list-group-item-action" th:classappend="${menu == 'profile'}? active" th:href="@{'/profile/'+ ${#authentication.name}}" sec:authorize="isAuthenticated()">프로필</a>
+        <a class="list-group-item list-group-item-action" th:classappend="${menu == 'tags'}? active" th:href="@{/profile/tags}">관심 태그 설정</a>
+        <a class="list-group-item list-group-item-action" th:classappend="${menu == 'locations'}? active" th:href="@{/profile/locations}">동네 설정</a>
+        <a class="list-group-item list-group-item-action" th:classappend="${menu == 'password'}? active" th:href="@{/profile/password}">비밀번호 변경</a>
+    </div>
+
+
+    <!-- form-validation -->
+    <script type="application/javascript" th:fragment="form-validation">
+        (function () {
+            'use strict';
+
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+
+                // Loop over them and prevent submission
+                Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+            }, false)
+        }())
+    </script>
+
+    <!-- csrf토큰 전송 -->
+    <script type="application/javascript" th:inline="javascript" th:fragment="ajax-csrf-header">
+        $(function() {
+            var csrfToken = /*[[${_csrf.token}]]*/ null;
+            var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+            $(document).ajaxSend(function (e, xhr, options) {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            });
+        });
+    </script>
+
+
+
 
 </body>
 </html>
