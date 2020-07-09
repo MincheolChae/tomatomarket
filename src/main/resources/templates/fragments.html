@@ -35,7 +35,7 @@
 
 
     <!-- 프로필 사이드 메뉴 -->
-    <div class="col-3 list-group" th:fragment="profile-side-menu (menu)">
+    <div class="list-group" th:fragment="profile-side-menu (menu)">
         <a class="list-group-item list-group-item-action" th:classappend="${menu == 'profile'}? active" th:href="@{'/profile/'+ ${#authentication.name}}" sec:authorize="isAuthenticated()">프로필</a>
         <a class="list-group-item list-group-item-action" th:classappend="${menu == 'tags'}? active" th:href="@{/profile/tags}">관심 태그 설정</a>
         <a class="list-group-item list-group-item-action" th:classappend="${menu == 'locations'}? active" th:href="@{/profile/locations}">동네 설정</a>
@@ -77,8 +77,109 @@
         });
     </script>
 
+    <!-- Summber Note -->
+    <div th:fragment="editor-script">
+        <script src="/node_modules/summernote/dist/summernote-bs4.js"></script>
+        <script type="application/javascript" th:inline="javascript">
+            $(function () {
+                $('.editor').summernote({
+                    placeholder: "게시글 내용을 작성해주세요. (가품 및 판매금지품목은 게시가 제한될 수 있어요.)<br>이미지는 최대 10장까지 등록할 수 있고, 첫번째 이미지가 대표이미지가 됩니다.<br>등록한 이미지를 클릭하면 이미지를 삭제할 수 있어요.",
+                    tabsize: 2,
+                    height: 400,
+                    minHeight:400,
+                    maxHeight:800,
+                    callbacks: {
+                        onImageUpload : function(files) {
+                            for(let i=0; i<files.length; i++){
+                                uploadSummernoteImageFile(files[i]);
+                            }
+                        }
+                    }
+                });
+
+                let imgTags = document.querySelectorAll('#image-group img');
+                for(let i=0; i<imgTags.length; i++){
+                    imgTags[i].addEventListener("click", function(){
+                        imgTags[i].remove();
+                        let imageGroup = document.querySelector('#image-group');
+                        document.querySelector('#image-group-value').setAttribute('value', imageGroup.innerHTML);
+                        if(imgTags.length === 1){
+                            imageGroup.style.border = "0";
+                            imageGroup.style.marginBottom = "0";
+                        }
+                    });
+                }
+
+                function uploadSummernoteImageFile(file) {
+                    const data = new FormData();
+                    data.append("file", file);
+                    $.ajax({
+                        data : data,
+                        type : "POST",
+                        url : "/uploadSummernoteImageFile/",
+                        contentType : false,
+                        processData : false,
+                        success : function(data) {
+                            const node = document.createElement('img');
+                            node.setAttribute('src', data.url);
+                            node.setAttribute('style', 'width:91.8px; height:91.8px;');
+                            const imageGroup = document.querySelector('#image-group');
+                            imageGroup.style.border = "1px solid #dbdbdb";
+                            imageGroup.style.marginBottom = "15px";
+                            imageGroup.appendChild(node);
+
+                            let imgTags = document.querySelectorAll('#image-group img');
+                            imgTags[imgTags.length-1].addEventListener("click", function(){
+                                imgTags[imgTags.length-1].remove();
+                                document.querySelector('#image-group-value').setAttribute('value', imageGroup.innerHTML);
+                                if(imgTags.length === 1){
+                                    imageGroup.style.border = "0";
+                                    imageGroup.style.marginBottom = "0";
+                                }
+                            });
+
+                            if(imgTags.length > 10 ){
+                                alert('이미지는 최대 10장까지 등록 가능합니다.');
+                                imgTags[imgTags.length-1].remove();
+                            }
+                            document.querySelector('#image-group-value').setAttribute('value', imageGroup.innerHTML);
+                        }
+                    });
+                }
+            });
+        </script>
+    </div>
+
+    <!-- BootStrap Tooltip -->
+    <script th:fragment="tooltip" type="application/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
 
 
+    <!-- footer -->
+    <div id="footer" th:fragment="footer">
+        <div class="mycontainer">
+            <div class="footer">
+                <ul>
+                    <li><a href="#">이용약관</a></li>
+                    <li><a href="#"><strong>개인정보처리방침</strong></a></li>
+                    <li><a href="#">위치기반서비스 이용약관</a></li>
+                    <li><a href="#"><strong>광고주센터</strong></a></li>
+                    <li><a href="#">ABOUT US</a></li>
+                </ul>
+                <ul>
+                    <li>(주)토마토마켓 대표 채민철</li>
+                    <li>고객문의 : <a href="/">cmc752@gmail.com</a></li>
+                </ul>
+                <address>
+                    Copyright © <strong>Tomato Market</strong> Inc. All Rights Reserved.
+                </address>
+            </div>
+        </div>
+    </div>
+    <!-- //footer -->
 
 </body>
 </html>

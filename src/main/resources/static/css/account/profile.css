@@ -1,7 +1,7 @@
 .sign-up{height: 42px;}
 .logout-form{height: 42px;}
 
-article{padding-top:150px; height: 700px; }
+article{padding-top:140px; height: 700px; }
 article .profile{width: 665px; height: 270px; padding-top: 30px; border-radius: 10px; background-color: #ffffff; border: 1px solid #dbdbdb;}
 article .profile .profile-image{ width: 210px; height: inherit; float: left; padding-left: 50px; padding-right: 40px;}
 article .profile .profile-image svg{border: 3px solid #273c75; width: 120px; height: 120px; border-radius: 5px;}
@@ -9,7 +9,7 @@ article .profile .profile-image .profile-modify{padding-top: 10px; font-weight: 
 article .profile .profile-image .profile-modify button{font-weight: bold; font-size: 15px; padding: 5px; background-color: #2980b9; color: #fff; border-radius: 10px;}
 article .profile .profile-image .profile-modify button:hover{cursor: pointer; background-color: #ff6348;}
 article .profile .profile-image .profile-modify button:focus{outline: none;}
-article .profile .profile-content{ width: 300px; height: inherit; float: left;}
+article .profile .profile-content{ width: 300px; height: inherit; float: left; padding-left: 20px;}
 article .profile .profile-content ul li{padding-bottom: 8px; font-size: 17px;}
 article .profile .profile-content ul li .fa-phone{font-size: 20px;}
 article .profile .profile-content ul li .fa-unlock-alt{font-size: 19px;}

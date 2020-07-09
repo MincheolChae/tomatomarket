@@ -1,5 +1,6 @@
 package com.tomato.market.account.domain;
 
+import com.tomato.market.product.Product;
 import com.tomato.market.tag.Tag;
 import com.tomato.market.location.Location;
 import lombok.*;
@@ -7,6 +8,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -44,9 +46,8 @@ public class Account {
 
     private LocalDateTime joinedAt;  //가입날(인증된 날)
 
-    //TODO 판매내역 속성 추가하고 관리
-
-    //private String location;  //살고 있는 지역 (위치 API or 수동 입력)  >> 없애기
+    @OneToMany(mappedBy = "writer")
+    private List<Product> products;   //판매내역
 
     @ManyToMany
     private Set<Tag> tags = new HashSet<>();   //관심 태그

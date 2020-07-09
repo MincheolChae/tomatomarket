@@ -34,7 +34,7 @@ public class AccountController {
 
     @PostMapping("/sign-up")
     private String signUp(@Valid SignUpForm signUpForm, Errors errors){
-        if(errors.hasErrors()){  //중복이메일과 비밀번호 일치하지 않을때 돌려보냄
+        if(errors.hasErrors()){   //중복이메일과 비밀번호 일치하지 않을때 돌려보냄
             return "account/sign-up";
         }
 

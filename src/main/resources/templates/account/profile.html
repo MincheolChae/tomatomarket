@@ -18,7 +18,7 @@
     <article>
         <div class="container">
             <div class="row">
-                <div th:if="${isOwner}" th:replace="fragments.html :: profile-side-menu (menu = 'profile')"></div>
+                <div th:if="${isOwner}"><div th:replace="fragments.html :: profile-side-menu (menu = 'profile')"></div></div>
                 <div class="col-7">
                     <div class="profile">
                         <div class="profile-image">
@@ -52,10 +52,6 @@
                                     <span th:if="${!#strings.isEmpty(account.joinedAt)}" th:text="${#temporals.format(account.joinedAt, 'yyyy년 MM월 dd일 가입')}">프로필 가입일</span>
                                     <span th:if="${#strings.isEmpty(account.joinedAt) && isOwner}" style="color: #ffffff; background-color: #ff6348">이메일 인증이 필요합니다.</span>
                                 </li>
-<!--                                <li th:if="${isOwner}">-->
-<!--                                    <i class="fa fa-unlock-alt" aria-hidden="true"></i>-->
-<!--                                    <span class="modify-password"><a href="/profile/password">비밀번호 변경</a></span>-->
-<!--                                </li>-->
                             </ul>
                         </div>
                     </div>
@@ -128,34 +124,13 @@
         </div>
     </article>
 
-    <!-- footer -->
-<!--    <footer id="footer">-->
-<!--        <div class="mycontainer">-->
-<!--            <div class="footer">-->
-<!--                <ul>-->
-<!--                    <li><a href="#">이용약관</a></li>-->
-<!--                    <li><a href="#"><strong>개인정보처리방침</strong></a></li>-->
-<!--                    <li><a href="#">위치기반서비스 이용약관</a></li>-->
-<!--                    <li><a href="#"><strong>광고주센터</strong></a></li>-->
-<!--                    <li><a href="#">ABOUT US</a></li>-->
-<!--                </ul>-->
-<!--                <ul>-->
-<!--                    <li>(주)토마토마켓 대표 채민철</li>-->
-<!--                    <li>고객문의 : <a href="/">cmc752@gmail.com</a></li>-->
-<!--                </ul>-->
-<!--                <address>-->
-<!--                    Copyright © <strong>Tomato Market</strong> Inc. All Rights Reserved.-->
-<!--                </address>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </footer>-->
-    <!-- //footer -->
+
 
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.querySelector("button[class=modify]").onclick = function(){
+        document.querySelector(".modify").onclick = function(){
             location.href = "/profile/settings";
         }
     </script>

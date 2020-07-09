@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>토마토마켓 - 물품 수정</title>
+    <link rel="shortcut icon" href="/img/favicon-32x32.png">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/reset-2.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/node_modules/summernote/dist/summernote-bs4.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header th:replace="fragments.html :: header"></header>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <form class="needs-validation col-sm-10" th:action="@{/product-update}" th:object="${productForm}" method="post" novalidate>
+                <input th:field="*{id}" th:value="${productForm.id}" style="display:none">
+                <div class="form-group">
+                    <label for="title" style="font-weight: bold">글 제목</label>
+                    <input id="title" type="text" th:field="*{title}" class="form-control" name="title"
+                           placeholder="글 제목" th:value="${productForm.title}" aria-describedby="titleHelp" required max="50">
+                    <small class="invalid-feedback">글 제목을 입력하세요.</small>
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></small>
+                </div>
+
+                <div class="form-group">
+                    <span class="hidden-category" th:text="${productForm.category}" hidden></span>
+                    <label for="category" style="font-weight: bold">카테고리 선택</label>
+                    <select id="category" name="category" th:field="*{category}" class="form-control" required>
+                        <option value="디지털/가전">디지털/가전</option>
+                        <option value="가구/인테리어">가구/인테리어</option>
+                        <option value="유아동/유아도서">유아동/유아도서</option>
+                        <option value="생활/가공식품">생활/가공식품</option>
+                        <option value="스포츠/레저">스포츠/레저</option>
+                        <option value="여성잡화">여성잡화</option>
+                        <option value="여성의류">여성의류</option>
+                        <option value="남성패션잡화">남성패션잡화</option>
+                        <option value="게임/취미">게임/취미</option>
+                        <option value="뷰티/미용">뷰티/미용</option>
+                        <option value="반려동물용품">반려동물용품</option>
+                        <option value="도서/티켓/음반">도서/티켓/음반</option>
+                        <option value="기타중고물품">기타중고물품</option>
+                        <option value="삽니다">삽니다</option>
+                    </select>
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="price" style="font-weight: bold">가격 입력</label>
+                    <input id="price" type="number" th:field="*{price}" class="form-control" name="price"
+                           placeholder="물품 가격(원)" aria-describedby="priceHelp" th:value="${productForm.price}" min="0" step="10" required>
+                    <small class="invalid-feedback">올바른 가격을 입력하세요.</small>
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></small>
+                </div>
+
+                <div class="form-group" style="display: none" hidden>
+                    <input type="text" name="images" id="image-group-value" th:field="*{images}">
+                </div>
+
+                <div id="image-group" th:utext="${productForm.images}"></div>
+
+                <div class="form-group">
+                    <label for="description" style="font-weight: bold">물품 소개 / 이미지 등록</label>
+                    <textarea id="description" type="textarea" name="description" th:field="*{description}" class="editor form-control"
+                              aria-describedby="descriptionHelp" th:utext="${productForm.description}" required></textarea>
+                    <small class="invalid-feedback">상세 소개를 입력하세요.</small>
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></small>
+                </div>
+
+                <div class="form-group mt-3 text-right pr-4">
+                    <span th:if="${product.isWriter(#authentication.principal)}">
+                        <button type="submit" aria-describedby="submitHelp" class="btn btn-primary update">수정완료</button>
+                    </span>
+                    &nbsp;<button type="button" class="btn btn-secondary" id="back">취소</button>
+                </div>
+            </form>
+        </div>
+        <form class="row justify-content-end col-sm-11" style="padding-right: 11px" th:object="${productForm}" th:action="@{/product-soldout}" method="post" th:if="${product.isWriter(#authentication.principal)}">
+            <input th:field="*{id}" th:value="${productForm.id}" style="display:none;" readonly hidden>
+            <button type="submit" class="btn btn-warning" id="soldout">판매완료</button>
+        </form>
+        <form class="row justify-content-end col-sm-11 mt-3" style="padding-right: 11px" th:object="${productForm}" th:action="@{/product-delete}" method="post" th:if="${product.isWriter(#authentication.principal)}">
+            <input th:field="*{id}" th:value="${productForm.id}" style="display: none" readonly hidden>
+            <button type="submit" class="btn btn-danger" id="product-delete">삭제하기</button>
+        </form>
+    </div>
+
+    <div th:replace="fragments.html :: footer"></div>
+
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:replace="fragments.html :: ajax-csrf-header"></script>
+    <script th:replace="fragments.html :: editor-script"></script>
+    <script th:replace="fragments.html :: form-validation"></script>
+    <script th:inline="javascript">
+        document.querySelector("#back").onclick = function(){
+            location.href = "/product/[[${product.id}]]";
+        }
+        document.querySelector("#soldout").onclick = function(){
+            return confirm('판매완료로 바꾸시겠습니까?')
+        }
+        document.querySelector("#product-delete").onclick = function(){
+            return confirm('글을 삭제하시겠습니까?')
+        }
+
+        const op = document.querySelector('.hidden-category').innerHTML;
+        document.querySelector(`option[value=${op}]`).setAttribute('selected', true);
+    </script>
+</body>
+</html>

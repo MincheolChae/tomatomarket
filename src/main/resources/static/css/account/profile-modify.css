@@ -1,7 +1,7 @@
 .sign-up{height: 42px;}
 .logout-form{height: 42px;}
 
-article{padding-top:131px; height: 500px;}
+article{height: 500px; padding-top: 140px;}
 article .profile{width: 570px; height: 380px; padding-top: 30px; border-radius: 10px; margin: 0 auto; background-color: #ffffff; border: 1px solid #dbdbdb;}
 article .profile .profile-content{width: 570px; height: inherit; float: left;}
 article .profile .profile-content ul li{padding-bottom: 15px; height: 50px; font-size: 20px; padding-left: 100px;}

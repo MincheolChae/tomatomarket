@@ -118,27 +118,26 @@
             <div class="mycontainer">
                 <div class="content">
                     <ul>
-                        <a href="#"><li>
-                            <div><img src="/img/8.jpg"></div>
-                            <div class="content-info">
-                                <div class="content-title">레노버 노트북 S340 팔아요</div>
-                                <div class="content-location">경기도 고양시 덕양구 화중로 152번길 32</div>
-                                <div class="content-price">420,000원</div>
-                                <div class="content-detail">조회수 38 · 관심 9</div>
-                            </div>
-                        </li></a>
-                        <a href="/"><li>b</li></a>
-                        <a href="/"><li>c</li></a>
-                        <a href="/"><li>d</li></a>
-                        <a href="/"><li>e</li></a>
-                        <a href="/"><li>f</li></a>
-                        <a href="/"><li>g</li></a>
-                        <a href="/"><li>h</li></a>
-                        <a href="/"><li>i</li></a>
-                        <a href="/"><li>j</li></a>
-                        <a href="/"><li>k</li></a>
-                        <a href="/"><li>l</li></a>
-                        <a href="/"><li class="content-more"><div class="content-more-plus">+</div><div class="content-more-text">토마토 마켓 <br>매물 더 보기</div></li></a>
+                        <li th:each="product : ${productList}">
+                            <a th:href="@{'/product/'+${product.id}}">
+                                <div th:utext="${product.representativeImage}" class="product-image"></div>
+                                <div class="content-info">
+                                    <div class="content-title" th:text="${product.title}"></div>
+                                    <div class="content-location">물품 주소와 태그정보</div>     <!-- //TODO 태그정보 넣어야댐 -->
+                                    <div class="content-price"><span th:text="${product.price}"></span> 원</div>
+                                    <div class="content-detail">관심 9 · 2020.07.08 16:20</div>  <!-- //TODO 관심수치와 시간 넣어야댐 -->
+                                </div>
+                            </a>
+                        </li>
+
+                        <li>a</li>
+                        <li>b</li>
+                        <li>c</li>
+                        <li>d</li>
+                        <li>e</li>
+                        <li>f</li>
+
+                        <a href="#"><li class="content-more"><div class="content-more-plus">+</div><div class="content-more-text">토마토 마켓 <br>매물 더 보기</div></li></a>
                     </ul>
                 </div>
             </div>
@@ -155,30 +154,16 @@
         </div>
     </section>
 
-    <footer id="footer">
-        <div class="mycontainer">
-            <div class="footer">
-                <ul>
-                    <li><a href="#">이용약관</a></li>
-                    <li><a href="#"><strong>개인정보처리방침</strong></a></li>
-                    <li><a href="#">위치기반서비스 이용약관</a></li>
-                    <li><a href="#"><strong>광고주센터</strong></a></li>
-                    <li><a href="#">ABOUT US</a></li>
-                </ul>
-                <ul>
-                    <li>(주)토마토마켓 대표 채민철</li>
-                    <li>고객문의 : <a href="/">cmc752@gmail.com</a></li>
-                </ul>
-                <address>
-                    Copyright © <strong>Tomato Market</strong> Inc. All Rights Reserved.
-                </address>
-            </div>
-        </div>
-    </footer>
+    <div th:replace="fragments.html :: footer"></div>
 
-    <script src="/js/jquery.min_3.5.1.js"></script>
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/js/slick.min.js"></script>
     <script>
+        let productImage = document.querySelectorAll('.product-image');
+        for(let i=0; i<productImage.length; i++){
+            productImage[i].firstElementChild.style = 'none';
+        }
+
         $('.fade').slick({
             dots: true,
             autoplay: true,
