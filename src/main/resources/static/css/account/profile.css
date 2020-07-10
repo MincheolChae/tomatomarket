@@ -9,7 +9,7 @@ article .profile .profile-image .profile-modify{padding-top: 10px; font-weight: 
 article .profile .profile-image .profile-modify button{font-weight: bold; font-size: 15px; padding: 5px; background-color: #2980b9; color: #fff; border-radius: 10px;}
 article .profile .profile-image .profile-modify button:hover{cursor: pointer; background-color: #ff6348;}
 article .profile .profile-image .profile-modify button:focus{outline: none;}
-article .profile .profile-content{ width: 300px; height: inherit; float: left; padding-left: 20px;}
+article .profile .profile-content{width: 450px; height: inherit; float: left; padding-left: 20px;}
 article .profile .profile-content ul li{padding-bottom: 8px; font-size: 17px;}
 article .profile .profile-content ul li .fa-phone{font-size: 20px;}
 article .profile .profile-content ul li .fa-unlock-alt{font-size: 19px;}

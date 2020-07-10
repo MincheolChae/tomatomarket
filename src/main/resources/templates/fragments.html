@@ -29,7 +29,7 @@
 
     <!-- 이메일 인증하라는 메세지 -->
     <div class="not-veri-email" th:if="${account != null && !account.emailVerified}" th:fragment="veri-email">
-        <span>이메일 인증이 <br>필요합니다. <br>이메일을 <br>확인해주세요.<br><a th:href="@{/resend-confirm-email}"><button type="button" class="resend">이메일 재전송</button></a></span>
+        <span>&nbsp;&nbsp;서비스를 이용<br>&nbsp;&nbsp;하려면 이메일<br>인증을 해주세요.<br>&nbsp;<a th:href="@{/resend-confirm-email}"><button type="button" class="resend">이메일 인증하기</button></a></span>
     </div>
     <!-- //이메일 인증하라는 메세지 -->
 
@@ -37,8 +37,10 @@
     <!-- 프로필 사이드 메뉴 -->
     <div class="list-group" th:fragment="profile-side-menu (menu)">
         <a class="list-group-item list-group-item-action" th:classappend="${menu == 'profile'}? active" th:href="@{'/profile/'+ ${#authentication.name}}" sec:authorize="isAuthenticated()">프로필</a>
-        <a class="list-group-item list-group-item-action" th:classappend="${menu == 'tags'}? active" th:href="@{/profile/tags}">관심 태그 설정</a>
         <a class="list-group-item list-group-item-action" th:classappend="${menu == 'locations'}? active" th:href="@{/profile/locations}">동네 설정</a>
+        <a class="list-group-item list-group-item-action" th:classappend="${menu == 'tags'}? active" th:href="@{/profile/tags}">관심 태그 설정</a>
+        <a class="list-group-item list-group-item-action" th:classappend="${menu == 'products'}? active" th:href="@{/profile/products}">판매 내역</a>
+        <a class="list-group-item list-group-item-action" th:classappend="${menu == 'productsLiked'}? active" th:href="@{/profile/productsLiked}">관심 상품</a>
         <a class="list-group-item list-group-item-action" th:classappend="${menu == 'password'}? active" th:href="@{/profile/password}">비밀번호 변경</a>
     </div>
 
@@ -83,7 +85,8 @@
         <script type="application/javascript" th:inline="javascript">
             $(function () {
                 $('.editor').summernote({
-                    placeholder: "게시글 내용을 작성해주세요. (가품 및 판매금지품목은 게시가 제한될 수 있어요.)<br>이미지는 최대 10장까지 등록할 수 있고, 첫번째 이미지가 대표이미지가 됩니다.<br>등록한 이미지를 클릭하면 이미지를 삭제할 수 있어요.",
+                    placeholder: "게시글 내용을 작성해주세요. (가품 및 판매금지품목은 게시가 제한될 수 있어요.)<br>이미지는 최대 10장까지 등록할 수 있고, 첫번째 이미지가 대표이미지가 됩니다." +
+                        "<br>이미지당 최대 크기는 1MB씩이고, 등록한 이미지를 클릭하면 이미지를 삭제할 수 있어요.",
                     tabsize: 2,
                     height: 400,
                     minHeight:400,

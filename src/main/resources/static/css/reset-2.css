@@ -12,3 +12,4 @@
 .footer li:before {content: ''; width: 1px; height: 14px; background-color: #dbdbdb; position: absolute; left: 0; top: 6px;}
 .footer li:first-child:before {width: 0;}
 .footer address {padding-top: 15px; color: #7f8c8d}
+

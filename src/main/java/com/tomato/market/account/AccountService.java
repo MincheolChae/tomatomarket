@@ -7,6 +7,7 @@ import com.tomato.market.account.profile.PasswordForm;
 import com.tomato.market.account.profile.ProfileModifyForm;
 import com.tomato.market.config.AppProperties;
 import com.tomato.market.location.Location;
+import com.tomato.market.product.Product;
 import com.tomato.market.tag.Tag;
 import com.tomato.market.mail.EmailMessage;
 import com.tomato.market.mail.EmailService;
@@ -24,11 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import javax.swing.text.html.Option;
 import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Transactional
@@ -186,5 +185,10 @@ public class AccountService implements UserDetailsService {
                 .message(message)
                 .build();
         emailService.sendEmail(emailMessage);
+    }
+
+    public List<Product> getProductsSold(Account account) {
+        Account accountFound =  accountRepository.findById(account.getId()).get();
+        return accountFound.getProducts();
     }
 }

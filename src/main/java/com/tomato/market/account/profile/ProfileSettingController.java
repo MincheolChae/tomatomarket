@@ -8,6 +8,7 @@ import com.tomato.market.account.domain.Account;
 import com.tomato.market.location.Location;
 import com.tomato.market.location.LocationForm;
 import com.tomato.market.location.LocationRepository;
+import com.tomato.market.product.Product;
 import com.tomato.market.tag.Tag;
 import com.tomato.market.tag.TagForm;
 import com.tomato.market.tag.TagRepository;
@@ -42,18 +43,13 @@ public class ProfileSettingController {
     private final TagService tagService;
     private final LocationRepository locationRepository;
 
-//    @InitBinder("profileModifyForm")
-//    public void profileInitBinder(WebDataBinder webDataBinder){
-//        webDataBinder.addValidators(profileModifyFormValidator);
-//    }
-
     @InitBinder("passwordForm")
     public void passwordInitBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(passwordFormValidator);
     }
 
     @GetMapping("/profile/{nickname}")
-    public String viewProfile(@PathVariable String nickname, Model model, @CurrentAccount Account account) throws JsonProcessingException {
+    public String viewProfile(@PathVariable String nickname, Model model, @CurrentAccount Account account) {
         Account accountToView = accountService.getAccount(nickname);
         model.addAttribute(accountToView);
         model.addAttribute("isOwner", accountToView.equals(account));
@@ -179,7 +175,14 @@ public class ProfileSettingController {
         return "redirect:/profile/" + URLencode;
     }
 
+    @GetMapping("/profile/products")
+    public String getProductsSold(@CurrentAccount Account account, Model model){
+        List<Product> productList = accountService.getProductsSold(account);
 
+        model.addAttribute(productList);
+        model.addAttribute(account);
+        return "account/my-products";
+    }
 
 
 }

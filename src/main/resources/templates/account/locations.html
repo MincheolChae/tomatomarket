@@ -23,12 +23,13 @@
     <header th:replace="fragments.html :: header"></header>
     <div th:replace="fragments.html :: veri-email"></div>
 
-    <div class="container">
+    <div class="container" style="height: 600px;">
         <div class="row">
             <div th:replace="fragments.html :: profile-side-menu (menu = 'locations')"></div>
-            <div class="col-8">
+            <div class="col-9">
                 <div class="alert alert-info" role="alert" style="margin-left: 5px;">
-                    주로 거래할 지역을 등록하세요. 해당 지역에 물건이 등록되면 알림을 받을 수 있습니다.
+                    주로 거래할 지역을 등록하세요. 해당 지역에 물건이 등록되면 알림을 받을 수 있습니다.<br>
+                    최대 2개까지 등록할 수 있습니다.
                 </div>
                 <div id="whitelist" th:text="${whitelist}" hidden></div>
                 <input id="locations" type="text" name="locations" th:value="${#strings.listJoin(locations, ',')}"
@@ -36,6 +37,8 @@
             </div>
         </div>
     </div>
+
+    <div th:replace="fragments.html :: footer"></div>
 
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -60,6 +63,12 @@
             }
 
             function onAdd(e) {
+                let registeredTags = document.querySelectorAll('.tagify__tag');
+                if(registeredTags.length > 2) {
+                    alert('최대 2개까지 등록할 수 있습니다.');
+                    registeredTags[2].remove();
+                    return;
+                }
                 tagRequest("/add", e.detail.data.value);
             }
 

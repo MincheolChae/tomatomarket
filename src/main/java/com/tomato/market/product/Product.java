@@ -10,6 +10,7 @@ import org.hibernate.mapping.ToOne;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter @Setter @EqualsAndHashCode(of = "id")
@@ -23,7 +24,10 @@ public class Product {
     @ManyToOne
     private Account writer;  //작성자
 
-    private boolean isWriter;  //필요없을듯
+//    private boolean isWriter;  //필요없을듯
+
+    @ManyToMany
+    private Set<Account> accounts = new HashSet<>();  //이 물품을 관심 추가한 회원들
 
     private String title;
 
@@ -62,4 +66,19 @@ public class Product {
         this.isSoldOut = true;
         this.soldOutTime = LocalDateTime.now();
     }
+
+    public void makeWriterAndTime(Account account) {
+        this.writer = account;
+        this.writeTime = LocalDateTime.now();
+    }
+
+    public void makeRepresentativeImage() {
+        if (this.images.contains("<img ") && this.images.contains("\">")) {
+            String image = this.images.substring(this.images.indexOf("<img "), this.images.indexOf("\">") + 2);
+            this.representativeImage = image;
+        } else {
+            this.representativeImage = "<img src=/img/default_b72974fa-1b77-490a-9642-e6b2a443fff6.jpg>";
+        }
+    }
+
 }

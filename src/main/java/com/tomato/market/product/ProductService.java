@@ -1,6 +1,7 @@
 package com.tomato.market.product;
 
 import com.tomato.market.account.domain.Account;
+import com.tomato.market.account.domain.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -16,13 +17,16 @@ import java.util.Optional;
 @Service
 public class ProductService {
 
+    private final AccountRepository accountRepository;
     private final ProductRepository productRepository;
     private final ModelMapper modelMapper;
 
     public Product createNewProduct(Product product, Account account) {
         Product newProduct = productRepository.save(product);
-        newProduct.setWriter(account);
-        newProduct.setWriteTime(LocalDateTime.now());
+        newProduct.makeWriterAndTime(account);
+        newProduct.makeRepresentativeImage();
+        account.addProduct(newProduct);
+
         return newProduct;
     }
 
@@ -33,19 +37,19 @@ public class ProductService {
     }
 
     public void checkIfAccountIsWriter(Account account, Product product) {
-        if(!account.getNickname().equals(product.getWriter().getNickname())){
+        if (!account.getNickname().equals(product.getWriter().getNickname())) {
             throw new IllegalArgumentException();
         }
     }
 
-    public Product updateProduct(ProductForm productForm ,Product product) {
+    public Product updateProduct(ProductForm productForm, Product product) {
         modelMapper.map(productForm, product);
         product.setUpdateTime(LocalDateTime.now());
-        Product updateProduct = productRepository.save(product);
-        return updateProduct;
+        return productRepository.save(product);
     }
 
-    public void deleteProduct(Product product) {
+    public void deleteProduct(Account account, Product product) {
+        account.deleteProduct(product);
         productRepository.delete(product);
     }
 
@@ -56,14 +60,35 @@ public class ProductService {
 
     public List<Product> getProductListToShow() {
         List<Product> productList = productRepository.findTop12ByOrderByIdDesc();
-        for(Product product : productList) {
-            if(product.getImages().contains("<img ") && product.getImages().contains("\">")) {
-                String image = product.getImages().substring(product.getImages().indexOf("<img "), product.getImages().indexOf("\">") + 2);
-                product.setRepresentativeImage(image);
-            } else {
-                product.setRepresentativeImage("<img src=/img/default_b72974fa-1b77-490a-9642-e6b2a443fff6.jpg>");
-            }
+        for (Product product : productList) {
+            product.makeRepresentativeImage();
         }
         return productList;
+    }
+
+    public List<String> getSeparatedImages(Product product) {
+        List<String> imageList = new ArrayList<>();
+        int count = 0;
+        int fromIndex = -1;
+        int index;
+        int[] indexArray = new int[10];
+        while ((index = product.getImages().indexOf("<img ", fromIndex + 1)) >= 0) {
+            fromIndex = index;
+            indexArray[count++] = fromIndex;
+        }
+
+        switch (count) {
+            case 0:
+                imageList.add("<img src=/img/default_b72974fa-1b77-490a-9642-e6b2a443fff6.jpg>");
+                break;
+
+            default:
+                for (int i = 0; i < count; i++) {
+                    String image = (i == count - 1) ? product.getImages().substring(indexArray[i]) : product.getImages().substring(indexArray[i], indexArray[i + 1]);
+                    imageList.add(image);
+                }
+                break;
+        }
+        return imageList;
     }
 }

@@ -7,10 +7,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Getter
@@ -46,8 +43,11 @@ public class Account {
 
     private LocalDateTime joinedAt;  //가입날(인증된 날)
 
-    @OneToMany(mappedBy = "writer")
-    private List<Product> products;   //판매내역
+    @OneToMany(mappedBy = "writer", fetch = FetchType.EAGER)
+    private List<Product> products = new ArrayList<>();   //판매내역
+
+    @ManyToMany
+    private List<Product> productsLiked = new ArrayList<>();  //관심 표시한 물품들
 
     @ManyToMany
     private Set<Tag> tags = new HashSet<>();   //관심 태그
@@ -81,5 +81,12 @@ public class Account {
         return this.emailCheckTokenGeneratedAt.isBefore(LocalDateTime.now().minusMinutes(30));
     }
 
+    public void addProduct(Product newProduct) {
+        this.products.add(newProduct);
+    }
+
+    public void deleteProduct(Product product) {
+        this.products.remove(product);
+    }
 }
 

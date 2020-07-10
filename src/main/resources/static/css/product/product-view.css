@@ -1,0 +1,47 @@
+.image-slide{position: relative;}
+.image-slide .slick-prev {
+    position: absolute; top: 270px; left: -50px;
+    z-index: 1000;
+    width: 30px; height: 30px;
+    border: 2px solid #5dbfeb; border-radius: 50%;
+    text-indent: -9999px;
+}
+.image-slide .slick-prev:hover {
+    background-color: #5dbfeb;
+}
+.image-slide .slick-prev::before {
+    content:"<";
+    color: #5dbfeb;
+    font-weight: bold; font-size: 22px;
+    text-indent: 0;
+    position: absolute; left: -2px; top: -1px;
+    width: 30px; height: 30px;
+}
+.image-slide .slick-prev:hover::before {
+    color: #eeeeee;
+}
+.image-slide .slick-next{
+    position: absolute; top: 270px; right: -50px;
+    z-index: 1000;
+    width: 30px; height: 30px;
+    border: 2px solid #5dbfeb; border-radius: 50%;
+    text-indent: -9999px;
+}
+.image-slide .slick-next:hover {
+    background-color: #5dbfeb;
+}
+.image-slide .slick-next::before {
+    content:">";
+    color: #5dbfeb;
+    font-weight: bold; font-size: 22px;
+    text-indent: 0;
+    position: absolute; left: 0; top: -1px;
+    width: 30px; height: 30px;
+}
+.image-slide .slick-next:hover::before {
+    color: #eeeeee;
+}
+
+.like-button:hover span{text-decoration: underline;}
+
+.writed{}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>토마토 마켓 - 판매 내역</title>
+    <link rel="shortcut icon" href="/img/favicon-32x32.png">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/reset-2.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header th:replace="fragments.html :: header"></header>
+    <div th:replace="fragments.html :: veri-email"></div>
+
+    <div class="container">
+        <div class="row">
+            <div th:replace="fragments.html :: profile-side-menu (menu = 'products')"></div>
+            <div class="col-9">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-info" style="margin-left: 5px;">판매 내역</div>
+                        <table class="product-table" style="margin-left: 5px;">
+                            <tr>
+                                <th style="width: 100px; padding: 0 10px;">사진</th>
+                                <th style="width: 250px; padding: 0 10px;">제목</th>
+                                <th style="width: 150px; padding: 0 10px;">카테고리</th>
+                                <th style="width: 150px; padding: 0 10px;">가격</th>
+                                <th style="width: 150px; padding: 0 10px;">등록 날짜</th>
+                            </tr>
+                            <tr th:each="i : ${#numbers.sequence(productList.size()-1, 0, -1)}" style="border-bottom: 1px solid #dbdbdb">
+                                <td class="product-image" style="padding: 0 10px;"><a th:href="@{'/product/'+${productList[i].id}}" th:utext="${productList[i].representativeImage}"></a></td>
+                                <td style="width: 250px; height: 100px; padding: 0 10px"><a th:href="@{'/product/'+${productList[i].id}}" th:text="${productList[i].title}"></a></td>
+                                <td style="width: 150px; height: 100px; padding: 0 10px" th:text="${productList[i].category}"></td>
+                                <td style="width: 150px; height: 100px; padding: 0 10px; color: #ff6348;"><span th:text="${productList[i].price}"></span> 원</td>
+                                <td style="width: 150px; height: 100px; padding: 0 10px" th:text="${#temporals.format(productList[i].writeTime, 'yyyy.MM.dd HH:mm')}"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="fragments.html :: footer"></div>
+
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:inline="javascript">
+        let productImage = document.querySelectorAll('.product-image img');
+        for(let i=0; i<productImage.length; i++){
+            productImage[i].style.width = '90px';
+            productImage[i].style.height = '90px';
+        }
+    </script>
+</body>
+</html>

@@ -11,7 +11,7 @@ public class ProductForm {
     private String id;  //게시글 번호
 
     @NotBlank
-    @Length(min = 1, max = 50)
+    @Length(min = 1, max = 35)
     private String title;
 
     @NotBlank

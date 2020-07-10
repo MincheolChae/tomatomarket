@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -28,7 +29,6 @@ public class ProductController {
 
     private final ModelMapper modelMapper;
     private final ProductService productService;
-    private final ProductRepository productRepository;
 
     @GetMapping("/new-product")
     public String newProductForm(@CurrentAccount Account account, Model model) {
@@ -80,8 +80,9 @@ public class ProductController {
     @GetMapping("/product/{id}")
     public String viewProduct(@PathVariable String id, Model model) {
         Product product = productService.getProduct(id);
+        List<String> imageList = productService.getSeparatedImages(product);
 
-//        model.addAttribute(account);
+        model.addAttribute("imageList", imageList);
         model.addAttribute(product);
         return "product/product-view";
     }
@@ -130,7 +131,7 @@ public class ProductController {
         Product product = productService.getProduct(productForm.getId());
         productService.checkIfAccountIsWriter(account, product);
 
-        productService.deleteProduct(product);
-        return "index";    //TODO : 돌려보낼 위치 나중에 바꾸기
+        productService.deleteProduct(account, product);
+        return "redirect:/";    //TODO : 돌려보낼 위치 나중에 바꾸기
     }
 }

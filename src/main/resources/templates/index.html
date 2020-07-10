@@ -117,27 +117,30 @@
         <article id="article">
             <div class="mycontainer">
                 <div class="content">
+                    <div class="show-product"><span class="show-near"><button>동네 매물 보기</button></span><span class="show-all"><button>전체 매물 보기</button></span></div>
+                    <div class="write-product"><a href="/new-product"><button>물품 등록하기</button></a></div>
                     <ul>
                         <li th:each="product : ${productList}">
                             <a th:href="@{'/product/'+${product.id}}">
                                 <div th:utext="${product.representativeImage}" class="product-image"></div>
                                 <div class="content-info">
                                     <div class="content-title" th:text="${product.title}"></div>
-                                    <div class="content-location">물품 주소와 태그정보</div>     <!-- //TODO 태그정보 넣어야댐 -->
-                                    <div class="content-price"><span th:text="${product.price}"></span> 원</div>
-                                    <div class="content-detail">관심 9 · 2020.07.08 16:20</div>  <!-- //TODO 관심수치와 시간 넣어야댐 -->
+                                    <div class="content-tags">물품 주소</div>     <!-- //TODO 태그정보 넣어야댐 -->
+                                    <div class="content-tags">태그 정보</div>     <!-- //TODO 태그정보 넣어야댐 -->
+                                    <div class="content-price">
+                                        <span th:text="${product.price}"></span><span>&nbsp;원</span>
+                                        &nbsp;&nbsp;<span th:if="${product.isSoldOut()}" class="soldout-msg" style="display: inline-block; border:1px solid #95a5a6; border-radius: 5px; color: #95a5a6;">판매완료</span>
+                                    </div>
+                                    <div class="content-detail">관심 100 · <span th:text="${#temporals.format(product.writeTime, 'yyyy.MM.dd HH:mm')}"></span></div>  <!-- //TODO 관심수치와 시간 넣어야댐 -->
                                 </div>
                             </a>
                         </li>
 
-                        <li>a</li>
-                        <li>b</li>
-                        <li>c</li>
-                        <li>d</li>
-                        <li>e</li>
-                        <li>f</li>
-
-                        <a href="#"><li class="content-more"><div class="content-more-plus">+</div><div class="content-more-text">토마토 마켓 <br>매물 더 보기</div></li></a>
+                        <a href="#">
+                            <li class="content-more">
+                                <div class="content-more-plus">+</div><div class="content-more-text">토마토 마켓 <br>매물 더 보기</div>
+                            </li>
+                        </a>
                     </ul>
                 </div>
             </div>
@@ -167,13 +170,22 @@
         $('.fade').slick({
             dots: true,
             autoplay: true,
-            autoplaySpeed: 3500,
+            autoplaySpeed: 3000,
             infinite: true,
             speed: 500,
             fade: true,
             arrows: false,
             cssEase: 'linear'
         });
+
+        const soldout = document.querySelectorAll(".soldout-msg");
+        for(let i=0; i<soldout.length; i++){
+            if(soldout[i].innerHTML === '판매완료'){
+                soldout[i].parentElement.children[0].style.textDecoration = 'line-through';
+                soldout[i].parentElement.children[1].style.textDecoration = 'line-through';
+                soldout[i].parentElement.parentElement.parentElement.parentElement.style.opacity = '0.3';
+            }
+        }
     </script>
 </body>
 </html>

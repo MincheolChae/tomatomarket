@@ -27,7 +27,7 @@ body{background-color: #f5f6fa;}
 /* 이메일 인증하라는 메세지 */
 .not-veri-email{position: fixed; top: 120px; right: 200px; z-index: 5000; border: 3px solid #e84118; background-color: #ffcccc; padding: 10px; border-radius: 10px; font-size: 18px;}
 .not-veri-email:hover{cursor: default}
-.not-veri-email .resend{font-size: 15px; font-weight: bold; padding: 5px; color: #16a085;}
+.not-veri-email .resend{font-size: 15px; font-weight: bold; padding: 5px; color: #20bf6b;}
 .not-veri-email .resend:hover{text-decoration: underline; cursor: pointer;}
 
 /* 여백 초기화 */

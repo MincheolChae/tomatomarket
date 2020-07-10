@@ -22,7 +22,7 @@ public class MainController {
 
     @GetMapping("/")
     public String home(@CurrentAccount Account account, Model model) {
-        List<Product> productList = productService.getProductListToShow();   //substring 할때 이미지 없는 경우 에러발생함~!!!
+        List<Product> productList = productService.getProductListToShow();
         model.addAttribute(productList);
 
         return "index";

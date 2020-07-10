@@ -7,8 +7,10 @@
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/reset.css">
     <link rel="stylesheet" href="/css/reset-2.css">
+    <link rel="stylesheet" href="/css/product/product-view.css">
     <link rel="stylesheet" href="/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/node_modules/summernote/dist/summernote-bs4.min.css">
+    <link rel="stylesheet" href="/css/slick.css">
+    <link rel="stylesheet" href="/css/slick-theme.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
 </head>
@@ -19,31 +21,41 @@
         <div class="row justify-content-center bg-white">
 
             <div class="col-3 text-center border-bottom soldout-blur" style="margin-top: 21px; font-size: 18px;">
-
-                <div style="padding: 15px; font-weight: bold;">작성자</div>
-                <div style="padding: 15px; font-weight: bold;">글제목</div>
-                <div style="padding: 15px; font-weight: bold;">카테고리</div>
-                <div style="padding: 15px; font-weight: bold;">가격</div>
+                <div style="padding: 15px 0; font-weight: bold;">작성자</div>
+                <div style="padding: 15px 0; font-weight: bold;">제목</div>
+                <div style="padding: 15px 0; font-weight: bold;">카테고리</div>
+                <div style="padding: 15px 0; font-weight: bold;">가격</div>
             </div>
             <div class="col-6 border-bottom mt-3 soldout-blur" style="font-size: 18px;">
-                <div style="padding: 15px;">
+                <div style="padding: 15px 0">
                     <svg th:if="${#strings.isEmpty(product.getWriter().profileImage)}" th:data-jdenticon-value="${product.getWriter().nickname}"
                          width="30" height="30"></svg>
                     <img th:if="${!#strings.isEmpty(product.getWriter().profileImage)}" th:src="${product.getWriter().profileImage}"
                          width="30" height="30"/>
                     <span th:text="${product.getWriter().nickname}"></span>
                 </div>
-                <div style="padding: 15px;" th:text="${product.title}"></div>
-                <div style="padding: 15px;" th:text="${product.category}"></div>
-                <div style="padding: 15px; color: #ff6348; font-weight: bold;">
+                <div style="padding: 15px 0; font-weight: bold; " th:text="${product.title}"></div>
+                <div style="padding: 15px 0;" th:text="${product.category}"></div>
+                <div style="padding: 15px 0; color: #ff6348; font-weight: bold;">
                     <span id="line-through"><span style="color: #ff6348; font-weight: bold;" th:text="${product.price}"></span> 원</span>
                     &nbsp;&nbsp;<span th:if="${product.isSoldOut()}" class="soldout-msg" style="padding: 5px; border:1px solid #95a5a6; border-radius: 5px; color: #95a5a6;">판매완료</span>
                 </div>
             </div>
         </div>
+
         <div style="padding: 20px; font-size: 18px;" class="row justify-content-center bg-white pb-5 soldout-blur" id="description" >
-            <div class="col-10 mt-3" th:utext="${product.description}"></div>
+            <div class="image-slide" style="width: 800px;">
+                <div th:each="image : ${imageList}">
+                    <span th:utext="${image}" class="imageList"></span>
+                </div>
+            </div>
+            <div class="col-9 mt-3" th:utext="${product.description}"></div>
         </div>
+        <div class="row">
+            <div class="col-6 soldout-blur" style="background-color: #ffffff; padding-bottom: 10px;"><button class="like-button" style="color: #ff6348; font-size: 20px"><i class="fa fa-heart-o" aria-hidden="true"></i>&nbsp;<span>관심 매물 추가</span></button></div>
+            <div class="col-6 soldout-blur" style="background-color: #ffffff; padding-bottom: 10px; text-align: right; font-size: 20px"><span th:text="${#temporals.format(product.writeTime, 'yyyy-MM-dd, HH시 mm분')}"></span></div>
+        </div>
+
         <div class="row justify-content-center mt-4">
             <span sec:authorize="isAuthenticated()"><button th:if="${product.isWriter(#authentication.principal)}"  type="submit" class="btn btn-success" id="update">수정하기</button></span>
             &nbsp;&nbsp;<button type="button" class="btn btn-secondary" id="back">돌아가기</button>
@@ -53,25 +65,42 @@
     <div th:replace="fragments.html :: footer"></div>
 
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="/js/slick.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
+    <script src="/js/slick.min.js"></script>
     <script th:inline="javascript">
+        $('.image-slide').slick({
+            dots: true,
+            autoplay: true,
+            autoplaySpeed: 3000,
+            infinite: true,
+            speed: 500,
+            arrows: true,
+        });
+
+        const imageList = document.querySelectorAll('.imageList img')
+        for(let i=0; i<imageList.length; i++){
+            imageList[i].style.width = '800px';
+            imageList[i].style.height = '570px';
+        }
+
+        const soldout = document.querySelector(".soldout-msg").innerHTML;
+        if(soldout === '판매완료'){
+            document.querySelector('#line-through').style.textDecoration = 'line-through';
+            let content = document.querySelectorAll('.soldout-blur');
+            for(let i=0; i<content.length; i++){
+                content[i].style.opacity = '0.3';
+            }
+            document.querySelector('.like-button').remove();
+        }
+    </script>
+    <script>
         document.querySelector("#back").onclick = function(){
             location.href = "/";
         }
         document.querySelector("#update").onclick = function(){
             location.href = "/product/[[${product.id}]]/update";
         }
-        const soldout = document.querySelector(".soldout-msg").innerHTML;
-        if(soldout == '판매완료'){
-            document.querySelector('#line-through').style.textDecoration = 'line-through';
-            let content = document.querySelectorAll('.soldout-blur');
-            for(let i=0; i<content.length; i++){
-                content[i].style.opacity = '0.5';
-            }
-        }
     </script>
-
 </body>
 </html>
