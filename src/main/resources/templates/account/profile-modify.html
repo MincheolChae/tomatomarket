@@ -52,12 +52,12 @@
                             <ul class="profile-content-title">
                                 <li>
                                     <i class="fa fa-id-card-o" aria-hidden="true"></i>
-                                    <input type="text" th:field="*{name}" th:value="${account.name}" placeholder="이름">
+                                    <input type="text" th:field="*{name}" th:value="${account.name}" placeholder="이름" min="2" max="16" required>
                                     <div class="error"><small th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small></div>
                                 </li>
                                 <li>
                                     <i class="fa fa-user-o" aria-hidden="true"></i>
-                                    <input type="text" th:field="*{nickname}" th:value="${account.nickname}" placeholder="닉네임">
+                                    <input type="text" th:field="*{nickname}" th:value="${account.nickname}" placeholder="닉네임" min="2" max="12" required>
                                     <div class="error"><small th:if="${error != null}" th:text="${error}"></small></div>
                                 </li>
                                 <li>

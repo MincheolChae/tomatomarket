@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="/css/reset-2.css">
     <link rel="stylesheet" href="/css/font-awesome.min.css">
     <link rel="stylesheet" href="/node_modules/summernote/dist/summernote-bs4.min.css">
+    <style>
+        #image-group img:hover{border: 2px solid #535c68; filter: grayscale(100%); cursor: pointer}
+    </style>
 
     <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
 </head>
@@ -75,7 +78,7 @@
                     <span>
                         <button type="submit" aria-describedby="submitHelp" class="btn btn-primary update">수정완료</button>
                     </span>
-                    &nbsp;<button type="button" class="btn btn-secondary" id="back">취소</button>
+                    &nbsp;&nbsp;<button type="button" class="btn btn-secondary" id="back">취소</button>
                 </div>
             </form>
         </div>
@@ -101,10 +104,10 @@
             location.href = "/product/[[${product.id}]]";
         }
         document.querySelector("#soldout").onclick = function(){
-            return confirm('판매완료로 바꾸시겠습니까?')
+            return confirm('판매완료로 바꾸시겠습니까? 이 작업은 되돌릴 수 없습니다.')
         }
         document.querySelector("#product-delete").onclick = function(){
-            return confirm('글을 삭제하시겠습니까?')
+            return confirm('글을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')
         }
 
         const op = document.querySelector('.hidden-category').innerHTML;

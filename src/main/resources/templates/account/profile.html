@@ -66,14 +66,14 @@
                         <form th:action="@{/notification}" th:object="${notificationForm}" method="post" novalidate>
                             <ul>
                                 <li>
-                                    <br><span><i class="fa fa-bell" aria-hidden="true"></i>&nbsp;등록한 태그에 관련된 상품 등록시 웹 알림</span>
+                                    <br><span><i class="fa fa-bell" aria-hidden="true"></i>&nbsp;우리 동네에 관심 키워드로 설정한 매물이 등록시 웹 알림</span>
                                     <div class="custom-control custom-switch custom-control-inline">
                                         <input type="checkbox" th:field="*{newProductNotiByWeb}" class="custom-control-input" id="newProductNotiByWeb">
                                         <label class="custom-control-label" for="newProductNotiByWeb"></label>
                                     </div>
                                 </li>
                                 <li>
-                                    <span><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;등록한 태그에 관련된 상품 등록시 이메일 알림</span>
+                                    <span><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;우리 동네에 관심 키워드로 설정한 매물이 등록시 이메일 알림</span>
                                     <div class="custom-control custom-switch custom-control-inline">
                                         <input type="checkbox" th:field="*{newProductNotiByEmail}" class="custom-control-input" id="newProductNotiByEmail">
                                         <label class="custom-control-label" for="newProductNotiByEmail"></label>
@@ -91,29 +91,6 @@
                     </div>
                 </div>
             </div>
-
-
-<!--            <div class="like">-->
-<!--                <div class="like-title">관심목록 &nbsp;<a href="#" class="more"><i class="fa fa-plus-square-o" aria-hidden="true"></i> 더보기</a></div>-->
-<!--                <div class="like-content">-->
-<!--                    관심목록 내용-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="keyword">-->
-<!--                <div class="keyword-title">키워드 설정 &nbsp;<a href="#" class="more"><i class="fa fa-plus-square-o" aria-hidden="true"></i> 더보기</a></div>-->
-<!--                <div class="keyword-content">-->
-<!--                    키워드 설정 내용-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="chat">-->
-<!--                <div class="chat-title">채팅 &nbsp;<a href="#" class="more"><i class="fa fa-plus-square-o" aria-hidden="true"></i> 더보기</a></div>-->
-<!--                <div class="chat-content">-->
-<!--                    채팅-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="leave">-->
-<!--                <div><a href="#">회원탈퇴</a></div>-->
-<!--            </div>-->
         </div>
     </article>
 
@@ -123,12 +100,14 @@
     <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.querySelector(".modify").onclick = function(){
-            location.href = "/profile/settings";
-        }
         let locationFromTag = document.querySelectorAll(".location-from-tag");
         if(locationFromTag.length === 2){
             locationFromTag[1].style.marginLeft = '20px';
+        }
+
+
+        document.querySelector(".modify").onclick = function(){
+            location.href = "/profile/settings";
         }
     </script>
 </body>

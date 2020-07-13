@@ -15,7 +15,7 @@ public class ProfileModifyForm {
     private String name;
 
     @NotBlank
-    @Pattern(regexp = "^[가-힣a-zA-Z0-9]{2,16}$")
+    @Pattern(regexp = "^[가-힣a-zA-Z0-9]{2,12}$")
     private String nickname;
 
     @NotBlank

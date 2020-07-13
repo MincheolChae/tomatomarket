@@ -13,14 +13,29 @@
                     <a href="/"><img src="/img/tomato-emoji-clipart-md.png" alt="tomato" class="tomato">
                         <div class="head">토마토 마켓</div>
                     </a>
-                    <div class="search">
-                        <div class="search-input"><input type="text" name="serch" placeholder="지역, 상품 등을 검색해보세요."></div>
-                        <div class="search-img"><button class="search-button" title="검색"><img src="/img/magnifying-glass-tilted-left-emoji-clipart-md.png" alt="search" class="magnifying"></button></div>
-                    </div>
+                    <form th:action="@{/search/product}" method="get" class="search">
+                        <div class="search-input"><input type="search" name="keyword" placeholder="지역, 상품 등을 검색해보세요." required></div>
+                        <div class="search-img"><button type="submit" th:href="@{/search/product}" class="search-button" title="검색"><img src="/img/magnifying-glass-tilted-left-emoji-clipart-md.png" alt="search" class="magnifying"></button></div>
+                    </form>
                     <a th:href="@{/login}" sec:authorize="!isAuthenticated()"><div class="log"><span>로그인</span></div></a>
                     <form th:action="@{/logout}" method="post" class="logout-form" sec:authorize="isAuthenticated()"><input type="submit" value="로그아웃"></form>
                     <a th:href="@{/sign-up}" sec:authorize="!isAuthenticated()"><div class="sign-up"><span>회원가입</span></div></a>
-                    <a th:href="@{'/profile/'+ ${#authentication.name}}" sec:authorize="isAuthenticated()"><div class="sign-up"><span>내정보</span></div></a>
+                    <a th:href="@{'/profile/'+ ${#authentication.name}}" sec:authorize="isAuthenticated()" title="내 정보">
+                        <div class="sign-up">
+                            <svg th:if="${#strings.isEmpty(account?.profileImage)}" th:data-jdenticon-value="${#authentication.name}" width="25" height="25"></svg>
+                            <img th:if="${!#strings.isEmpty(account?.profileImage)}" th:src="${account.profileImage}" width="25" height="25"/>
+                            <div th:text="${#authentication.name}"></div>
+                        </div>
+                    </a>
+                    <div style="float: left; font-size: 23px; margin: 12px 0 0 10px; width: 80px; height: 40px;">
+                        <a class="nav-link" th:href="@{/notifications}" sec:authorize="isAuthenticated()" style="padding: 0">
+                            <i th:if="${!hasNotification}" class="fa fa-bell-o" aria-hidden="true" style="color: #b2bec3" title="새알림이 없습니다."></i>
+                            <span th:if="${hasNotification}" style="position: relative;">
+                                <i class="fa fa-bell" aria-hidden="true" style="color: #ffd700;" title="새알림 도착!"></i>
+                                <span style="position: absolute; top: 0; right: -7px; font-size: 10px; color: #FFFFFF; background-color: #cc0000; border-radius: 50%; width: 17px; height: 17px; text-align: center" th:text="${numberOfNotChecked}"></span>
+                            </span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -38,7 +53,7 @@
     <div class="list-group" th:fragment="profile-side-menu (menu)">
         <a class="list-group-item list-group-item-action" th:classappend="${menu == 'profile'}? active" th:href="@{'/profile/'+ ${#authentication.name}}" sec:authorize="isAuthenticated()">프로필</a>
         <a class="list-group-item list-group-item-action" th:classappend="${menu == 'locations'}? active" th:href="@{/profile/locations}">동네 설정</a>
-        <a class="list-group-item list-group-item-action" th:classappend="${menu == 'tags'}? active" th:href="@{/profile/tags}">관심 태그 설정</a>
+        <a class="list-group-item list-group-item-action" th:classappend="${menu == 'tags'}? active" th:href="@{/profile/tags}">관심 키워드 설정</a>
         <a class="list-group-item list-group-item-action" th:classappend="${menu == 'products'}? active" th:href="@{/profile/products}">판매 내역</a>
         <a class="list-group-item list-group-item-action" th:classappend="${menu == 'productsLiked'}? active" th:href="@{/profile/productsLiked}">관심 상품</a>
         <a class="list-group-item list-group-item-action" th:classappend="${menu == 'password'}? active" th:href="@{/profile/password}">비밀번호 변경</a>

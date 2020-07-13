@@ -13,6 +13,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
+@NamedEntityGraph(name = "Product.withTagsAndLocations", attributeNodes = {
+        @NamedAttributeNode("tags"),
+        @NamedAttributeNode("locations")})
 @Getter @Setter @EqualsAndHashCode(of = "id")
 @Builder @AllArgsConstructor @NoArgsConstructor
 @Entity
@@ -23,8 +27,6 @@ public class Product {
 
     @ManyToOne
     private Account writer;  //작성자
-
-//    private boolean isWriter;  //필요없을듯
 
     @ManyToMany
     private Set<Account> accounts = new HashSet<>();  //이 물품을 관심 추가한 회원들
@@ -57,6 +59,7 @@ public class Product {
 
     private boolean isSoldOut = false;
 
+    private boolean isNotified = false;
 
     public boolean isWriter(UserAccount userAccount) {
         return this.writer.equals(userAccount.getAccount());  //userAccount.getUsername() 으로 바꿔서 디버그 해보기! username에 뭐가 들었나 궁금함

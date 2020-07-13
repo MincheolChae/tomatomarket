@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>토마토 마켓 - 알림</title>
+    <link rel="shortcut icon" href="/img/favicon-32x32.png">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/reset-2.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header th:replace="fragments.html :: header"></header>
+    <div th:replace="fragments.html :: veri-email"></div>
+
+    <div class="container" style="height: 600px;">
+        <div class="row py-3 text-center">
+            <div class="col-3">
+                <ul class="list-group">
+                    <a href="#" th:href="@{/notifications}" th:classappend="${isNew}? active"
+                       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        읽지 않은 알림
+                        <span th:text="${numberOfNotChecked}"></span>
+                    </a>
+                    <a href="#" th:href="@{/notifications/old}" th:classappend="${!isNew}? active"
+                       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        읽은 알림
+                        <span th:text="${numberOfChecked}"></span>
+                    </a>
+                </ul>
+
+                <ul class="list-group mt-4" th:if="${numberOfChecked > 0}">
+                    <form th:action="@{/notifications}" th:method="delete">
+                        <button type="submit" class="btn btn-block btn-outline-warning" aria-describedby="deleteHelp">
+                            읽은 알림 삭제
+                        </button>
+                        <small id="deleteHelp">삭제하지 않아도 한달이 지난 알림은 사라집니다.</small>
+                    </form>
+                </ul>
+            </div>
+            <div class="col-9">
+                <div class="card" th:if="${notifications.size() == 0}">
+                    <div class="card-header">
+                        알림 메시지가 없습니다.
+                    </div>
+                </div>
+
+                <div class="card" th:if="${newProductNotifications.size() > 0}">
+                    <div class="card-header">
+                        동네에 관심있는 매물이 생겼습니다.
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <a href="#" th:href="@{${noti.link}}" th:each="noti: ${notifications}"
+                           class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <small class="text-muted" th:text="${noti.title}"></small>
+                                <small class="fromNow text-muted" th:text="${#temporals.format(noti.createdLocalDateTime, 'yyyy.MM.dd. HH:mm')}"></small>
+                            </div>
+                            <span th:utext="${noti.message}" class="text-left mb-0 mt-1"></span>
+                        </a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="fragments.html :: footer"></div>
+
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+    <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
+    <script>
+        moment.locale('ko');
+        $(".fromNow").text(function(index, dateTime) {
+            return moment(dateTime, "YYYY.MM.DD hh:mm").fromNow();
+        });
+    </script>
+</body>
+</html>

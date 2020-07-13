@@ -1,10 +1,14 @@
+.title-wrap{height: 60px;}
+.search{width: 486px; height: 41px;}
 
 #nav{padding-top:85px}
 .category{height: 95px;}
 .category-title{float: left; font-size: 20px; padding:8px 17px; color:#fff; background-color: #2980b9; margin-right: 20px; height: 68px; line-height: 68px;}
 .category-title:hover{cursor: default;}
 .category-list{margin: 10px 0 8px 0;}
-.category-list li{float: left; font-size: 15px; padding: 8px; color: #fff; background-color: #ff6348; margin:2px 10px 0 0; border-radius: 10px;}
+/*.category-list button{}*/
+/*.category-list button:focus{outline: none;}*/
+.category-list li{float: left; padding: 6px 8px; color: #fff; font-size: 15px; margin:7px 12px 0 0; background-color: #ff6348; border-radius: 10px;}
 .category-list li.category-last{background-color: #009432;}
 .category-list li:hover{cursor: pointer; text-decoration: underline;}
 
@@ -57,7 +61,7 @@
 
 
 #article{}
-.content{height: 1370px; margin:50px 0; overflow: hidden;}
+.content{height: auto; margin:50px 0; overflow: hidden;}
 .content .show-product{width: 480px; height:40px; float:left; margin-left: 20px; padding-bottom: 10px; border-bottom: 1px solid #dbdbdb;}
 .content .show-product .show-near{display: inline-block; padding: 0 15px; margin-top: 15px; border-right: 1px solid #dbdbdb;}
 .content .show-product .show-near button{font-size: 20px;}
@@ -68,13 +72,17 @@
 .content .write-product{width: 480px; height:40px; float:left; text-align: right; margin-right: 20px; padding-bottom: 10px; border-bottom: 1px solid #dbdbdb;}
 .content .write-product button{font-size: 20px; color: #ffffff; background-color: #0984e3; padding: 5px; border-radius: 10px;}
 .content .write-product button:hover{cursor: pointer; text-decoration: underline;}
+.content .write-product button:focus{outline: none;}
+.content .write-product .button-disabled{border: 1px solid #0984e3; color: #0984e3; background-color: #FFFFFF;}
+.content .write-product .button-disabled:hover{cursor: default; text-decoration: none;}
 .content ul li{width: 21%; height: 290px; float: left; margin: 1.9%; border: 1px solid #95a5a6; border-radius: 10px;}
 .content ul li:hover{color: black; box-shadow: 5px 5px 7px rgba(0,0,0,0.8);}
 .content ul li img{width: 100%; height: 150px; border-top-left-radius: 10px; border-top-right-radius: 10px; border:none;}
 .content ul li .content-info{padding: 0 15px;}
 .content ul li .content-info >div{margin-top:5px;}
 .content ul li .content-title{font-size: 18px; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
-.content ul li .content-tags{color:#535c68; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+.content ul li .content-locations{color:#535c68; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+.content ul li .content-tags{color:#17A2B8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px;}
 .content ul li .content-price{font-size: 16px; font-weight: bold; height: 24px; color: #ff6348; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
 .content ul li .content-detail{font-size: 12px; color: #b2bec3; text-align: right; border-top: 1px solid #dfe6e9; padding-right: 8px;}
 

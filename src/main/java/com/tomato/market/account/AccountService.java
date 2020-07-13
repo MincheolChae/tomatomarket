@@ -8,6 +8,7 @@ import com.tomato.market.account.profile.ProfileModifyForm;
 import com.tomato.market.config.AppProperties;
 import com.tomato.market.location.Location;
 import com.tomato.market.product.Product;
+import com.tomato.market.product.ProductRepository;
 import com.tomato.market.tag.Tag;
 import com.tomato.market.mail.EmailMessage;
 import com.tomato.market.mail.EmailService;
@@ -125,8 +126,8 @@ public class AccountService implements UserDetailsService {
     }
 
     public Set<Tag> getTags(Account account) {
-        Optional<Account> foundAccountById = accountRepository.findById(account.getId());
-        return foundAccountById.orElseThrow(NoSuchElementException::new).getTags();
+        Optional<Account> accountFoundById = accountRepository.findById(account.getId());
+        return accountFoundById.orElseThrow(NoSuchElementException::new).getTags();
     }
 
     public void addTag(Account account, Tag tag) {
@@ -187,8 +188,10 @@ public class AccountService implements UserDetailsService {
         emailService.sendEmail(emailMessage);
     }
 
-    public List<Product> getProductsSold(Account account) {
-        Account accountFound =  accountRepository.findById(account.getId()).get();
-        return accountFound.getProducts();
+    public List<Product> getUploadedProducts(Account account) {
+
+
+
+        return account.getProducts();
     }
 }

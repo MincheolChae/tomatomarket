@@ -1,25 +1,26 @@
 package com.tomato.market.product;
 
 import com.tomato.market.account.domain.Account;
-import com.tomato.market.account.domain.AccountRepository;
+import com.tomato.market.location.Location;
+import com.tomato.market.product.event.ProductCreatedEvent;
+import com.tomato.market.tag.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Transactional
 @Service
 public class ProductService {
 
-    private final AccountRepository accountRepository;
     private final ProductRepository productRepository;
     private final ModelMapper modelMapper;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public Product createNewProduct(Product product, Account account) {
         Product newProduct = productRepository.save(product);
@@ -30,10 +31,17 @@ public class ProductService {
         return newProduct;
     }
 
-    public Product getProduct(String id) {
-        Product product = productRepository.findById(Long.parseLong(id.trim())).orElseThrow(IllegalArgumentException::new);
+    public void applyNewProductNotification(Product product){
+        System.out.println(product.isNotified());
+        System.out.println(product.isSoldOut());
+        if(!product.isNotified() && !product.isSoldOut()) {
+            applicationEventPublisher.publishEvent(new ProductCreatedEvent(product));
+            product.setNotified(true);
+        }
+    }
 
-        return product;
+    public Product getProduct(String id) {
+        return productRepository.findById(Long.parseLong(id.trim())).orElseThrow(IllegalArgumentException::new);
     }
 
     public void checkIfAccountIsWriter(Account account, Product product) {
@@ -59,7 +67,7 @@ public class ProductService {
     }
 
     public List<Product> getProductListToShow() {
-        List<Product> productList = productRepository.findTop12ByOrderByIdDesc();
+        List<Product> productList = productRepository.findFirst16ByOrderByWriteTimeDesc();
         for (Product product : productList) {
             product.makeRepresentativeImage();
         }
@@ -77,18 +85,44 @@ public class ProductService {
             indexArray[count++] = fromIndex;
         }
 
-        switch (count) {
-            case 0:
-                imageList.add("<img src=/img/default_b72974fa-1b77-490a-9642-e6b2a443fff6.jpg>");
-                break;
-
-            default:
-                for (int i = 0; i < count; i++) {
-                    String image = (i == count - 1) ? product.getImages().substring(indexArray[i]) : product.getImages().substring(indexArray[i], indexArray[i + 1]);
-                    imageList.add(image);
-                }
-                break;
+        if (count == 0) {
+            imageList.add("<img src=/img/default_b72974fa-1b77-490a-9642-e6b2a443fff6.jpg>");
+        } else {
+            for (int i = 0; i < count; i++) {
+                String image = (i == count - 1) ? product.getImages().substring(indexArray[i]) : product.getImages().substring(indexArray[i], indexArray[i + 1]);
+                imageList.add(image);
+            }
         }
         return imageList;
+    }
+
+    public Set<Tag> getTags(String id) {
+        Optional<Product> productFoundById = productRepository.findById(Long.parseLong(id.trim()));
+        return productFoundById.orElseThrow(NoSuchElementException::new).getTags();
+    }
+
+    public void addTag(String id, Tag tag) {
+        Optional<Product> productFoundById = productRepository.findById(Long.parseLong(id.trim()));
+        productFoundById.ifPresent(product -> product.getTags().add(tag));
+    }
+
+    public void removeTag(String id, Tag tag) {
+        Optional<Product> productFoundById = productRepository.findById(Long.parseLong(id.trim()));
+        productFoundById.ifPresent(product -> product.getTags().remove(tag));
+    }
+
+    public Set<Location> getLocations(String id) {
+        Optional<Product> productFoundById = productRepository.findById(Long.parseLong(id.trim()));
+        return productFoundById.orElseThrow(NoSuchElementException::new).getLocations();
+    }
+
+    public void addLocation(String id, Location location) {
+        Optional<Product> productFoundById = productRepository.findById(Long.parseLong(id.trim()));
+        productFoundById.ifPresent(product -> product.getLocations().add(location));
+    }
+
+    public void removeLocation(String id, Location location) {
+        Optional<Product> productFoundById = productRepository.findById(Long.parseLong(id.trim()));
+        productFoundById.ifPresent(product -> product.getLocations().remove(location));
     }
 }

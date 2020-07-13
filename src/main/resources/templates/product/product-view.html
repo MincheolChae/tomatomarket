@@ -11,6 +11,15 @@
     <link rel="stylesheet" href="/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/slick.css">
     <link rel="stylesheet" href="/css/slick-theme.css">
+    <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css">
+    <link rel="stylesheet" href="/node_modules/lightgallery/dist/css/lightgallery.min.css">
+    <style>
+        .tagify-outside{
+            border: 0;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
 
     <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
 </head>
@@ -19,12 +28,18 @@
 
     <div class="container">
         <div class="row justify-content-center bg-white">
-
             <div class="col-3 text-center border-bottom soldout-blur" style="margin-top: 21px; font-size: 18px;">
                 <div style="padding: 15px 0; font-weight: bold;">작성자</div>
                 <div style="padding: 15px 0; font-weight: bold;">제목</div>
                 <div style="padding: 15px 0; font-weight: bold;">카테고리</div>
                 <div style="padding: 15px 0; font-weight: bold;">가격</div>
+                <div style="padding: 15px 0;">
+                    <span th:each="location: ${product.locations}" class="font-weight-light text-monospace badge badge-primary py-2 px-2">
+                        <a th:href="@{'/search/product?keyword='+${location.unit}}" class="text-decoration-none text-white">
+                            <i class="fa fa-globe"></i><span th:text="${location}"></span>
+                        </a>
+                    </span>
+                </div>
             </div>
             <div class="col-6 border-bottom mt-3 soldout-blur" style="font-size: 18px;">
                 <div style="padding: 15px 0">
@@ -32,33 +47,81 @@
                          width="30" height="30"></svg>
                     <img th:if="${!#strings.isEmpty(product.getWriter().profileImage)}" th:src="${product.getWriter().profileImage}"
                          width="30" height="30"/>
-                    <span th:text="${product.getWriter().nickname}"></span>
+                    <a th:href="@{'/profile/'+${product.getWriter().nickname}}"><span th:text="${product.getWriter().nickname}"></span></a>
                 </div>
                 <div style="padding: 15px 0; font-weight: bold; " th:text="${product.title}"></div>
                 <div style="padding: 15px 0;" th:text="${product.category}"></div>
                 <div style="padding: 15px 0; color: #ff6348; font-weight: bold;">
-                    <span id="line-through"><span style="color: #ff6348; font-weight: bold;" th:text="${product.price}"></span> 원</span>
+                    <span id="line-through"><span class="product-price" style="color: #ff6348; font-weight: bold;" th:text="${product.price}"></span> 원</span>
                     &nbsp;&nbsp;<span th:if="${product.isSoldOut()}" class="soldout-msg" style="padding: 5px; border:1px solid #95a5a6; border-radius: 5px; color: #95a5a6;">판매완료</span>
+                </div>
+                <div style="padding: 15px 0;">
+                    <span th:each="tag : ${product.tags}"
+                          class="font-weight-light text-monospace badge badge-pill badge-info mr-2 mt-1" style="font-size: 15px">
+                        <a th:href="@{'/search/product?keyword='+${tag.title}}" class="text-decoration-none text-white">
+                            <i class="fa fa-tag"></i> <span th:text="${tag.title}"></span>
+                        </a>
+                    </span>
                 </div>
             </div>
         </div>
 
+        <div class="row tag-and-location py-3" style="background-color: #ffffff" sec:authorize="isAuthenticated()">
+            <div class="col-5" th:if="${product.isWriter(#authentication.principal)}">
+                <div class="alert alert-danger" role="alert" style="margin-left: 5px;">
+                    거래할 지역을 등록하세요. (필수, 최대 1곳)
+                </div>
+                <div id="location-whitelist" th:text="${locationWhitelist}" style="display: none" hidden></div>
+                <input id="locations" type="text" name="locations" th:value="${#strings.listJoin(locations, ',')}"
+                       class="tagify-outside" aria-describedby="tagHelp" required/>
+            </div>
+            <div class="col-5" th:if="${product.isWriter(#authentication.principal)}">
+                <div class="alert alert-primary" role="alert" style="margin-left: 5px;">
+                    매물을 나타낼 키워드를 등록해주세요. (선택, 최대 5개)
+                </div>
+                <div id="tag-whitelist" th:text="${tagWhitelist}" style="display: none" hidden></div>
+                <input id="tags" type="text" name="tags" th:value="${#strings.listJoin(tags, ',')}"
+                       class="tagify-outside" aria-describedby="tagHelp"/>
+            </div>
+            <form class="col-2 text-center" style="padding-left: 0" th:if="${product.isWriter(#authentication.principal)}" th:action="@{'/new-product-notification/'+${product.id}}" method="post">
+                <span th:if="${!product.isSoldOut() && !product.isNotified()}">
+                    <span style="font-size: 12px; color: #e84118;">태그 등록 후 알림을 보내세요.</span>
+                    <br>
+                    <button type="submit" class="apply-tag btn btn-warning" style="padding: 10px; font-size: 20px;">알림 보내기</button>
+                </span>
+                <span th:if="${!product.isSoldOut() && product.isNotified()}">
+                    <button type="button" class="apply-tag btn btn-warning disabled" style="padding: 10px; margin-top: 15px; font-size: 20px;">알림 보내기</button>
+                    <br>
+                    <span style="font-size: 12px; color: #e84118;">이미 알림을 보냈습니다.</span>
+                </span>
+                <span th:if="${product.isSoldOut()}">
+                    <button type="button" class="apply-tag btn btn-warning disabled" style="padding: 10px; margin-top: 15px; font-size: 20px;">알림 보내기</button>
+                    <br>
+                    <span style="font-size: 12px; color: #e84118;">알림을 보낼 수 없습니다.</span>
+                </span>
+            </form>
+        </div>
+
         <div style="padding: 20px; font-size: 18px;" class="row justify-content-center bg-white pb-5 soldout-blur" id="description" >
-            <div class="image-slide" style="width: 800px;">
-                <div th:each="image : ${imageList}">
-                    <span th:utext="${image}" class="imageList"></span>
+            <div class="image-slide" style="width: 600px;">
+                <div th:each="image : ${imageList}" class="lightgallery">
+                    <a th:utext="${image}" class="imageList"></a>
                 </div>
             </div>
             <div class="col-9 mt-3" th:utext="${product.description}"></div>
         </div>
         <div class="row">
-            <div class="col-6 soldout-blur" style="background-color: #ffffff; padding-bottom: 10px;"><button class="like-button" style="color: #ff6348; font-size: 20px"><i class="fa fa-heart-o" aria-hidden="true"></i>&nbsp;<span>관심 매물 추가</span></button></div>
-            <div class="col-6 soldout-blur" style="background-color: #ffffff; padding-bottom: 10px; text-align: right; font-size: 20px"><span th:text="${#temporals.format(product.writeTime, 'yyyy-MM-dd, HH시 mm분')}"></span></div>
+            <div class="col-6 soldout-blur" style="background-color: #ffffff; padding-bottom: 10px;">
+                <button sec:authorize="isAuthenticated()" class="like-button" style="color: #ff6348; font-size: 20px; border: 1px solid #ff6348; border-radius: 10px; padding: 0 5px;">
+                    <i class="fa fa-heart-o" aria-hidden="true"></i>&nbsp;<span>관심 매물 추가</span>
+                </button>
+            </div>
+            <div class="col-6 soldout-blur" style="background-color: #ffffff; padding-bottom: 10px; text-align: right; font-size: 20px"><span class="write-time" th:text="${#temporals.format(product.writeTime, 'yyyy.MM.dd. HH:mm')}"></span>&nbsp;(<span class="from-now"></span>)</div>
         </div>
 
         <div class="row justify-content-center mt-4">
-            <span sec:authorize="isAuthenticated()"><button th:if="${product.isWriter(#authentication.principal)}"  type="submit" class="btn btn-success" id="update">수정하기</button></span>
-            &nbsp;&nbsp;<button type="button" class="btn btn-secondary" id="back">돌아가기</button>
+            <span sec:authorize="isAuthenticated()"><button th:if="${product.isWriter(#authentication.principal)}"  type="submit" class="btn btn-success" id="update">내용 수정하기</button></span>
+            &nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-secondary" id="back">목록으로</button>
         </div>
     </div>
 
@@ -66,9 +129,23 @@
 
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
     <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
     <script src="/js/slick.min.js"></script>
+    <script src="/node_modules/lightgallery/dist/js/lightgallery-all.min.js"></script>
+    <script>
+        moment.locale('ko');
+        $(".write-time").text(function(index, dateTime) {
+            $(".from-now").text(moment(dateTime, "YYYY.MM.DD hh:mm").fromNow());
+        });
+    </script>
     <script th:inline="javascript">
+        function addComma(price) {
+            var regexp = /\B(?=(\d{3})+(?!\d))/g;
+            return price.replace(regexp, ',');
+        }
+        document.querySelector('.product-price').innerHTML = addComma(document.querySelector('.product-price').innerHTML);
+
         $('.image-slide').slick({
             dots: true,
             autoplay: true,
@@ -78,10 +155,16 @@
             arrows: true,
         });
 
-        const imageList = document.querySelectorAll('.imageList img')
+        $(".lightgallery").lightGallery({
+        });
+
+
+        const imageList = document.querySelectorAll('.imageList img');
+        const imageLink = document.querySelectorAll('.imageList');
         for(let i=0; i<imageList.length; i++){
-            imageList[i].style.width = '800px';
-            imageList[i].style.height = '570px';
+            imageList[i].style.width = '600px';
+            imageList[i].style.height = '450px';
+            imageLink[i].setAttribute('href', imageList[i].src);
         }
 
         const soldout = document.querySelector(".soldout-msg").innerHTML;
@@ -92,15 +175,122 @@
                 content[i].style.opacity = '0.3';
             }
             document.querySelector('.like-button').remove();
+
+            document.querySelector('.tag-and-location').style.opacity = '0.3';
         }
     </script>
     <script>
         document.querySelector("#back").onclick = function(){
+            let tagifyBox = document.querySelectorAll('.tagify')
+            if(tagifyBox.length !== 0 && tagifyBox[0].childElementCount !== 1) {
+                alert('거래할 지역을 등록하세요.');
+                return;
+            }
             location.href = "/";
         }
         document.querySelector("#update").onclick = function(){
             location.href = "/product/[[${product.id}]]/update";
         }
+    </script>
+    <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
+    <script th:replace="fragments.html :: ajax-csrf-header"></script>
+    <script type="application/javascript" th:inline="javascript">
+        $(function() {
+            function tagRequest(url, tagTitle) {
+                $.ajax({
+                    dataType: "json",
+                    autocomplete: {
+                        enabled: true,
+                        rightKey: true,
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    method: "POST",
+                    url: "/product/[[${product.id}]]/tags" + url,
+                    data: JSON.stringify({'tagTitle': tagTitle})
+                }).done(function (data, status) {
+                    console.log("${data} and status is ${status}");
+                });
+            }
+
+            function onAdd(e) {
+                let tagifyBox = document.querySelectorAll('.tagify')
+                if(tagifyBox[1].childElementCount > 5) {
+                    alert('최대 5개까지 등록할 수 있습니다.');
+                    tagifyBox[1].children[5].remove();
+                    return;
+                }
+                tagRequest("/add", e.detail.data.value);
+            }
+
+            function onRemove(e) {
+                tagRequest("/remove", e.detail.data.value);
+            }
+
+            var tagInput = document.querySelector("#tags");
+            var tagify = new Tagify(tagInput, {
+                pattern: /^.{0,20}$/,
+                whitelist: JSON.parse(document.querySelector("#tag-whitelist").textContent),
+                dropdown : {
+                    enabled: 1, // suggest tags after a single character input
+                } // map tags
+            });
+            tagify.on("add", onAdd);
+            tagify.on("remove", onRemove);
+            // add a class to Tagify's input element
+            tagify.DOM.input.classList.add('form-control');
+            // re-place Tagify's input element outside of the  element (tagify.DOM.scope), just before it
+            tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
+        });
+    </script>
+    <script type="application/javascript" th:inline="javascript">
+        $(function () {
+            function tagRequest(url, locationName) {
+                $.ajax({
+                    dataType: "json",
+                    autocomplete: {
+                        enabled: true,
+                        rightKey: true,
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    method: "POST",
+                    url: "/product/[[${product.id}]]/locations" + url,
+                    data: JSON.stringify({'locationName': locationName})
+                }).done(function (data, status) {
+                    console.log("${data} and status is ${status}");
+                });
+            }
+
+            function onAdd(e) {
+                let tagifyBox = document.querySelectorAll('.tagify')
+                if(tagifyBox[0].childElementCount > 1) {
+                    alert('1곳만 등록할 수 있습니다.');
+                    tagifyBox[0].children[1].remove();
+                    return;
+                }
+                tagRequest("/add", e.detail.data.value);
+            }
+
+            function onRemove(e) {
+                tagRequest("/remove", e.detail.data.value);
+            }
+
+            var tagInput = document.querySelector("#locations");
+            var tagify = new Tagify(tagInput, {
+                enforceWhitelist: true,
+                whitelist: JSON.parse(document.querySelector("#location-whitelist").textContent),
+                dropdown : {
+                    enabled: 1, // suggest tags after a single character input
+                } // map tags
+            });
+
+            tagify.on("add", onAdd);
+            tagify.on("remove", onRemove);
+
+            // add a class to Tagify's input element
+            tagify.DOM.input.classList.add('form-control');
+            // re-place Tagify's input element outside of the  element (tagify.DOM.scope), just before it
+            tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
+        });
     </script>
 </body>
 </html>

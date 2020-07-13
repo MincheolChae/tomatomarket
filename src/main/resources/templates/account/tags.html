@@ -31,9 +31,9 @@
                     <div class="col-12">
                         <div class="alert alert-info" role="alert" style="margin-left: 5px;">
                             관심 있는 키워드를 태그로 등록해 주세요. 관련 매물이 등록되면 알림을 받을 수 있습니다.<br>
-                            최대 5개까지 등록할 수 있습니다.
+                            최대 10개까지 등록할 수 있습니다.
                         </div>
-                        <div id="whitelist" th:text="${whitelist}" hidden></div>
+                        <div id="whitelist" th:text="${whitelist}" style="display: none" hidden></div>
                         <input id="tags" type="text" name="tags" th:value="${#strings.listJoin(tags, ',')}"
                                class="tagify-outside" aria-describedby="tagHelp"/>
                     </div>
@@ -46,6 +46,7 @@
 
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
     <script th:replace="fragments.html :: ajax-csrf-header"></script>
     <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
     <script type="application/javascript" th:inline="javascript">
@@ -68,9 +69,9 @@
 
             function onAdd(e) {
                 let registeredTags = document.querySelectorAll('.tagify__tag');
-                if(registeredTags.length > 5) {
-                    alert('최대 5개까지 등록할 수 있습니다.');
-                    registeredTags[5].remove();
+                if(registeredTags.length > 10) {
+                    alert('최대 10개까지 등록할 수 있습니다.');
+                    registeredTags[10].remove();
                     return;
                 }
                 tagRequest("/add", e.detail.data.value);

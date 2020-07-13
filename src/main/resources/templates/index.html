@@ -17,7 +17,6 @@
 <body>
 
     <header th:replace="fragments.html :: header"></header>
-    <div th:replace="fragments.html :: veri-email"></div>
 
     <!-- nav -->
     <nav id="nav">
@@ -25,20 +24,20 @@
             <div class="category">
                 <div class="category-title"><i class="fa fa-bars" aria-hidden="true"></i><span>카테고리</span></div>
                 <ul class="category-list">
-                    <button><li>디지털/가전</li></button>
-                    <button><li>가구/인테리어</li></button>
-                    <button><li>유아동/유아도서</li></button>
-                    <button><li>생활/가공식품</li></button>
-                    <button><li>스포츠/레저</li></button>
-                    <button><li>여성잡화</li></button>
-                    <button><li>여성의류</li></button>
-                    <button><li>남성패션잡화</li></button>
-                    <button><li>게임/취미</li></button>
-                    <button><li>뷰티/미용</li></button>
-                    <button><li>반려동물용품</li></button>
-                    <button><li>도서/티켓/음반</li></button>
-                    <button><li>기타중고물품</li></button>
-                    <button><li class="category-last">삽니다</li></button>
+                    <a th:href="@{'/search/product?keyword=디지털/가전'}"><li>디지털/가전</li></a>
+                    <a th:href="@{'/search/product?keyword=가구/인테리어'}"><li>가구/인테리어</li></a>
+                    <a th:href="@{'/search/product?keyword=유아동/유아도서'}"><li>유아동/유아도서</li></a>
+                    <a th:href="@{'/search/product?keyword=생활/가공식품'}"><li>생활/가공식품</li></a>
+                    <a th:href="@{'/search/product?keyword=스포츠/레저'}"><li>스포츠/레저</li></a>
+                    <a th:href="@{'/search/product?keyword=여성잡화'}"><li>여성잡화</li></a>
+                    <a th:href="@{'/search/product?keyword=여성의류'}"><li>여성의류</li></a>
+                    <a th:href="@{'/search/product?keyword=남성패션잡화'}"><li>남성패션잡화</li></a>
+                    <a th:href="@{'/search/product?keyword=게임/취미'}"><li>게임/취미</li></a>
+                    <a th:href="@{'/search/product?keyword=뷰티/미용'}"><li>뷰티/미용</li></a>
+                    <a th:href="@{'/search/product?keyword=반려동물용품'}"><li>반려동물용품</li></a>
+                    <a th:href="@{'/search/product?keyword=도서/티켓/음반'}"><li>도서/티켓/음반</li></a>
+                    <a th:href="@{'/search/product?keyword=기타중고물품'}"><li>기타중고물품</li></a>
+                    <a th:href="@{'/search/product?keyword=삽니다'}"><li class="category-last">삽니다</li></a>
                 </ul>
             </div>
         </div>
@@ -118,20 +117,37 @@
             <div class="mycontainer">
                 <div class="content">
                     <div class="show-product"><span class="show-near"><button>동네 매물 보기</button></span><span class="show-all"><button>전체 매물 보기</button></span></div>
-                    <div class="write-product"><a href="/new-product"><button>물품 등록하기</button></a></div>
+                    <div class="write-product">
+                        <a sec:authorize="isAuthenticated()" th:if="${account.emailVerified}" href="/new-product"><button>매물 등록하기</button></a>
+                        <button sec:authorize="isAuthenticated()" th:if="${!account.emailVerified}" class="button-disabled" disabled>매물을 등록하려면 이메일을 인증하세요.</button>
+                    </div>
                     <ul>
                         <li th:each="product : ${productList}">
                             <a th:href="@{'/product/'+${product.id}}">
                                 <div th:utext="${product.representativeImage}" class="product-image"></div>
                                 <div class="content-info">
                                     <div class="content-title" th:text="${product.title}"></div>
-                                    <div class="content-tags">물품 주소</div>     <!-- //TODO 태그정보 넣어야댐 -->
-                                    <div class="content-tags">태그 정보</div>     <!-- //TODO 태그정보 넣어야댐 -->
+                                    <div class="content-locations">
+                                        <span th:if="${!#sets.isEmpty(product.locations)}" th:each="location : ${product.locations}">
+                                            <span th:text="${location.province}"></span>&nbsp;<span th:text="${location.unit}"></span>
+                                        </span>
+                                        <span th:if="${#sets.isEmpty(product.locations)}">
+                                            <span>등록된 지역이 없습니다.</span>
+                                        </span>
+                                    </div>
+                                    <div class="content-tags">
+                                        <span th:if="${!#sets.isEmpty(product.tags)}" th:each="tag : ${product.tags}">
+                                            <i class="fa fa-tag"></i><span th:text="${tag.title}"></span>
+                                        </span>
+                                        <span th:if="${#sets.isEmpty(product.tags)}" style="color: #5f27cd">
+                                            <i class="fa fa-tags" aria-hidden="true"></i><span th:text="${product.category}"></span>
+                                        </span>
+                                    </div>
                                     <div class="content-price">
-                                        <span th:text="${product.price}"></span><span>&nbsp;원</span>
+                                        <span class="product-price" th:text="${product.price}"></span><span>&nbsp;원</span>
                                         &nbsp;&nbsp;<span th:if="${product.isSoldOut()}" class="soldout-msg" style="display: inline-block; border:1px solid #95a5a6; border-radius: 5px; color: #95a5a6;">판매완료</span>
                                     </div>
-                                    <div class="content-detail">관심 100 · <span th:text="${#temporals.format(product.writeTime, 'yyyy.MM.dd HH:mm')}"></span></div>  <!-- //TODO 관심수치와 시간 넣어야댐 -->
+                                    <div class="content-detail">관심//TODO · <span class="write-time" th:text="${#temporals.format(product.writeTime, 'yyyy.MM.dd. HH:mm')}"></span></div>
                                 </div>
                             </a>
                         </li>
@@ -160,7 +176,25 @@
     <div th:replace="fragments.html :: footer"></div>
 
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+    <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
     <script src="/js/slick.min.js"></script>
+    <script>
+        moment.locale('ko');
+        $(".write-time").text(function(index, dateTime) {
+            return moment(dateTime, "YYYY.MM.DD hh:mm").fromNow();
+        });
+    </script>
+    <script>
+        function addComma(price) {
+            var regexp = /\B(?=(\d{3})+(?!\d))/g;
+            return price.replace(regexp, ',');
+        }
+        const productPrices = document.querySelectorAll('.product-price')
+        for(let i=0; i<productPrices.length; i++){
+            productPrices[i].innerHTML = addComma(productPrices[i].innerHTML);
+        }
+    </script>
     <script>
         let productImage = document.querySelectorAll('.product-image');
         for(let i=0; i<productImage.length; i++){

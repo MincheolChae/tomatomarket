@@ -32,7 +32,6 @@ public class Account {
     @Column(unique = true)
     private String nickname;
 
-    @Column(unique = false)
     private String phone;  //휴대폰 번호(폰번호는 바뀔수 있으므로 unique한 값으로 하지않음)
 
     private boolean emailVerified = false;  //이메일 인증 여부
@@ -44,6 +43,7 @@ public class Account {
     private LocalDateTime joinedAt;  //가입날(인증된 날)
 
     @OneToMany(mappedBy = "writer", fetch = FetchType.EAGER)
+    @OrderBy("writeTime")
     private List<Product> products = new ArrayList<>();   //판매내역
 
     @ManyToMany

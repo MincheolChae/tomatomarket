@@ -42,12 +42,12 @@
                     </div>
                     <div class="input-info">
                         <label for="name">이름</label>
-                        <input id="name" type="text" name="name" th:field="*{name}" placeholder="이름을 입력하세요." required>
+                        <input id="name" type="text" name="name" th:field="*{name}" placeholder="이름을 입력하세요." min="2" max="16" required>
                         <br><small th:if="${#fields.hasErrors('name')}" th:errors="*{name}">이름 입력 오류</small>
                     </div>
                     <div class="input-info">
                         <label for="nickname">닉네임</label>
-                        <input id="nickname" type="text" name="nickname" th:field="*{nickname}" placeholder="한글, 알파벳, 숫자만 허용됩니다." required>
+                        <input id="nickname" type="text" name="nickname" th:field="*{nickname}" placeholder="한글, 알파벳, 숫자만 허용됩니다." min="2" max="12" required>
                         <br><small th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">닉네임 입력 오류</small>
                     </div>
                     <div class="input-info">

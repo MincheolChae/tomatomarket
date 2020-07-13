@@ -25,7 +25,5 @@ public class ProductForm {
     @NotBlank
     private String description;
 
-    //TODO 태그 등록 -> 다른페이지로 넘길까?
-    //TODO 동네 등록
 
 }

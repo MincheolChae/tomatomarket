@@ -1,6 +1,6 @@
 .image-slide{position: relative;}
 .image-slide .slick-prev {
-    position: absolute; top: 270px; left: -50px;
+    position: absolute; top: 230px; left: -50px;
     z-index: 1000;
     width: 30px; height: 30px;
     border: 2px solid #5dbfeb; border-radius: 50%;
@@ -21,7 +21,7 @@
     color: #eeeeee;
 }
 .image-slide .slick-next{
-    position: absolute; top: 270px; right: -50px;
+    position: absolute; top: 230px; right: -50px;
     z-index: 1000;
     width: 30px; height: 30px;
     border: 2px solid #5dbfeb; border-radius: 50%;
@@ -44,4 +44,4 @@
 
 .like-button:hover span{text-decoration: underline;}
 
-.writed{}
+.lightgallery a:hover img{border: 2px solid #535c68;}

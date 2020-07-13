@@ -5,10 +5,10 @@
     <title>토마토 마켓 - 동네 설정</title>
     <link rel="shortcut icon" href="/img/favicon-32x32.png">
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css">
     <link rel="stylesheet" href="/css/reset.css">
     <link rel="stylesheet" href="/css/reset-2.css">
     <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css">
     <style>
         .tagify-outside{
             border: 0;
@@ -29,9 +29,9 @@
             <div class="col-9">
                 <div class="alert alert-info" role="alert" style="margin-left: 5px;">
                     주로 거래할 지역을 등록하세요. 해당 지역에 물건이 등록되면 알림을 받을 수 있습니다.<br>
-                    최대 2개까지 등록할 수 있습니다.
+                    최대 2곳까지 등록할 수 있습니다.
                 </div>
-                <div id="whitelist" th:text="${whitelist}" hidden></div>
+                <div id="whitelist" th:text="${whitelist}" style="display: none" hidden></div>
                 <input id="locations" type="text" name="locations" th:value="${#strings.listJoin(locations, ',')}"
                        class="tagify-outside" aria-describedby="tagHelp"/>
             </div>
@@ -42,9 +42,10 @@
 
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
     <script th:replace="fragments.html :: ajax-csrf-header"></script>
     <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
-    <script type="application/javascript">
+    <script type="application/javascript" th:inline="javascript">
         $(function () {
             function tagRequest(url, locationName) {
                 $.ajax({
@@ -65,7 +66,7 @@
             function onAdd(e) {
                 let registeredTags = document.querySelectorAll('.tagify__tag');
                 if(registeredTags.length > 2) {
-                    alert('최대 2개까지 등록할 수 있습니다.');
+                    alert('최대 2곳까지 등록할 수 있습니다.');
                     registeredTags[2].remove();
                     return;
                 }
@@ -93,6 +94,13 @@
             tagify.DOM.input.classList.add('form-control');
             // re-place Tagify's input element outside of the  element (tagify.DOM.scope), just before it
             tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
+        });
+    </script>
+    <script>
+        navigator.geolocation.watchPosition(function(pos) {
+            let latitude = pos.coords.latitude;
+            let longitude = pos.coords.longitude;
+            console.log("현재 위치는 : " + latitude + ", "+ longitude);
         });
     </script>
 </body>

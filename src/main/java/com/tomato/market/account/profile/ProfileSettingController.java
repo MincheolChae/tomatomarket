@@ -61,7 +61,7 @@ public class ProfileSettingController {
     }
 
     @PostMapping("/notification")
-    public String updateNotification(@CurrentAccount Account account, @Valid NotificationForm notificationForm, Errors errors, Model model, RedirectAttributes attributes) {
+    public String updateNotification(@CurrentAccount Account account, @Valid NotificationForm notificationForm, Errors errors, Model model, RedirectAttributes attributes) throws UnsupportedEncodingException {
         if (errors.hasErrors()) {
             model.addAttribute(account);
             return "/account/profile";
@@ -69,7 +69,7 @@ public class ProfileSettingController {
 
         accountService.updateNotifications(account, notificationForm);
         attributes.addFlashAttribute("message", "알림 설정을 변경했습니다.");
-        return "redirect:/profile/" + account.getNickname();
+        return "redirect:/profile/" + URLEncoder.encode(account.getNickname(), "UTF-8");
     }
 
     @GetMapping("/profile/tags")
@@ -154,8 +154,7 @@ public class ProfileSettingController {
         }
 
         accountService.modifyProfile(account, profileModifyForm);
-        String URLencode = URLEncoder.encode(profileModifyForm.getNickname(), "UTF-8");  //URL에 한글을 넣어줄 때 인코딩 해줘야함
-        return "redirect:/profile/" + URLencode;
+        return "redirect:/profile/" + URLEncoder.encode(profileModifyForm.getNickname(), "UTF-8");    //URL에 한글을 넣어줄 때 인코딩 해줘야함
     }
 
     @GetMapping("/profile/password")
@@ -176,8 +175,8 @@ public class ProfileSettingController {
     }
 
     @GetMapping("/profile/products")
-    public String getProductsSold(@CurrentAccount Account account, Model model){
-        List<Product> productList = accountService.getProductsSold(account);
+    public String getUploadedProducts(@CurrentAccount Account account, Model model){
+        List<Product> productList = accountService.getUploadedProducts(account);
 
         model.addAttribute(productList);
         model.addAttribute(account);

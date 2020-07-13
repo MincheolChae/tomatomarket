@@ -1,27 +1,37 @@
 package com.tomato.market.product;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
 import com.tomato.market.account.CurrentAccount;
 import com.tomato.market.account.domain.Account;
-import com.tomato.market.account.domain.AccountRepository;
+import com.tomato.market.location.Location;
+import com.tomato.market.location.LocationForm;
+import com.tomato.market.location.LocationRepository;
+import com.tomato.market.location.LocationService;
+import com.tomato.market.tag.Tag;
+import com.tomato.market.tag.TagForm;
+import com.tomato.market.tag.TagRepository;
+import com.tomato.market.tag.TagService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,6 +39,10 @@ public class ProductController {
 
     private final ModelMapper modelMapper;
     private final ProductService productService;
+    private final LocationRepository locationRepository;
+    private final TagRepository tagRepository;
+    private final ObjectMapper objectMapper;
+    private final TagService tagService;
 
     @GetMapping("/new-product")
     public String newProductForm(@CurrentAccount Account account, Model model) {
@@ -46,6 +60,14 @@ public class ProductController {
 
         Product newProduct = productService.createNewProduct(modelMapper.map(productForm, Product.class), account);
         return "redirect:/product/" + newProduct.getId();
+    }
+
+    @PostMapping("/new-product-notification/{id}")
+    public String newProductNotification(@CurrentAccount Account account, @PathVariable String id) {
+        Product newProduct = productService.getProduct(id);
+        productService.checkIfAccountIsWriter(account, newProduct);
+        productService.applyNewProductNotification(newProduct);
+        return "redirect:/product/" + id;
     }
 
     @PostMapping(value="/uploadSummernoteImageFile", produces = "application/json")
@@ -78,13 +100,69 @@ public class ProductController {
     }
 
     @GetMapping("/product/{id}")
-    public String viewProduct(@PathVariable String id, Model model) {
+    public String viewProduct(@CurrentAccount Account account, @PathVariable String id, Model model) throws JsonProcessingException {
+        if(account != null) {
+            model.addAttribute(account);
+        }
         Product product = productService.getProduct(id);
         List<String> imageList = productService.getSeparatedImages(product);
-
         model.addAttribute("imageList", imageList);
         model.addAttribute(product);
+
+        Set<Location> locations = productService.getLocations(id);
+        model.addAttribute("locations", locations.stream().map(Location::toString).collect(Collectors.toList()));
+        List<String> allLocations = locationRepository.findAll().stream().map(Location::toString).collect(Collectors.toList());
+        model.addAttribute("locationWhitelist", objectMapper.writeValueAsString(allLocations));
+
+        Set<Tag> tags = productService.getTags(id);
+        model.addAttribute("tags", tags.stream().map(Tag::getTitle).collect(Collectors.toList()));
+        List<String> allTags = tagRepository.findAll().stream().map(Tag::getTitle).collect(Collectors.toList());
+        model.addAttribute("tagWhitelist", objectMapper.writeValueAsString(allTags));
+
         return "product/product-view";
+    }
+
+    @PostMapping("/product/{id}/tags/add")
+    @ResponseBody
+    public ResponseEntity addTag(@PathVariable String id, @RequestBody TagForm tagForm) {
+        Tag tag = tagService.findOrCreateNew(tagForm.getTagTitle());
+        productService.addTag(id, tag);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/product/{id}/tags/remove")
+    @ResponseBody
+    public ResponseEntity removeTag(@PathVariable String id, @RequestBody TagForm tagForm) {
+        String title = tagForm.getTagTitle();
+        Tag tag = tagRepository.findByTitle(title);
+        if (tag == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        productService.removeTag(id, tag);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/product/{id}/locations/add")
+    @ResponseBody
+    public ResponseEntity addLocation(@PathVariable String id, @RequestBody LocationForm locationForm) {
+        Location location = locationRepository.findByCityAndProvinceAndUnit(locationForm.getCityName(), locationForm.getProvinceName(), locationForm.getUnitName());
+        if (location == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        productService.addLocation(id, location);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/product/{id}/locations/remove")
+    @ResponseBody
+    public ResponseEntity removeLocation(@PathVariable String id, @RequestBody LocationForm locationForm) {
+        Location location = locationRepository.findByCityAndProvinceAndUnit(locationForm.getCityName(), locationForm.getProvinceName(), locationForm.getUnitName());
+        if (location == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        productService.removeLocation(id, location);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/product/{id}/update")
@@ -134,4 +212,9 @@ public class ProductController {
         productService.deleteProduct(account, product);
         return "redirect:/";    //TODO : 돌려보낼 위치 나중에 바꾸기
     }
+
+
+
+
+
 }
