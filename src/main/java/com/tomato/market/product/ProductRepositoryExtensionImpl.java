@@ -30,8 +30,7 @@ public class ProductRepositoryExtensionImpl extends QuerydslRepositorySupport im
                 .or(product.locations.any().province.containsIgnoreCase(keyword))
                 .or(product.locations.any().unit.containsIgnoreCase(keyword))
                 .or(product.category.containsIgnoreCase(keyword)))
-                // 아래는 QueryDSL 사용시의 N+1 Select 문제를 해결하기 위한 코드
-                .leftJoin(product.tags, QTag.tag).fetchJoin()
+                .leftJoin(product.tags, QTag.tag).fetchJoin()   //QueryDSL 사용시의 N+1 Select 문제를 해결하기 위한 leftJoin + fetchJoin + distinct
                 .leftJoin(product.locations, QLocation.location).fetchJoin()
                 .distinct();
 

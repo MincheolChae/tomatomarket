@@ -36,7 +36,7 @@
             <div th:replace="fragments.html :: profile-side-menu (menu = 'products')"></div>
             <div class="col-10">
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-12" th:if="${!#lists.isEmpty(productList)}">
                         <div class="alert alert-info" style="margin-left: 5px;">판매 내역</div>
                         <table class="product-table col-12" style="margin-left: 5px;">
                             <tr>
@@ -54,6 +54,9 @@
                                 <td style="width: 150px; height: 100px; padding: 0 10px" th:text="${#temporals.format(productList[i].writeTime, 'yyyy.MM.dd. HH:mm')}"></td>
                             </tr>
                         </table>
+                    </div>
+                    <div class="col-12" th:if="${#lists.isEmpty(productList)}">
+                        <div class="alert alert-info" style="margin-left: 5px;">판매 내역이 없습니다.</div>
                     </div>
                 </div>
             </div>

@@ -63,6 +63,7 @@ public class AccountController {
 
     @GetMapping("/resend-confirm-email")
     public String resendConfirmEmail(@CurrentAccount Account account, Model model) {
+        model.addAttribute(account);
         model.addAttribute("email", account.getEmail());
         if (!account.canSendConfirmEmail()) {
             model.addAttribute("error", "인증 이메일은 30분에 한번만 전송할 수 있습니다.");
@@ -79,8 +80,8 @@ public class AccountController {
         return "account/find-id";
     }
 
-    @PostMapping(value = "/find-id", produces = "application/json; charset=utf-8")   //응답이 error로 가는 이유 찾기..!!
-    public @ResponseBody String findIdResult(@Valid @RequestBody FindIdForm findIdForm){
+    @PostMapping(value = "/find-id", produces = "application/json; charset=utf-8")
+    public @ResponseBody String findIdResult(@RequestBody FindIdForm findIdForm){
         Account foundAccount = accountRepository.findByNameAndPhone(findIdForm.getName(), findIdForm.getPhone());
         if(foundAccount == null) {
             return "이름 또는 휴대폰 번호가 잘못되었거나 일치하는 아이디가 없습니다.";

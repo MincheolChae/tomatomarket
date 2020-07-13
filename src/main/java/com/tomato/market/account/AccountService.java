@@ -2,18 +2,19 @@ package com.tomato.market.account;
 
 import com.tomato.market.account.domain.Account;
 import com.tomato.market.account.domain.AccountRepository;
+import com.tomato.market.account.event.SendingEmailEvent;
 import com.tomato.market.account.profile.NotificationForm;
 import com.tomato.market.account.profile.PasswordForm;
 import com.tomato.market.account.profile.ProfileModifyForm;
 import com.tomato.market.config.AppProperties;
 import com.tomato.market.location.Location;
 import com.tomato.market.product.Product;
-import com.tomato.market.product.ProductRepository;
 import com.tomato.market.tag.Tag;
 import com.tomato.market.mail.EmailMessage;
 import com.tomato.market.mail.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import javax.swing.text.html.Option;
 import javax.validation.Valid;
 import java.util.*;
 
@@ -41,10 +41,11 @@ public class AccountService implements UserDetailsService {
     private final EmailService emailService;
     private final AppProperties appProperties;
     private final TemplateEngine templateEngine;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public Account processNewAccount(SignUpForm signUpForm) {
         Account newAccount = saveNewAccount(signUpForm);
-//        sendSignUpConfirmEmail(newAccount);
+        sendSignUpConfirmEmail(newAccount);
         return newAccount;
     }
 
@@ -56,23 +57,25 @@ public class AccountService implements UserDetailsService {
     }
 
     public void sendSignUpConfirmEmail(Account newAccount) {
-        Context context = new Context();
-        context.setVariable("link", "/check-email-token?token=" + newAccount.getEmailCheckToken() +
-                "&email=" + newAccount.getEmail());
-        context.setVariable("name", newAccount.getName());
-        context.setVariable("nickname", newAccount.getNickname());
-        context.setVariable("linkName", "이메일 인증하기");
-        context.setVariable("message", "토마토 마켓 서비스를 이용하려면 아래 링크를 클릭하세요.");
-        context.setVariable("host", appProperties.getHost());
-        String message = templateEngine.process("mail/email-link", context);
+        applicationEventPublisher.publishEvent(new SendingEmailEvent(newAccount));  //비동기로 이메일 전송
 
-        EmailMessage emailMessage = EmailMessage.builder()
-                .to(newAccount.getEmail())
-                .subject("토마토 마켓, 회원 가입 인증")
-                .message(message)
-                .build();
-
-        emailService.sendEmail(emailMessage);
+//        Context context = new Context();
+//        context.setVariable("link", "/check-email-token?token=" + newAccount.getEmailCheckToken() +
+//                "&email=" + newAccount.getEmail());
+//        context.setVariable("name", newAccount.getName());
+//        context.setVariable("nickname", newAccount.getNickname());
+//        context.setVariable("linkName", "이메일 인증하기");
+//        context.setVariable("message", "토마토 마켓 서비스를 이용하려면 아래 링크를 클릭하세요.");
+//        context.setVariable("host", appProperties.getHost());
+//        String message = templateEngine.process("mail/email-link", context);
+//
+//        EmailMessage emailMessage = EmailMessage.builder()
+//                .to(newAccount.getEmail())
+//                .subject("토마토 마켓, 회원 가입 인증")
+//                .message(message)
+//                .build();
+//
+//        emailService.sendEmail(emailMessage);
     }
 
     public void login(Account account) {
@@ -189,9 +192,6 @@ public class AccountService implements UserDetailsService {
     }
 
     public List<Product> getUploadedProducts(Account account) {
-        Account accountFound = accountRepository.findAccountWithProductsById(account.getId());
-        System.out.println(account.getNickname());
-        System.out.println(accountFound.getNickname());
         return account.getProducts();
     }
 }

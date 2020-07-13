@@ -122,10 +122,11 @@ public class ProductController {
         return "product/product-view";
     }
 
-    @PostMapping("/product/{id}/like")
-    public void productLiked(@PathVariable String id){
-
-    }
+//    @PostMapping("/product/{id}/like")
+//    @ResponseBody
+//    public void productLiked(@PathVariable String id, @RequestBody ){
+//
+//    }
 
 
     @PostMapping("/product/{id}/tags/add")

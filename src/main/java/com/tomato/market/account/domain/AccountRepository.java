@@ -18,6 +18,4 @@ public interface AccountRepository extends JpaRepository<Account, Long>, Queryds
 
     Account findByNameAndPhone(String name, String phone);
 
-    @EntityGraph(value = "Account.withProducts", type = EntityGraph.EntityGraphType.FETCH)
-    Account findAccountWithProductsById(Long id);
 }

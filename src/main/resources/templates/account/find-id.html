@@ -54,18 +54,8 @@
                     method: "POST",
                     url: "/find-id",
                     success:function(data){
-                        console.log("success")
-                        console.log(data);
                         document.querySelector('#id-result').innerText = data;
-                    },
-                    error:function(error){
-                        console.log("error")
-                        console.log(error);
-                        document.querySelector('#id-result').innerText = error.responseText;
                     }
-                }).done(function(e){
-                    console.log("done")
-                    console.log(e);
                 })
                 return false;
             })

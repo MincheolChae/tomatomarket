@@ -9,8 +9,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-@NamedEntityGraph(name = "Account.withProducts", attributeNodes = {
-        @NamedAttributeNode("products")})
 @Entity
 @Getter @Setter @Builder
 @AllArgsConstructor @NoArgsConstructor

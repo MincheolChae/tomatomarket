@@ -48,7 +48,8 @@ public class MainController {
 
         model.addAttribute("productPage", productPage);
         model.addAttribute("keyword", keyword);
-
+        model.addAttribute("sortProperty",
+                pageable.getSort().toString().contains("writeTime") ? "writeTime" : "likeCount");  //TODO likeCount 속성추가하고 관심표시 할때마다 +1 씩 올리기
         return "search-result";
     }
 }

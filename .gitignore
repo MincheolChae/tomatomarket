@@ -36,3 +36,6 @@ src/main/resources/static/node
 
 ### OAuth ###
 src/main/resources/application-oauth.properties
+
+### SummerNote Image ###
+src/main/resources/static/summernote_image
