@@ -55,7 +55,6 @@ public class NotificationController {
                 newProductNotifications.add(notification);
             }
         }
-
         model.addAttribute("numberOfNotChecked", numberOfNotChecked);
         model.addAttribute("numberOfChecked", numberOfChecked);
         model.addAttribute("notifications", notifications);

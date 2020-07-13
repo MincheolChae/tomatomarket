@@ -1,5 +1,7 @@
 package com.tomato.market.account.domain;
 
+import com.tomato.market.product.Product;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,4 +17,7 @@ public interface AccountRepository extends JpaRepository<Account, Long>, Queryds
     Account findByNickname(String name);
 
     Account findByNameAndPhone(String name, String phone);
+
+    @EntityGraph(value = "Account.withProducts", type = EntityGraph.EntityGraphType.FETCH)
+    Account findAccountWithProductsById(Long id);
 }

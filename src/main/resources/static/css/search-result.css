@@ -38,7 +38,6 @@ mark {
     background-position: right bottom;
     background-size: 200% 100%;
     transition: all .5s ease;
-    color: #fff;
 }
 
 mark.animate {

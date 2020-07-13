@@ -51,7 +51,8 @@ public class ProfileSettingController {
     @GetMapping("/profile/{nickname}")
     public String viewProfile(@PathVariable String nickname, Model model, @CurrentAccount Account account) {
         Account accountToView = accountService.getAccount(nickname);
-        model.addAttribute(accountToView);
+        model.addAttribute("account", account);
+        model.addAttribute("accountToView", accountToView);
         model.addAttribute("isOwner", accountToView.equals(account));
 
         //알림

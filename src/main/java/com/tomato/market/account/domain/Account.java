@@ -9,13 +9,12 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
+@NamedEntityGraph(name = "Account.withProducts", attributeNodes = {
+        @NamedAttributeNode("products")})
 @Entity
-@Getter
-@Setter
+@Getter @Setter @Builder
+@AllArgsConstructor @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class Account {
 
     @Id

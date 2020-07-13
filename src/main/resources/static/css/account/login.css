@@ -10,7 +10,7 @@ article .inputuser .input-info{text-align: center; margin: 5px 0;}
 article .inputuser label{display: block; font-size: 18px; font-weight: bold; padding: 5px 100px; text-align: left;}
 article .inputuser input{width: 380px; height: 45px; padding: 0 10px;}
 article .inputuser .remember{overflow: hidden; padding: 5px 100px; margin-bottom: 10px; height: 20px;}
-article .inputuser .remember-small{text-align: left; margin-right: 50px; background-color: #ffeaa7; display: inline-block; display: none;}
+article .inputuser .remember-small{text-align: left; background-color: #ffeaa7; display: none;}
 article .inputuser #rememberMe{width:15px; height:15px; float:left; margin-right: 5px;}
 article .inputuser .rememberMe{font-size: 12px; font-weight: normal; padding: 0; float: left;}
 article .inputuser .submit{width: 400px; height: 50px; background-color: #ff6348; color: #fff; font-size: 22px; margin-top: 10px; letter-spacing: 1px; border: none;}

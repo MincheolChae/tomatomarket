@@ -6,6 +6,9 @@ body{background-color: #f5f6fa;}
 #header{background: #fff; width: 100%;  position: fixed; z-index: 100; box-shadow: 1px 1px 5px #dbdbdb;}
 .title{height: 80px;}
 .title-wrap{padding: 10px 0; height: 80px; min-width: 1250px;}
+.new-notification{float: left; font-size: 26px; margin: 10px 0 0 12px; width: 30px; height: 40px;}
+.new-notification .fa-bell-o{color: #b2bec3}
+.new-notification:hover .fa-bell-o{color: #222222;}
 .tomato{width: 60px; height: 60px; float: left;}
 .head{float: left; color:#ff6348; font-size: 40px; font-weight: bold; font-family: 'Gamja Flower', cursive;}
 .search{float: left; display: block; width: 490px; height: 45px; border:2px solid #ff6348; border-radius: 5px; margin:10px 35px 10px 30px;}

@@ -87,7 +87,7 @@ public class ProductController {
         try {
             InputStream fileStream = multipartFile.getInputStream();
             FileUtils.copyInputStreamToFile(fileStream, targetFile);	//파일 저장
-            jsonObject.addProperty("url", "/summernote_image/"+savedFileName);  //뷰에서 불러올때의 src url
+            jsonObject.addProperty("url", "/summernote_image/"+savedFileName);  //뷰에서 불러올때의 src의 url
             jsonObject.addProperty("responseCode", "success");
 
         } catch (IOException e) {
@@ -121,6 +121,12 @@ public class ProductController {
 
         return "product/product-view";
     }
+
+    @PostMapping("/product/{id}/like")
+    public void productLiked(@PathVariable String id){
+
+    }
+
 
     @PostMapping("/product/{id}/tags/add")
     @ResponseBody
@@ -205,12 +211,12 @@ public class ProductController {
 
 
     @PostMapping("/product-delete")
-    public String deleteProduct(@CurrentAccount Account account, ProductForm productForm) {     //TODO : Soft-Delete로 바꿔보기
+    public String deleteProduct(@CurrentAccount Account account, ProductForm productForm) {
         Product product = productService.getProduct(productForm.getId());
         productService.checkIfAccountIsWriter(account, product);
 
         productService.deleteProduct(account, product);
-        return "redirect:/";    //TODO : 돌려보낼 위치 나중에 바꾸기
+        return "redirect:/";
     }
 
 

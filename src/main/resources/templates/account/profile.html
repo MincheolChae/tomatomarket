@@ -22,9 +22,9 @@
                 <div class="col-7">
                     <div class="profile">
                         <div class="profile-image">
-                            <svg th:if="${#strings.isEmpty(account?.profileImage)}" th:data-jdenticon-value="${#authentication.name}"
+                            <svg th:if="${#strings.isEmpty(accountToView?.profileImage)}" th:data-jdenticon-value="${accountToView.nickname}"
                                  width="125" height="125"></svg>
-                            <img th:if="${!#strings.isEmpty(account?.profileImage)}" th:src="${account.profileImage}"
+                            <img th:if="${!#strings.isEmpty(accountToView?.profileImage)}" th:src="${accountToView.profileImage}"
                                  width="125" height="125"/>
                             <br>
                             <div class="profile-modify"><button class="modify" th:if="${isOwner}">개인정보 수정</button></div>
@@ -33,29 +33,29 @@
                             <ul class="profile-content-title">
                                 <li>
                                     <i class="fa fa-id-card-o" aria-hidden="true"></i>
-                                    <span th:if="${isOwner}" th:text="${account.name}"></span><span class="add">(이름)</span>
+                                    <span th:if="${isOwner}" th:text="${accountToView.name}"></span><span class="add">(이름)</span>
                                 </li>
                                 <li>
                                     <i class="fa fa-user-o" aria-hidden="true"></i>
-                                    <span th:text="${account.nickname}"></span><span class="add">(닉네임)</span>
+                                    <span th:text="${accountToView.nickname}"></span><span class="add">(닉네임)</span>
                                 </li>
                                 <li>
                                     <i class="fa fa-envelope-o" aria-hidden="true"></i>
-                                    <span th:text="${account.email}">프로필 이메일</span>
+                                    <span th:text="${accountToView.email}">프로필 이메일</span>
                                 </li>
                                 <li>
                                     <i class="fa fa-phone" aria-hidden="true"></i>
-                                    <span th:if="${isOwner}" th:text="${account.phone}">프로필 휴대폰 번호</span>
+                                    <span th:if="${isOwner}" th:text="${accountToView.phone}">프로필 휴대폰 번호</span>
                                 </li>
                                 <li>
                                     <i class="fa fa-sign-in" aria-hidden="true"></i>
-                                    <span th:if="${!#strings.isEmpty(account.joinedAt)}" th:text="${#temporals.format(account.joinedAt, 'yyyy년 MM월 dd일 가입')}">프로필 가입일</span>
-                                    <span th:if="${#strings.isEmpty(account.joinedAt) && isOwner}" style="color: #ffffff; background-color: #ff6348">이메일 인증이 필요합니다.</span>
+                                    <span th:if="${!#strings.isEmpty(accountToView.joinedAt)}" th:text="${#temporals.format(accountToView.joinedAt, 'yyyy년 MM월 dd일 가입')}">프로필 가입일</span>
+                                    <span th:if="${#strings.isEmpty(accountToView.joinedAt) && isOwner}" style="color: #ffffff; background-color: #ff6348">이메일 인증이 필요합니다.</span>
                                 </li>
                                 <li>
                                     <i class="fa fa-home" aria-hidden="true"></i>
-                                    <span th:if="${#lists.isEmpty(account.locations) && isOwner}" style="background-color: #ff6348"><a href="/profile/locations" style="color: #ffffff;">동네를 설정해주세요.</a></span>
-                                    <span th:if="${!#lists.isEmpty(account.locations)}" th:each="location : ${account.locations}">
+                                    <span th:if="${#lists.isEmpty(accountToView.locations) && isOwner}" style="background-color: #ff6348"><a href="/profile/locations" style="color: #ffffff;">동네를 설정해주세요.</a></span>
+                                    <span th:if="${!#lists.isEmpty(accountToView.locations)}" th:each="location : ${accountToView.locations}">
                                         <span th:text="${location.toString()}" style="margin: 0" class="location-from-tag"></span>
                                     </span>
                                 </li>
@@ -66,14 +66,14 @@
                         <form th:action="@{/notification}" th:object="${notificationForm}" method="post" novalidate>
                             <ul>
                                 <li>
-                                    <br><span><i class="fa fa-bell" aria-hidden="true"></i>&nbsp;우리 동네에 관심 키워드로 설정한 매물이 등록시 웹 알림</span>
+                                    <br><span><i class="fa fa-bell" aria-hidden="true"></i>&nbsp;우리 동네에 관심 태그로 설정한 매물이 등록시 웹 알림</span>
                                     <div class="custom-control custom-switch custom-control-inline">
                                         <input type="checkbox" th:field="*{newProductNotiByWeb}" class="custom-control-input" id="newProductNotiByWeb">
                                         <label class="custom-control-label" for="newProductNotiByWeb"></label>
                                     </div>
                                 </li>
                                 <li>
-                                    <span><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;우리 동네에 관심 키워드로 설정한 매물이 등록시 이메일 알림</span>
+                                    <span><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;우리 동네에 관심 태그로 설정한 매물이 등록시 이메일 알림</span>
                                     <div class="custom-control custom-switch custom-control-inline">
                                         <input type="checkbox" th:field="*{newProductNotiByEmail}" class="custom-control-input" id="newProductNotiByEmail">
                                         <label class="custom-control-label" for="newProductNotiByEmail"></label>

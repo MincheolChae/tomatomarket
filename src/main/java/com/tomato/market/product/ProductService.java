@@ -32,8 +32,6 @@ public class ProductService {
     }
 
     public void applyNewProductNotification(Product product){
-        System.out.println(product.isNotified());
-        System.out.println(product.isSoldOut());
         if(!product.isNotified() && !product.isSoldOut()) {
             applicationEventPublisher.publishEvent(new ProductCreatedEvent(product));
             product.setNotified(true);

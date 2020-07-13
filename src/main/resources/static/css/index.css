@@ -6,8 +6,6 @@
 .category-title{float: left; font-size: 20px; padding:8px 17px; color:#fff; background-color: #2980b9; margin-right: 20px; height: 68px; line-height: 68px;}
 .category-title:hover{cursor: default;}
 .category-list{margin: 10px 0 8px 0;}
-/*.category-list button{}*/
-/*.category-list button:focus{outline: none;}*/
 .category-list li{float: left; padding: 6px 8px; color: #fff; font-size: 15px; margin:7px 12px 0 0; background-color: #ff6348; border-radius: 10px;}
 .category-list li.category-last{background-color: #009432;}
 .category-list li:hover{cursor: pointer; text-decoration: underline;}
@@ -56,7 +54,7 @@
 .recommand-body{margin-top: 30px; font-size: 18px;}
 .recommand-body li{padding: 5px;}
 .recommand-body li:hover b{cursor: default;}
-.recommand-body li:hover span{cursor: pointer; color: #ff6348;}
+/*.recommand-body li:hover span{cursor: pointer; color: #ff6348;}*/
 .recommand-body li b{width: 31px; display: block; float: left; padding-right: 10px; text-align: center;}
 
 

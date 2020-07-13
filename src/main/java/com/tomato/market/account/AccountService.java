@@ -189,9 +189,9 @@ public class AccountService implements UserDetailsService {
     }
 
     public List<Product> getUploadedProducts(Account account) {
-
-
-
+        Account accountFound = accountRepository.findAccountWithProductsById(account.getId());
+        System.out.println(account.getNickname());
+        System.out.println(accountFound.getNickname());
         return account.getProducts();
     }
 }
