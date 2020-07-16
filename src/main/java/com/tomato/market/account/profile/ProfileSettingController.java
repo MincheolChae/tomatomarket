@@ -184,5 +184,20 @@ public class ProfileSettingController {
         return "account/my-products";
     }
 
+    @GetMapping("/profile/products_liked")
+    public String getUploadedProductsLiked(@CurrentAccount Account account, Model model){
+        List<Product> productList = accountService.getUploadedProductsLiked(account);
+
+        model.addAttribute(productList);
+        model.addAttribute(account);
+        return "account/products-liked";
+    }
+
+//    @DeleteMapping("/profile/delete")
+//    public String deleteAccount(@CurrentAccount Account account){
+//        accountService.deleteAccount(account);
+//
+//        return "redirect:/";
+//    }
 
 }

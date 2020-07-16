@@ -40,17 +40,28 @@ public class ProductRepositoryExtensionImpl extends QuerydslRepositorySupport im
         return new PageImpl<>(fetchResults.getResults(), pageable, fetchResults.getTotal());  //리턴 타입을 Page인터페이스로 바꾸고 Page를 구현한 PageImpl을 반환함(인자들 : 컨텐츠List, pageable, 조건에 맞는 전체 데이터 갯수)
     }
 
-//    @Override
-    public List<Product> findByAccount(Set<Tag> tags, Set<Location> locations) {
+
+    @Override
+    public List<Product> findFirst16ByAccountOrderByWriteTimeDesc(Set<Location> locations) {
         QProduct product = QProduct.product;
-        JPQLQuery<Product> query = from(product).where(product.isSoldOut.isFalse()
-                .and(product.tags.any().in(tags))
-                .and(product.locations.any().in(locations)))
-                .leftJoin(product.tags, QTag.tag).fetchJoin()
+        JPQLQuery<Product> query = from(product).where(product.locations.any().in(locations))
                 .leftJoin(product.locations, QLocation.location).fetchJoin()
                 .orderBy(product.writeTime.desc())
                 .distinct()
-                .limit(12);
+                .limit(16);
         return query.fetch();
     }
+
+    @Override
+    public Page<Product> findAllByAccount(Set<Location> locations, Pageable pageable) {
+        QProduct product = QProduct.product;
+        JPQLQuery<Product> query = from(product).where(product.locations.any().in(locations))
+                .leftJoin(product.locations, QLocation.location).fetchJoin()
+                .orderBy(product.writeTime.desc())
+                .distinct();
+        JPQLQuery<Product> pageableQuery = getQuerydsl().applyPagination(pageable, query);  //페이징이 적용된 쿼리가 나옴
+        QueryResults<Product> fetchResults = pageableQuery.fetchResults();   //query.fetch()는 그냥 데이터만 가져오고 fetchResults()를 해야 페이징이 적용된 데이터를 가져옴.
+        return new PageImpl<>(fetchResults.getResults(), pageable, fetchResults.getTotal());
+    }
+
 }

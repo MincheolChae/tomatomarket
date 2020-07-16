@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
 import com.tomato.market.account.CurrentAccount;
 import com.tomato.market.account.domain.Account;
+import com.tomato.market.account.domain.AccountRepository;
 import com.tomato.market.location.Location;
 import com.tomato.market.location.LocationForm;
 import com.tomato.market.location.LocationRepository;
@@ -43,6 +44,7 @@ public class ProductController {
     private final TagRepository tagRepository;
     private final ObjectMapper objectMapper;
     private final TagService tagService;
+    private final AccountRepository accountRepository;
 
     @GetMapping("/new-product")
     public String newProductForm(@CurrentAccount Account account, Model model) {
@@ -53,7 +55,7 @@ public class ProductController {
 
     @PostMapping("/new-product")
     public String newProduct(@CurrentAccount Account account, @Valid ProductForm productForm, Errors errors, Model model) {
-        if (errors.hasErrors()) {
+        if (errors.hasErrors() || !account.isEmailVerified()) {
             model.addAttribute(account);
             return "product/new-product";
         }
@@ -102,7 +104,10 @@ public class ProductController {
     @GetMapping("/product/{id}")
     public String viewProduct(@CurrentAccount Account account, @PathVariable String id, Model model) throws JsonProcessingException {
         if(account != null) {
-            model.addAttribute(account);
+            Account currentAccount = accountRepository.findById(account.getId()).get();
+            model.addAttribute("account", currentAccount);
+        } else {
+            model.addAttribute(new Account());  //
         }
         Product product = productService.getProduct(id);
         List<String> imageList = productService.getSeparatedImages(product);
@@ -121,13 +126,6 @@ public class ProductController {
 
         return "product/product-view";
     }
-
-//    @PostMapping("/product/{id}/like")
-//    @ResponseBody
-//    public void productLiked(@PathVariable String id, @RequestBody ){
-//
-//    }
-
 
     @PostMapping("/product/{id}/tags/add")
     @ResponseBody
@@ -215,7 +213,7 @@ public class ProductController {
     public String deleteProduct(@CurrentAccount Account account, ProductForm productForm) {
         Product product = productService.getProduct(productForm.getId());
         productService.checkIfAccountIsWriter(account, product);
-
+        productService.deleteLikedAccount(product);
         productService.deleteProduct(account, product);
         return "redirect:/";
     }

@@ -15,9 +15,9 @@
 <body>
     <header th:replace="fragments.html :: header"></header>
 
-    <div class="container">
+    <div class="container" style="min-height: 587px;">
         <div class="content">
-            <div class="pb-4 text-center">
+            <div class="pb-3 text-center">
                 <p class="lead" th:if="${productPage.getTotalElements() == 0}">
                     <strong th:text="${keyword}" id="keyword" class="context"></strong>에 해당하는 물품이 없습니다.
                 </p>
@@ -28,7 +28,7 @@
                 </p>
             </div>
 
-            <div class="dropdown pb-5 text-center">
+            <div class="dropdown pb-3 text-center" th:if="${productPage.getTotalElements() > 0}">
                 <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     정렬 방식
                 </button>
@@ -39,7 +39,7 @@
                     </a>
                     <a class="dropdown-item" th:classappend="${#strings.equals(sortProperty, 'likeCount')}? active"
                        th:href="@{'/search/product?sort=likeCount,desc&keyword=' + ${keyword}}">
-                        인기순
+                        관심순
                     </a>
                 </div>
             </div>
@@ -71,37 +71,38 @@
                                     <span class="product-price" th:text="${product.price}"></span><span>&nbsp;원</span>
                                     &nbsp;&nbsp;<span th:if="${product.isSoldOut()}" class="soldout-msg" style="display: inline-block; border:1px solid #95a5a6; border-radius: 5px; color: #95a5a6;">판매완료</span>
                                 </div>
-                                <div class="content-detail">관심//TODO · <span class="write-time" th:text="${#temporals.format(product.writeTime, 'yyyy.MM.dd. HH:mm')}"></span></div>
+                                <div class="content-detail">관심&nbsp;<span th:text="${product.likeCount}"></span> · <span class="write-time" th:text="${#temporals.format(product.writeTime, 'yyyy.MM.dd. HH:mm')}"></span></div>
                             </div>
                         </a>
                     </li>
                 </ul>
             </div>
         </div>
-        <div class="row justify-content-center">
+        <div class="row justify-content-center" th:if="${productPage.getTotalElements() > 0}">
             <div class="col-sm-10">
-                <nav>
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item" th:classappend="${!productPage.hasPrevious()}? disabled">
-                            <a th:href="@{'/search/product?keyword=' + ${keyword} + '&sort=' + ${sortProperty} + ',desc&page=' + ${productPage.getNumber() - 1}}"
-                               class="page-link" tabindex="-1" aria-disabled="true">
-                                이전
-                            </a>
-                        </li>
-                        <li class="page-item" th:classappend="${i == productPage.getNumber()}? active"
-                            th:each="i: ${#numbers.sequence(0, productPage.getTotalPages() - 1)}">
-                            <a th:href="@{'/search/product?keyword=' + ${keyword} + '&sort=' + ${sortProperty} + ',desc&page=' + ${i}}"
-                               class="page-link" href="#" th:text="${i + 1}">1</a>
-                        </li>
-                        <li class="page-item" th:classappend="${!productPage.hasNext()}? disabled">
-                            <a th:href="@{'/search/product?keyword=' + ${keyword} + '&sort=' + ${sortProperty} + ',desc&page=' + ${productPage.getNumber() + 1}}"
-                               class="page-link">
-                                다음
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${!productPage.hasPrevious()}? disabled">
+                        <a th:href="@{'/search/product?keyword=' + ${keyword} + '&sort=' + ${sortProperty} + ',desc&page=' + ${productPage.getNumber() - 1}}"
+                           class="page-link" tabindex="-1" aria-disabled="true">
+                            이전
+                        </a>
+                    </li>
+                    <li class="page-item" th:classappend="${i == productPage.getNumber()}? active"
+                        th:each="i: ${#numbers.sequence(0, productPage.getTotalPages() - 1)}">
+                        <a th:href="@{'/search/product?keyword=' + ${keyword} + '&sort=' + ${sortProperty} + ',desc&page=' + ${i}}"
+                           class="page-link" href="#" th:text="${i + 1}"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${!productPage.hasNext()}? disabled">
+                        <a th:href="@{'/search/product?keyword=' + ${keyword} + '&sort=' + ${sortProperty} + ',desc&page=' + ${productPage.getNumber() + 1}}"
+                           class="page-link">
+                            다음
+                        </a>
+                    </li>
+                </ul>
             </div>
+        </div>
+        <div>
+            <a href="/new-product"><button class="btn btn-primary">매물 등록하기</button></a>
         </div>
     </div>
 

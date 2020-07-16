@@ -3,6 +3,7 @@ package com.tomato.market.account;
 import com.tomato.market.account.domain.Account;
 import com.tomato.market.account.domain.AccountRepository;
 import com.tomato.market.account.profile.NotificationForm;
+import com.tomato.market.product.ProductLikeForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -134,5 +135,15 @@ public class AccountController {
         return "account/logged-in-by-email";
     }
 
-
+    @PostMapping(value = "/product/like", produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public int productLiked(@CurrentAccount Account account, @RequestBody ProductLikeForm productLikeForm){
+        int likeCount;
+        if(productLikeForm.getLikeOrUnlike().equals("like")){
+            likeCount = accountService.addLikedProduct(account, productLikeForm);
+        } else {
+            likeCount = accountService.removeLikedProduct(account, productLikeForm);
+        }
+        return likeCount;
+    }
 }

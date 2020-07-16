@@ -9,6 +9,8 @@ import com.tomato.market.account.profile.ProfileModifyForm;
 import com.tomato.market.config.AppProperties;
 import com.tomato.market.location.Location;
 import com.tomato.market.product.Product;
+import com.tomato.market.product.ProductLikeForm;
+import com.tomato.market.product.ProductRepository;
 import com.tomato.market.tag.Tag;
 import com.tomato.market.mail.EmailMessage;
 import com.tomato.market.mail.EmailService;
@@ -42,6 +44,7 @@ public class AccountService implements UserDetailsService {
     private final AppProperties appProperties;
     private final TemplateEngine templateEngine;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final ProductRepository productRepository;
 
     public Account processNewAccount(SignUpForm signUpForm) {
         Account newAccount = saveNewAccount(signUpForm);
@@ -58,31 +61,13 @@ public class AccountService implements UserDetailsService {
 
     public void sendSignUpConfirmEmail(Account newAccount) {
         applicationEventPublisher.publishEvent(new SendingEmailEvent(newAccount));  //비동기로 이메일 전송
-
-//        Context context = new Context();
-//        context.setVariable("link", "/check-email-token?token=" + newAccount.getEmailCheckToken() +
-//                "&email=" + newAccount.getEmail());
-//        context.setVariable("name", newAccount.getName());
-//        context.setVariable("nickname", newAccount.getNickname());
-//        context.setVariable("linkName", "이메일 인증하기");
-//        context.setVariable("message", "토마토 마켓 서비스를 이용하려면 아래 링크를 클릭하세요.");
-//        context.setVariable("host", appProperties.getHost());
-//        String message = templateEngine.process("mail/email-link", context);
-//
-//        EmailMessage emailMessage = EmailMessage.builder()
-//                .to(newAccount.getEmail())
-//                .subject("토마토 마켓, 회원 가입 인증")
-//                .message(message)
-//                .build();
-//
-//        emailService.sendEmail(emailMessage);
     }
 
     public void login(Account account) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 new UserAccount(account),
                 account.getPassword(),
-                Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")));
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
         SecurityContextHolder.getContext().setAuthentication(token);
     }
 
@@ -193,5 +178,37 @@ public class AccountService implements UserDetailsService {
 
     public List<Product> getUploadedProducts(Account account) {
         return account.getProducts();
+    }
+
+    public int addLikedProduct(Account account, ProductLikeForm productLikeForm) {
+        Account currentAccount = accountRepository.findById(account.getId()).orElseThrow(RuntimeException::new);
+        Product product = productRepository.findById(Long.parseLong(productLikeForm.getId().trim())).orElseThrow(RuntimeException::new);
+        currentAccount.getProductsLiked().add(product);
+        product.addLikedAccount(currentAccount);
+        return product.getLikeCount();
+    }
+
+    public int removeLikedProduct(Account account, ProductLikeForm productLikeForm) {
+        Account currentAccount = accountRepository.findById(account.getId()).orElseThrow(RuntimeException::new);
+        Product product = productRepository.findById(Long.parseLong(productLikeForm.getId().trim())).orElseThrow(RuntimeException::new);
+        currentAccount.getProductsLiked().remove(product);
+        product.removeLikedAccount(currentAccount);
+        return product.getLikeCount();
+    }
+
+    public List<Product> getUploadedProductsLiked(Account account) {
+        Account currentAccount = accountRepository.findById(account.getId()).get();
+        return currentAccount.getProductsLiked();
+    }
+
+    public void deleteAccount(Account account) {
+        Account currentAccount = accountRepository.findById(account.getId()).get();
+
+//        currentAccount.getProductsLiked().forEach(product -> product.getAccounts().removeIf(account1 -> true));
+//        currentAccount.getLocations().clear();
+//        currentAccount.getTags().clear();
+
+
+        accountRepository.deleteById(account.getId());
     }
 }

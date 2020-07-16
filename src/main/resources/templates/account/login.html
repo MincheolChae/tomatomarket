@@ -24,6 +24,10 @@
     <article>
         <div class="mycontainer">
             <div class="inputuser">
+                <div th:if="${param.error}" class="error"> <!-- 파라미터에 error가 true면 보여줄 div -->
+                    <p>이메일(또는 닉네임)과 패스워드가 정확하지 않습니다.<button class="close">×</button></p>
+
+                </div>
                 <form th:action="@{/login}" method="post" novalidate>
                     <div class="input-info">
                         <label for="username">아이디(이메일 또는 닉네임)</label>
@@ -86,6 +90,9 @@
     <script>
         $('#rememberMe').on('click', function () {
             $('.remember-small').toggle();
+        })
+        $('.close').on('click', function () {
+            $('.error').hide();
         })
     </script>
 </body>

@@ -84,12 +84,13 @@
 
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
     <script th:replace="fragments.html :: ajax-csrf-header"></script>
     <script th:replace="fragments.html :: editor-script"></script>
     <script th:replace="fragments.html :: form-validation"></script>
     <script>
         document.querySelector("#back").onclick = function(){
-            location.href = "/";
+            history.back();
         }
     </script>
 

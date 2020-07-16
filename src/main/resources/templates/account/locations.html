@@ -23,7 +23,7 @@
     <header th:replace="fragments.html :: header"></header>
     <div th:replace="fragments.html :: veri-email"></div>
 
-    <div class="container" style="height: 600px;">
+    <div class="container" style="height: 590px;">
         <div class="row">
             <div th:replace="fragments.html :: profile-side-menu (menu = 'locations')"></div>
             <div class="col-9">
@@ -96,12 +96,12 @@
             tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
         });
     </script>
-    <script>
-        navigator.geolocation.watchPosition(function(pos) {
-            let latitude = pos.coords.latitude;
-            let longitude = pos.coords.longitude;
-            console.log("현재 위치는 : " + latitude + ", "+ longitude);
-        });
-    </script>
+<!--    <script>-->
+<!--        navigator.geolocation.watchPosition(function(pos) {-->
+<!--            let latitude = pos.coords.latitude;-->
+<!--            let longitude = pos.coords.longitude;-->
+<!--            console.log("현재 위치는 : " + latitude + ", "+ longitude);-->
+<!--        });-->
+<!--    </script>-->
 </body>
 </html>

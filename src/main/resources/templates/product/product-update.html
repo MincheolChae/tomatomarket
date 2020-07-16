@@ -96,12 +96,13 @@
 
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
     <script th:replace="fragments.html :: ajax-csrf-header"></script>
     <script th:replace="fragments.html :: editor-script"></script>
     <script th:replace="fragments.html :: form-validation"></script>
     <script th:inline="javascript">
         document.querySelector("#back").onclick = function(){
-            location.href = "/product/[[${product.id}]]";
+            history.back();
         }
         document.querySelector("#soldout").onclick = function(){
             return confirm('판매완료로 바꾸시겠습니까? 이 작업은 되돌릴 수 없습니다.')

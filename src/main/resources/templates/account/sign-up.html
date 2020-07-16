@@ -33,11 +33,11 @@
                     </div>
                     <div class="input-info">
                         <label for="password">비밀번호</label>
-                        <input id="password" type="password" name="password" th:field="*{password}" placeholder="8자 이상의 비밀번호 입력" required minlength="8" maxlength="20">
+                        <input id="password" type="password" name="password" th:field="*{password}" placeholder="8자 이상의 비밀번호 입력" min="8" max="30" required>
                     </div>
                     <div class="input-info">
                         <label for="password2">비밀번호 확인</label>
-                        <input id="password2" type="password" name="password2" th:field="*{password2}" placeholder="8자 이상의 비밀번호 재입력" required minlength="8" maxlength="20">
+                        <input id="password2" type="password" name="password2" th:field="*{password2}" placeholder="8자 이상의 비밀번호 재입력" min="8" max="30" required>
                         <br><small th:if="${#fields.hasErrors('password')}" th:errors="*{password}">비밀번호 불일치 오류</small>
                     </div>
                     <div class="input-info">

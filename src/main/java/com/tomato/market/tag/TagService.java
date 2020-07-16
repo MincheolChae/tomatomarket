@@ -9,12 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class TagService {
 
-    private final TagRepository keywordRepository;
+    private final TagRepository tagRepository;
 
     public Tag findOrCreateNew(String tagTitle) {
-        Tag tag = keywordRepository.findByTitle(tagTitle);
+        Tag tag = tagRepository.findByTitle(tagTitle);
         if (tag == null) {
-            tag = keywordRepository.save(Tag.builder().title(tagTitle).build());
+            tag = tagRepository.save(Tag.builder().title(tagTitle).build());
         }
         return tag;
     }

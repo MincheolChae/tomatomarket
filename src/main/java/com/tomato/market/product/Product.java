@@ -1,14 +1,15 @@
 package com.tomato.market.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tomato.market.account.UserAccount;
 import com.tomato.market.account.domain.Account;
 import com.tomato.market.location.Location;
 import com.tomato.market.tag.Tag;
 import lombok.*;
-import org.hibernate.mapping.ToOne;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,8 +29,10 @@ public class Product {
     @ManyToOne
     private Account writer;  //작성자
 
-    @ManyToMany
-    private Set<Account> accounts = new HashSet<>();  //이 물품을 관심 추가한 회원들
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Account> accounts = new ArrayList<>();  //이 물품을 관심 추가한 회원들
+
+    private int likeCount;
 
     private String title;
 
@@ -37,10 +40,12 @@ public class Product {
 
     private String price;
 
-    @Lob @Basic(fetch = FetchType.EAGER)
+    @Lob
+    @Basic(fetch = FetchType.EAGER)
     private String description;
 
-    @Lob @Basic(fetch = FetchType.EAGER)
+    @Lob
+    @Basic(fetch = FetchType.EAGER)
     private String images;  //등록한 이미지들의 html태그
 
     private String representativeImage;   //등록한 이미지 중 대표이미지(첫번째 이미지 html태그)
@@ -77,11 +82,19 @@ public class Product {
 
     public void makeRepresentativeImage() {
         if (this.images.contains("<img ") && this.images.contains("\">")) {
-            String image = this.images.substring(this.images.indexOf("<img "), this.images.indexOf("\">") + 2);
-            this.representativeImage = image;
+            this.representativeImage = this.images.substring(this.images.indexOf("<img "), this.images.indexOf("\">") + 2);
         } else {
             this.representativeImage = "<img src=/img/default_b72974fa-1b77-490a-9642-e6b2a443fff6.jpg>";
         }
     }
 
+    public void addLikedAccount(Account account) {
+            this.accounts.add(account);
+            this.likeCount++;
+    }
+
+    public void removeLikedAccount(Account account) {
+            this.accounts.remove(account);
+            this.likeCount--;
+    }
 }

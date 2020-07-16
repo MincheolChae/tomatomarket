@@ -43,7 +43,7 @@ public class Account {
     @OrderBy("writeTime")
     private List<Product> products = new ArrayList<>();   //판매내역
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Product> productsLiked = new ArrayList<>();  //관심 표시한 물품들
 
     @ManyToMany
@@ -84,6 +84,10 @@ public class Account {
 
     public void deleteProduct(Product product) {
         this.products.remove(product);
+    }
+
+    public void removeProductLiked(Product product) {
+        this.productsLiked.remove(product);
     }
 }
 

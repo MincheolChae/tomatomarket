@@ -50,47 +50,27 @@
             <div class="recommand">
                 <div class="recommand-title">토마토 마켓 인기 매물</div>
                 <div class="fade">
-                    <div>
-                        <a href="#">
+                    <div th:each="product : ${popularProductList}">
+                        <a th:href="@{'/product/'+${product.id}}">
                             <figure>
-                                <img src="/img/1.jpg">
-                                <figcaption><span class="fade-title">싱가폴 아파트 팝니다</span><span class="fade-location">싱가포르 종로구 동동</span><span class="fade-price">540,000원</span></figcaption>
-                            </figure>
-                        </a>
-                    </div>
-                    <div>
-                        <a href="#">
-                            <figure>
-                                <img src="/img/2.jpg">
-                                <figcaption><span class="fade-title">미국 빌딩 3채 팔아요~</span><span class="fade-location">미국 플로리다주</span><span class="fade-price">790,000원</span></figcaption>
-                            </figure>
-                        </a>
-                    </div>
-                    <div>
-                        <a href="#">
-                            <figure>
-                                <img src="/img/3.jpg">
-                                <figcaption><span class="fade-title">아껴 쓰던 섬 급처합니다!!</span><span class="fade-location">전라남도 완도군 노화읍 죽굴도</span><span class="fade-price">30,000원</span></figcaption>
-                            </figure>
-                        </a>
-                    </div>
-                    <div>
-                        <a href="#">
-                            <figure>
-                                <img src="/img/4.jpg">
-                                <figcaption><span class="fade-title">외딴섬에 있는 별장 팔아봅니다^^</span><span class="fade-location">전라남도 신안군 만재도</span><span class="fade-price">5,500,000원</span></figcaption>
-                            </figure>
-                        </a>
-                    </div>
-                    <div>
-                        <a href="#">
-                            <figure>
-                                <img src="/img/5.jpg">
-                                <figcaption><span class="fade-title">셜록홈즈가 살던 집 팔아요ㅋ</span><span class="fade-location">영국 런던 베이커스트리트 221b</span><span class="fade-price">2,100,000원</span></figcaption>
+                                <div class="popular-image" th:utext="${product.representativeImage}"></div>
+                                <figcaption>
+                                    <span class="fade-title" th:text="${product.title}"></span>
+                                    <span class="fade-location">
+                                        <span th:if="${!#sets.isEmpty(product.locations)}" th:each="location : ${product.locations}">
+                                            <span th:text="${location.city}"></span>&nbsp;<span th:text="${location.province}"></span>&nbsp;<span th:text="${location.unit}"></span>
+                                        </span>
+                                        <span th:if="${#sets.isEmpty(product.locations)}">
+                                            <span>등록된 지역이 없습니다.</span>
+                                        </span>
+                                    </span>
+                                    <span class="fade-price product-price" th:text="${product.price}"></span><span class="won">&nbsp;원</span>
+                                </figcaption>
                             </figure>
                         </a>
                     </div>
                 </div>
+
                 <div class="recommand-menu">
                     <div class="recommand-head">
                         <span>추천 검색어</span>
@@ -107,6 +87,7 @@
                         </ul>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
@@ -116,12 +97,12 @@
         <article id="article">
             <div class="mycontainer">
                 <div class="content">
-                    <div class="show-product"><span class="show-near"><button>동네 매물 보기</button></span><span class="show-all"><button>전체 매물 보기</button></span></div>
+                    <div class="show-product"><span class="show-all"><button class="my-town-button">전체 매물</button></span><span sec:authorize="isAuthenticated()" class="show-near"><button class="my-town-button">동네 매물</button></span></div>
                     <div class="write-product">
                         <a sec:authorize="isAuthenticated()" th:if="${account.emailVerified}" href="/new-product"><button>매물 등록하기</button></a>
                         <button sec:authorize="isAuthenticated()" th:if="${!account.emailVerified}" class="button-disabled" disabled>매물을 등록하려면 이메일을 인증하세요.</button>
                     </div>
-                    <ul>
+                    <ul class="allProductList">
                         <li th:each="product : ${productList}">
                             <a th:href="@{'/product/'+${product.id}}">
                                 <div th:utext="${product.representativeImage}" class="product-image"></div>
@@ -147,14 +128,52 @@
                                         <span class="product-price" th:text="${product.price}"></span><span>&nbsp;원</span>
                                         &nbsp;&nbsp;<span th:if="${product.isSoldOut()}" class="soldout-msg" style="display: inline-block; border:1px solid #95a5a6; border-radius: 5px; color: #95a5a6;">판매완료</span>
                                     </div>
-                                    <div class="content-detail">관심//TODO · <span class="write-time" th:text="${#temporals.format(product.writeTime, 'yyyy.MM.dd. HH:mm')}"></span></div>
+                                    <div class="content-detail">관심&nbsp;<span th:text="${product.likeCount}"></span> · <span class="write-time" th:text="${#temporals.format(product.writeTime, 'yyyy.MM.dd. HH:mm')}"></span></div>
                                 </div>
                             </a>
                         </li>
 
-                        <a href="#">
+                        <a href="/more-product">
                             <li class="content-more">
-                                <div class="content-more-plus">+</div><div class="content-more-text">토마토 마켓 <br>매물 더 보기</div>
+                                <div class="content-more-plus">+</div><div class="content-more-text">토마토 마켓<br>전체 매물 보기</div>
+                            </li>
+                        </a>
+                    </ul>
+
+                    <ul sec:authorize="isAuthenticated()" class="myTownProductList" style="display: none">
+                        <li th:each="product : ${myTownProductList}">
+                            <a th:href="@{'/product/'+${product.id}}">
+                                <div th:utext="${product.representativeImage}" class="product-image"></div>
+                                <div class="content-info">
+                                    <div class="content-title" th:text="${product.title}"></div>
+                                    <div class="content-locations">
+                                        <span th:if="${!#sets.isEmpty(product.locations)}" th:each="location : ${product.locations}">
+                                            <span th:text="${location.province}"></span>&nbsp;<span th:text="${location.unit}"></span>
+                                        </span>
+                                        <span th:if="${#sets.isEmpty(product.locations)}">
+                                            <span>등록된 지역이 없습니다.</span>
+                                        </span>
+                                    </div>
+                                    <div class="content-tags">
+                                        <span th:if="${!#sets.isEmpty(product.tags)}" th:each="tag : ${product.tags}">
+                                            <i class="fa fa-tag"></i><span th:text="${tag.title}"></span>
+                                        </span>
+                                        <span th:if="${#sets.isEmpty(product.tags)}" style="color: #5f27cd">
+                                            <i class="fa fa-tags" aria-hidden="true"></i><span th:text="${product.category}"></span>
+                                        </span>
+                                    </div>
+                                    <div class="content-price">
+                                        <span class="product-price" th:text="${product.price}"></span><span>&nbsp;원</span>
+                                        &nbsp;&nbsp;<span th:if="${product.isSoldOut()}" class="soldout-msg" style="display: inline-block; border:1px solid #95a5a6; border-radius: 5px; color: #95a5a6;">판매완료</span>
+                                    </div>
+                                    <div class="content-detail">관심&nbsp;<span th:text="${product.likeCount}"></span> · <span class="write-time" th:text="${#temporals.format(product.writeTime, 'yyyy.MM.dd. HH:mm')}"></span></div>
+                                </div>
+                            </a>
+                        </li>
+
+                        <a href="/more-town-product">
+                            <li class="content-more">
+                                <div class="content-more-plus">+</div><div class="content-more-text">우리 동네<br>매물 더 보기</div>
                             </li>
                         </a>
                     </ul>
@@ -167,8 +186,7 @@
         <div class="mycontainer">
             <div class="question">
                 <h5>궁금한 점이 있으신가요?</h5>
-                <h6><a href="/"><i class="fa fa-question-circle-o" aria-hidden="true"></i><span class="q1">자주 묻는 질문</span></a>
-                    <a href="/"><span class="q2">문의하기</span></a></h6>
+                <h6><a href="/question"><i class="fa fa-question-circle-o" aria-hidden="true"></i><span class="q2">문의하기</span></a></h6>
             </div>
         </div>
     </section>
@@ -176,6 +194,7 @@
     <div th:replace="fragments.html :: footer"></div>
 
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
     <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
     <script src="/js/slick.min.js"></script>
@@ -193,6 +212,13 @@
         const productPrices = document.querySelectorAll('.product-price')
         for(let i=0; i<productPrices.length; i++){
             productPrices[i].innerHTML = addComma(productPrices[i].innerHTML);
+        }
+    </script>
+    <script>
+        let popularImage = document.querySelectorAll('.popular-image img');
+        for(let i=0; i<popularImage.length; i++){
+            popularImage[i].style.width = '712px';
+            popularImage[i].style.height = '400px';
         }
     </script>
     <script>
@@ -220,6 +246,22 @@
                 soldout[i].parentElement.parentElement.parentElement.parentElement.style.opacity = '0.3';
             }
         }
+    </script>
+    <script>
+        $('.my-town-button').on('click', function(){
+            let text = this.innerHTML;
+            if(text === '동네 매물'){
+                this.style.fontWeight = 'bold';
+                this.parentElement.parentElement.children[0].firstChild.style.fontWeight = 'normal';
+                document.querySelector('.myTownProductList').style.display = 'block';
+                document.querySelector('.allProductList').style.display = 'none';
+            } else if(text === '전체 매물'){
+                this.style.fontWeight = 'bold';
+                this.parentElement.parentElement.children[1].firstChild.style.fontWeight = 'normal';
+                document.querySelector('.myTownProductList').style.display = 'none';
+                document.querySelector('.allProductList').style.display = 'block';
+            }
+        })
     </script>
 </body>
 </html>

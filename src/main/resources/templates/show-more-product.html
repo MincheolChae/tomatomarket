@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>토마토마켓 - 전체 매물</title>
+    <link rel="shortcut icon" href="/img/favicon-32x32.png">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/reset-2.css">
+    <link rel="stylesheet" href="/css/show-more-product.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header th:replace="fragments.html :: header"></header>
+
+    <div class="container" style="min-height: 587px;">
+        <div class="content row">
+            <div class="text-right col-6">
+                <p class="lead" th:if="${productPage.getTotalElements() == 0}">
+                    토마토마켓에 등록된 매물이 없습니다.
+                </p>
+                <p class="lead" th:if="${productPage.getTotalElements() > 0}">
+                    토마토마켓에 등록된 전체 매물입니다.
+                </p>
+            </div>
+
+            <div class="dropdown pb-3 col-2 text-center" th:if="${productPage.getTotalElements() > 0}">
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    정렬 방식
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" th:classappend="${#strings.equals(sortProperty, 'writeTime')}? active"
+                       th:href="@{'/more-product?sort=writeTime,desc'}">
+                        최근순
+                    </a>
+                    <a class="dropdown-item" th:classappend="${#strings.equals(sortProperty, 'likeCount')}? active"
+                       th:href="@{'/more-product?sort=likeCount,desc'}">
+                        관심순
+                    </a>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <ul>
+                    <li th:each="product : ${productPage.getContent()}">
+                        <a th:href="@{'/product/'+${product.id}}">
+                            <div th:utext="${product.representativeImage}" class="product-image"></div>
+                            <div class="content-info">
+                                <div class="content-title context" th:text="${product.title}"></div>
+                                <div class="content-locations">
+                                                <span th:if="${!#sets.isEmpty(product.locations)}" th:each="location : ${product.locations}">
+                                                    <span class="context" th:text="${location.province}"></span>&nbsp;<span class="context" th:text="${location.unit}"></span>
+                                                </span>
+                                    <span th:if="${#sets.isEmpty(product.locations)}">
+                                                    <span>등록된 장소가 없습니다.</span>
+                                                </span>
+                                </div>
+                                <div class="content-tags">
+                                                <span th:if="${!#sets.isEmpty(product.tags)}" th:each="tag : ${product.tags}">
+                                                    <i class="fa fa-tag"></i><span class="context" th:text="${tag.title}"></span>
+                                                </span>
+                                    <span th:if="${#sets.isEmpty(product.tags)}" style="color: #5f27cd">
+                                                    <i class="fa fa-tags" aria-hidden="true"></i><span class="context" th:text="${product.category}"></span>
+                                                </span>
+                                </div>
+                                <div class="content-price">
+                                    <span class="product-price" th:text="${product.price}"></span><span>&nbsp;원</span>
+                                    &nbsp;&nbsp;<span th:if="${product.isSoldOut()}" class="soldout-msg" style="display: inline-block; border:1px solid #95a5a6; border-radius: 5px; color: #95a5a6;">판매완료</span>
+                                </div>
+                                <div class="content-detail">관심&nbsp;<span th:text="${product.likeCount}"></span> · <span class="write-time" th:text="${#temporals.format(product.writeTime, 'yyyy.MM.dd. HH:mm')}"></span></div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row justify-content-center" th:if="${productPage.getTotalElements() > 0}">
+            <div class="col-sm-10">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${!productPage.hasPrevious()}? disabled">
+                        <a th:href="@{/more-product(page=${productPage.getNumber() - 1})}"
+                           class="page-link" tabindex="-1" aria-disabled="true">
+                            이전
+                        </a>
+                    </li>
+                    <li class="page-item" th:classappend="${i == productPage.getNumber()}? active"
+                        th:each="i: ${#numbers.sequence(0, productPage.getTotalPages() - 1)}">
+                        <a th:href="@{/more-product(page=${i})}"
+                           class="page-link" href="#" th:text="${i + 1}"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${!productPage.hasNext()}? disabled">
+                        <a th:href="@{/more-product(page=${productPage.getNumber() + 1})}"
+                           class="page-link">
+                            다음
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div>
+            <a href="/new-product"><button class="btn btn-primary">매물 등록하기</button></a>
+        </div>
+    </div>
+
+
+<div th:replace="fragments.html :: footer"></div>
+
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
+<script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+<script>
+    moment.locale('ko');
+    $(".write-time").text(function(index, dateTime) {
+        return moment(dateTime, "YYYY.MM.DD hh:mm").fromNow();
+    });
+</script>
+<script src="/node_modules/mark.js/dist/jquery.mark.min.js"></script>
+<script>
+    $(function(){
+        var mark = function() {
+            // Read the keyword
+            var keyword = $("#keyword").text();
+
+            // Determine selected options
+            var options = {
+                "each": function(element) {
+                    setTimeout(function() {
+                        $(element).addClass("animate");
+                    }, 250);
+                }
+            };
+
+            // Mark the keyword inside the context
+            $(".context").unmark({
+                done: function() {
+                    $(".context").mark(keyword, options);
+                }
+            });
+        };
+
+        mark();
+    });
+</script>
+<script>
+    function addComma(price) {
+        var regexp = /\B(?=(\d{3})+(?!\d))/g;
+        return price.replace(regexp, ',');
+    }
+    const productPrices = document.querySelectorAll('.product-price')
+    for(let i=0; i<productPrices.length; i++){
+        productPrices[i].innerHTML = addComma(productPrices[i].innerHTML);
+    }
+</script>
+<script>
+    let productImage = document.querySelectorAll('.product-image');
+    for(let i=0; i<productImage.length; i++){
+        productImage[i].firstElementChild.style = 'none';
+    }
+
+    const soldout = document.querySelectorAll(".soldout-msg");
+    for(let i=0; i<soldout.length; i++){
+        if(soldout[i].innerHTML === '판매완료'){
+            soldout[i].parentElement.children[0].style.textDecoration = 'line-through';
+            soldout[i].parentElement.children[1].style.textDecoration = 'line-through';
+            soldout[i].parentElement.parentElement.parentElement.parentElement.style.opacity = '0.3';
+        }
+    }
+</script>
+</body>
+</html>

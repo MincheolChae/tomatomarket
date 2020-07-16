@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>토마토마켓 - 이메일 링크 로그인</title>
+    <title>토마토마켓 - 잘못된 요청</title>
     <link rel="shortcut icon" href="/img/favicon-32x32.png">
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/reset.css">
@@ -12,20 +12,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div th:replace="fragments.html :: header"></div>
-
-    <div class="container">
-        <div class="py-5 text-center" th:if="${error}">
-            <div  class="alert alert-danger" role="alert" th:text="${error}">
-                로그인 할 수 없습니다.
-            </div>
+    <header th:replace="fragments.html :: header"></header>
+    <section class="jumbotron text-center">
+        <div class="container">
+            <p class="lead text-muted" style="font-size: 24px;">
+                잘못된 요청입니다.
+            </p>
+            <p>
+                <a href="javascript:history.back()" class="btn btn-secondary my-3 mx-1">이전 페이지로</a>
+                <a th:href="@{/}" class="btn btn-primary my-3">홈으로</a>
+            </p>
         </div>
-
-        <div class="py-5 text-center" th:if="${error == null}">
-            <h2 style="font-size: 20px">이메일로 로그인 했습니다. <a th:href="@{/profile/password}" style="color: #ff6348">비밀번호를 변경</a>하세요.</h2>
-        </div>
-    </div>
+    </section>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
 </body>
 </html>

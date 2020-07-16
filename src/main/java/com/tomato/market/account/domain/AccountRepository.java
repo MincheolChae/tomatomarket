@@ -18,4 +18,6 @@ public interface AccountRepository extends JpaRepository<Account, Long>, Queryds
 
     Account findByNameAndPhone(String name, String phone);
 
+    @EntityGraph(attributePaths = {"locations"})
+    Account findAccountWithLocationsById(Long id);
 }

@@ -1,6 +1,7 @@
 package com.tomato.market.product;
 
 import com.tomato.market.account.domain.Account;
+import com.tomato.market.account.domain.AccountRepository;
 import com.tomato.market.location.Location;
 import com.tomato.market.product.event.ProductCreatedEvent;
 import com.tomato.market.tag.Tag;
@@ -21,6 +22,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ModelMapper modelMapper;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final AccountRepository accountRepository;
 
     public Product createNewProduct(Product product, Account account) {
         Product newProduct = productRepository.save(product);
@@ -56,7 +58,7 @@ public class ProductService {
 
     public void deleteProduct(Account account, Product product) {
         account.deleteProduct(product);
-        productRepository.delete(product);
+        productRepository.deleteById(product.getId());
     }
 
     public void soldOut(Product product) {
@@ -123,4 +125,25 @@ public class ProductService {
         Optional<Product> productFoundById = productRepository.findById(Long.parseLong(id.trim()));
         productFoundById.ifPresent(product -> product.getLocations().remove(location));
     }
+
+    public List<Product> getPopularProductListToShow() {
+        List<Product> popularProductList = productRepository.findFirst10ByIsSoldOutOrderByLikeCountDesc(false);
+        for (Product product : popularProductList) {
+            product.makeRepresentativeImage();
+        }
+        return popularProductList;
+    }
+
+    public void deleteLikedAccount(Product product) {
+        product.getAccounts().forEach(account -> account.removeProductLiked(product));
+        product.getAccounts().clear();
+    }
+
+    public List<Product> getMyTownProductListToShow(Account account) {
+        Account currentAccount = accountRepository.findAccountWithLocationsById(account.getId());
+        return productRepository.findFirst16ByAccountOrderByWriteTimeDesc(currentAccount.getLocations());
+
+    }
+
+
 }

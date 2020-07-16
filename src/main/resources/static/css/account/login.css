@@ -6,6 +6,8 @@
 .login-head{float: left; color:#ff6348; font-size: 40px; font-weight: bold; font-family: 'Gamja Flower', cursive;}
 
 article{margin-top: 10px;}
+article .inputuser .error{text-align: center; font-size: 16px; border: 1px solid #f5c6cb; background-color: #f8d7da; color: #721c24; padding: 10px 0;}
+article .inputuser .error .close{font-size: 20px; margin-left: 150px;}
 article .inputuser .input-info{text-align: center; margin: 5px 0;}
 article .inputuser label{display: block; font-size: 18px; font-weight: bold; padding: 5px 100px; text-align: left;}
 article .inputuser input{width: 380px; height: 45px; padding: 0 10px;}

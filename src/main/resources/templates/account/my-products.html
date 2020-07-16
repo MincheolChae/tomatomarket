@@ -34,7 +34,7 @@
     <div class="container">
         <div class="row">
             <div th:replace="fragments.html :: profile-side-menu (menu = 'products')"></div>
-            <div class="col-10">
+            <div class="col-10" style="min-height: 450px;">
                 <div class="row">
                     <div class="col-12" th:if="${!#lists.isEmpty(productList)}">
                         <div class="alert alert-info" style="margin-left: 5px;">판매 내역</div>
@@ -89,10 +89,6 @@
         for(let i=0; i<soldout.length; i++){
             if(soldout[i].innerHTML === '판매완료'){
                 soldout[i].parentElement.parentElement.style.opacity= '0.5';
-                // console.log(soldout[i].parentElement.nextElementSibling)
-                // soldout[i].parentElement.children[0].style.textDecoration = 'line-through';
-                // soldout[i].parentElement.children[1].style.textDecoration = 'line-through';
-                // soldout[i].parentElement.parentElement.parentElement.parentElement.style.opacity = '0.3';
             }
         }
     </script>

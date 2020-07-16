@@ -19,6 +19,8 @@
             padding: 0;
             margin: 0;
         }
+
+        .like-button:focus{outline: none;}
     </style>
 
     <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
@@ -112,8 +114,11 @@
         </div>
         <div class="row">
             <div class="col-6 soldout-blur" style="background-color: #ffffff; padding-bottom: 10px;">
-                <button sec:authorize="isAuthenticated()" class="like-button" style="color: #ff6348; font-size: 20px; border: 1px solid #ff6348; border-radius: 10px; padding: 0 5px;">
-                    <i class="fa fa-heart-o" aria-hidden="true"></i>&nbsp;<span>관심 매물 추가</span>
+                <button sec:authorize="isAuthenticated()" th:if="${!account.getProductsLiked().contains(product)}" class="like-button" style="color: #ff6348; font-size: 20px; border: 1px solid #ff6348; border-radius: 10px; padding: 0 5px;">
+                    <i class="fa fa-heart-o" aria-hidden="true"></i>(<span class="like-count" th:text="${product.likeCount}"></span>)&nbsp;<span class="like">관심 매물 추가</span>
+                </button>
+                <button sec:authorize="isAuthenticated()" th:if="${account.getProductsLiked().contains(product)}" class="like-button" style="color: #ff6348; font-size: 20px; border: 1px solid #ff6348; border-radius: 10px; padding: 0 5px;">
+                    <i class="fa fa-heart" aria-hidden="true"></i>(<span class="like-count" th:text="${product.likeCount}"></span>)&nbsp;<span class="like">관심 매물 제거</span>
                 </button>
             </div>
             <div class="col-6 soldout-blur" style="background-color: #ffffff; padding-bottom: 10px; text-align: right; font-size: 20px"><span class="write-time" th:text="${#temporals.format(product.writeTime, 'yyyy.MM.dd. HH:mm')}"></span>&nbsp;(<span class="from-now"></span>)</div>
@@ -121,7 +126,7 @@
 
         <div class="row justify-content-center mt-4">
             <span sec:authorize="isAuthenticated()"><button th:if="${product.isWriter(#authentication.principal)}"  type="submit" class="btn btn-success" id="update">내용 수정하기</button></span>
-            &nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-secondary" id="back">목록으로</button>
+            &nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-secondary" id="back">돌아가기</button>
         </div>
     </div>
 
@@ -133,6 +138,44 @@
     <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
     <script src="/js/slick.min.js"></script>
     <script src="/node_modules/lightgallery/dist/js/lightgallery-all.min.js"></script>
+    <script th:inline="javascript">
+        $('.like-button').on('click', function(){
+            let productId = "[[${product.id}]]";
+            let likeOrUnlike;
+            let text = document.querySelector('.like').innerHTML;
+            if(text === '관심 매물 추가'){
+                likeOrUnlike = 'like';
+                $('.like-button .like').text('관심 매물 제거');
+                document.querySelector('.like-button i').classList.remove('fa-heart-o');
+                document.querySelector('.like-button i').classList.add('fa-heart');
+            } else if(text === '관심 매물 제거'){
+                likeOrUnlike = 'unlike';
+                $('.like-button .like').text('관심 매물 추가');
+                document.querySelector('.like-button i').classList.remove('fa-heart');
+                document.querySelector('.like-button i').classList.add('fa-heart-o');
+            }
+            let likeData = {
+                id : productId,
+                likeOrUnlike : likeOrUnlike
+            }
+
+            $.ajax({
+                url: "/product/like",
+                method: "POST",
+                data: JSON.stringify(likeData),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function(e){
+                    document.querySelector('.like-count').innerHTML = e;
+                    console.log(e)
+                },
+                error: function () {
+                    console.log('error occured')
+                }
+            })
+
+        })
+    </script>
     <script>
         moment.locale('ko');
         $(".write-time").text(function(index, dateTime) {
@@ -186,7 +229,7 @@
                 alert('거래할 지역을 등록하세요.');
                 return;
             }
-            location.href = "/";
+            location.href = '/';
         }
         document.querySelector("#update").onclick = function(){
             location.href = "/product/[[${product.id}]]/update";

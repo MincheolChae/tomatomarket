@@ -42,6 +42,6 @@
     color: #eeeeee;
 }
 
-.like-button:hover span{font-weight: bold;}
+.like-button:hover .like{font-weight: bold;}
 
 .lightgallery a:hover img{border: 2px solid #535c68;}
