@@ -30,7 +30,7 @@ public class Product {
     private Account writer;  //작성자
 
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<Account> accounts = new ArrayList<>();  //이 물품을 관심 추가한 회원들
+    private List<Account> accounts = new ArrayList<>();  //이 물품을 관심 추가한 회원들 (오류 발생.. 수정 필요)
 
     private int likeCount;
 

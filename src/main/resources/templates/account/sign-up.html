@@ -28,31 +28,31 @@
                 <form th:action="@{/sign-up}" method="post" th:object="${signUpForm}" class="needs-validation" novalidate>
                     <div class="input-info">
                         <label for="email">이메일</label>
-                        <input id="email" type="email" name="email" th:field="*{email}" placeholder="tomato@email.com" required>
+                        <input id="email" type="email" name="email" th:field="*{email}" class="form-control" placeholder="tomato@email.com" required>
                         <br><small th:if="${#fields.hasErrors('email')}" th:errors="*{email}">이메일 입력 오류</small>
                     </div>
                     <div class="input-info">
                         <label for="password">비밀번호</label>
-                        <input id="password" type="password" name="password" th:field="*{password}" placeholder="8자 이상의 비밀번호 입력" min="8" max="30" required>
+                        <input id="password" type="password" name="password" th:field="*{password}" class="form-control" placeholder="8자 이상의 비밀번호 입력" min="8" max="30" required>
                     </div>
                     <div class="input-info">
                         <label for="password2">비밀번호 확인</label>
-                        <input id="password2" type="password" name="password2" th:field="*{password2}" placeholder="8자 이상의 비밀번호 재입력" min="8" max="30" required>
+                        <input id="password2" type="password" name="password2" th:field="*{password2}" class="form-control" placeholder="8자 이상의 비밀번호 재입력" min="8" max="30" required>
                         <br><small th:if="${#fields.hasErrors('password')}" th:errors="*{password}">비밀번호 불일치 오류</small>
                     </div>
                     <div class="input-info">
                         <label for="name">이름</label>
-                        <input id="name" type="text" name="name" th:field="*{name}" placeholder="이름을 입력하세요." min="2" max="16" required>
+                        <input id="name" type="text" name="name" th:field="*{name}" class="form-control" placeholder="이름을 입력하세요." min="2" max="16" required>
                         <br><small th:if="${#fields.hasErrors('name')}" th:errors="*{name}">이름 입력 오류</small>
                     </div>
                     <div class="input-info">
                         <label for="nickname">닉네임</label>
-                        <input id="nickname" type="text" name="nickname" th:field="*{nickname}" placeholder="한글, 알파벳, 숫자만 허용됩니다." min="2" max="12" required>
+                        <input id="nickname" type="text" name="nickname" th:field="*{nickname}" class="form-control" placeholder="한글, 알파벳, 숫자만 허용됩니다." min="2" max="12" required>
                         <br><small th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">닉네임 입력 오류</small>
                     </div>
                     <div class="input-info">
                         <label for="phone">휴대폰 번호</label>
-                        <input id="phone" type="tel" name="phone" th:field="*{phone}" placeholder="특수문자 없이 숫자만 입력하세요." required>
+                        <input id="phone" type="tel" name="phone" th:field="*{phone}" class="form-control" placeholder="특수문자 없이 숫자만 입력하세요." required>
                         <br><small th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">휴대폰 번호 입력 오류</small>
                     </div>
                     <div class="input-info">

@@ -44,7 +44,7 @@ public class Account {
     private List<Product> products = new ArrayList<>();   //판매내역
 
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<Product> productsLiked = new ArrayList<>();  //관심 표시한 물품들
+    private List<Product> productsLiked = new ArrayList<>();  //관심 표시한 물품들 (오류 발생.. 수정 필요)
 
     @ManyToMany
     private Set<Tag> tags = new HashSet<>();   //관심 태그
